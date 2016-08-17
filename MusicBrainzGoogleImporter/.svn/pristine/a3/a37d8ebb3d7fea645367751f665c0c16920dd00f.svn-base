@@ -1,0 +1,49 @@
+package org.nanotek.musicbrainz.job.base;
+
+import org.nanotek.Workable;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobExecutionNotRunningException;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.NoSuchJobException;
+import org.springframework.batch.core.launch.NoSuchJobExecutionException;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class ArtistAliasDataLoad implements Workable<String[]>{
+
+	private ClassPathXmlApplicationContext ctx;
+
+	/**
+	 * @param args
+	 * @throws JobParametersInvalidException 
+	 * @throws JobInstanceAlreadyCompleteException 
+	 * @throws JobRestartException 
+	 * @throws JobExecutionAlreadyRunningException 
+	 * @throws NoSuchJobException 
+	 * @throws JobExecutionNotRunningException 
+	 * @throws NoSuchJobExecutionException 
+	 */
+	public static void main(String[] args)  {
+		ArtistAliasDataLoad load = new ArtistAliasDataLoad();
+		load.doWork(args);
+	}
+
+	@Override
+	public void doWork(String[] args) {
+		try { 
+			ctx = new ClassPathXmlApplicationContext(new String[] {
+			"/spring-batch-jobs/artist_alias/spring-batch-context.xml"});
+			Job artistCreditJob = (Job) ctx.getBean("artistAliasIndexJob");
+			JobLauncher jobLauncher = (JobLauncher) ctx.getBean("jobLauncher");
+			jobLauncher.run(artistCreditJob, new JobParametersBuilder().addLong("run.id", System.currentTimeMillis()).toJobParameters());
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+	}
+
+}

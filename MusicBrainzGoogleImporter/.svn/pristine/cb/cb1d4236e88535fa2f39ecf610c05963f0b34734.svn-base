@@ -1,0 +1,53 @@
+package org.nanotek.base;
+
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.nanotek.Base;
+
+/**
+ * Something like a date... 
+ * 
+ * @author josecanova
+ *
+ */
+@Entity
+@SuppressWarnings("serial")
+public class BirthDateBase implements Base<Long>{
+
+	@Id
+	private Long id; 
+	
+	private Date dateBirth;
+
+	public BirthDateBase() {
+		super();
+	} 
+	
+	public BirthDateBase(Date dateBirth) {
+		super();
+		this.dateBirth = dateBirth;
+	} 
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id; 
+	} 
+
+	public Date getDateBirth() {
+		return dateBirth;
+	}
+
+	public void setDateBirth(Date dateBirth) {
+		this.dateBirth = dateBirth;
+	}
+	
+}

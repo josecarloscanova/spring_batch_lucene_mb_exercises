@@ -1,0 +1,175 @@
+package org.nanotek.tika.job.writer;
+
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Base;
+import org.nanotek.StringBase;
+import org.nanotek.hibernate.dao.GeneralPurposeDAO;
+import org.nanotek.indexer.util.key.GenericUUIDService;
+import org.nanotek.spring.batch.TypeWriter;
+import org.nanotek.spring.batch.step.StampFinderStep;
+import org.nanotek.tika.MediaDetail;
+import org.nanotek.tika.file.FileIdentity;
+import org.nanotek.tika.io.TikaMediaDetailDetector;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemStream;
+import org.springframework.batch.item.ItemStreamException;
+
+/**
+ * executed the check of some constraints presents on file like permission and 
+ * performs a sign on file content based on MD5 hashing. 
+ * 
+ * @author java-eclipse
+ *
+ * @param <T>
+ */
+public class FileSignerWriter<T extends StampFinderStep> extends TypeWriter<T> implements ItemStream{
+
+	private Logger log = Logger.getLogger(FileSignerWriter.class);
+	private ExecutionContext executionContext;
+	private TikaMediaDetailDetector tikaMediaDetailDetector; 
+	private GeneralPurposeDAO<FileIdentity> dao; 
+	
+	public FileSignerWriter() {}
+
+	@Override
+	public void write(List<? extends T> items) throws Exception {
+		assert(items.size()==1);
+		processElementPath(items.get(0));
+		//		log.debug("Here you have a list of " + items.get(0).size() + "Elements.");
+	}
+
+	//TODO: Decompose the Path again to cascade in a tree structure just for fun. 
+	@SuppressWarnings("unchecked")
+	private void processElementPath(T t) {
+		Map <String,HashSet<String>> pathMap = (Map<String, HashSet<String>>) executionContext.get(Long.toString(t.getId()));
+		for (String base: pathMap.keySet()){  
+			Set<String> fileSet = pathMap.get(base);
+			for (String filePath : fileSet){ 
+				log.debug("WRITER RootPath " + base.toString() + " WRITER FILE PATH  " + filePath.toString());
+				FileIdentity fileIdentity = buildFileIdentity(base,filePath);
+				readArchive(base,filePath);
+				dao.persist(fileIdentity);
+				log.debug("File Identity Updated " + fileIdentity.toString());
+			}
+		}
+		executionContext.put("pathMap", pathMap);
+	}
+
+
+	private FileIdentity buildFileIdentity(String base, String filePath) {
+		GenericUUIDService uuidService = new GenericUUIDService();
+		UUID id = uuidService.getKey();
+		FileIdentity fileIdentity = new FileIdentity();
+		fileIdentity.setId(id.toString());
+		fileIdentity.setName(base);
+		fileIdentity.setSortName(filePath);
+		fileIdentity.setCksum("");
+		fileIdentity.setType("");
+		return fileIdentity;
+	}
+
+	private void readArchive(String base, String filePath) {
+		String filePathStr = base +  FileSystems.getDefault().getSeparator() +  filePath;
+		File file = new File(filePathStr);
+		try { 
+			if (!file.isDirectory() && file.canRead()) { 
+				ByteBuffer buffer = readFile (file);
+				signFile (buffer);
+				storeFileProcessingStem(file);
+				log.debug(" FILE  READEN " + buffer.capacity() ) ;
+			}
+		}catch(SecurityException se) { 
+			if (!file.isDirectory()) 
+			{ 
+				log.debug("File permission read denied " + filePathStr);
+			}else { 
+				log.debug("Directory is not processed on this step");
+			}
+		}
+	}
+
+	private void storeFileProcessingStem(File file) {
+		log.debug("IMPLEMENT STORE PROCESSING MD5 ON database ");
+		GenericUUIDService service =  new GenericUUIDService();
+		ByteBuffer buffer = readFile(file);
+		UUID key = service.getKey(buffer.array()); 
+		log.debug("ID KEY " + key.toString());
+	}
+
+	private void signFile(ByteBuffer buffer) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			digest.update(buffer.array());
+			byte[] ckSumResult = digest.digest();
+			StringBuilder sb = new StringBuilder();
+			log.debug ("Key SIZE " + ckSumResult.length);
+			for (byte b: ckSumResult) { 
+				String hex=Integer.toHexString(0xff & b);
+				sb.append(hex);
+			}
+			String result = new String(sb.toString());
+			log.debug("CkSum result " + result);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			log.debug(e);
+		}
+	}
+
+	private ByteBuffer readFile(File file) {
+		ByteBuffer buffer = null;
+		try {
+			byte [] fileByteArray = Files.readAllBytes(file.toPath());
+			buffer = ByteBuffer.allocate(fileByteArray.length);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.debug(e);
+		}
+		return  buffer; 
+	}
+
+	@Override
+	public void open(ExecutionContext executionContext)
+			throws ItemStreamException {
+		this.executionContext = executionContext; 
+	}
+
+	@Override
+	public void update(ExecutionContext executionContext)
+			throws ItemStreamException {
+	}
+
+	@Override
+	public void close() throws ItemStreamException {
+		this.executionContext = null;
+	}
+
+	public TikaMediaDetailDetector getTikaMediaDetailDetector() {
+		return tikaMediaDetailDetector;
+	}
+
+	public void setTikaMediaDetailDetector(
+			TikaMediaDetailDetector  tikaMediaDetailDetector) {
+		this.tikaMediaDetailDetector = tikaMediaDetailDetector;
+	}
+
+	public GeneralPurposeDAO<FileIdentity> getDao() {
+		return dao;
+	}
+
+	public void setDao(GeneralPurposeDAO<FileIdentity> dao) {
+		this.dao = dao;
+	}
+
+}

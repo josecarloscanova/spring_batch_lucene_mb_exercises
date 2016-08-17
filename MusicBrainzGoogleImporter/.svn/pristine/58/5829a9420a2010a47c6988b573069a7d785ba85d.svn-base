@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.nanotek.base">
+
+    <class name="NormalizedContact" table="NORMALIZED_CONTACTS">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="sequence" >  
+                <param name="sequence">normalized_contact_id_seq</param>  
+             </generator>
+        </id>
+		<property name="name" type="string"  unique="true" not-null="false" column="name" />
+		<property name="normalizedName" type="string" not-null="false" column="normalized_name" />
+		<property name="address" type="string"  not-null="false" column="address" />
+		<property name="normalizedAddress" type="string"  not-null="false" column="normalized_address" />
+		<property name="addressComplement" type="string"  not-null="false" column="addressComplement" />
+		<property name="city" type="string"  not-null="false" column="city"/>
+		<property name="normalizedCity" type="string"  not-null="false" column="normalized_city"/>
+		<property name="state" type="string"  not-null="false" column="state"/>
+ 		<property name="normalizedState" type="string"  not-null="false" column="normalized_state"/>
+ 		<property name="zip" type="string" not-null="false" column="zip"/>
+ 		<property name="normalizedZip" type="string" not-null="false" column="normalized_zip"/>
+ 		<property name="phone" type="string" not-null="false" column="phone"/>
+		<property name="normalizedPhone" type="string" not-null="false" column="normalized_phone"/>
+		<property name="mail" type="string" not-null="false" column="mail"/>
+		<property name="normalizedMail" type="string" not-null="false" column="normalized_mail"/>
+		<property name="phoneAreaCode" type="string" not-null="false" column="phoneAreaCode"/>
+		<property name="description" type="string" not-null="false" length="5000" column="description"/>
+    </class>
+    
+</hibernate-mapping>

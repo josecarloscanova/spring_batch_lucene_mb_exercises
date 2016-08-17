@@ -1,0 +1,7 @@
+package org.nanotek;
+
+public interface ReferenceResolver <R , I>{
+
+	public I resolve(R ref);
+	
+}

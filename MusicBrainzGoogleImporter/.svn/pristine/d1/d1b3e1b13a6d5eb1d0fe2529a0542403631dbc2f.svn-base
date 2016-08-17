@@ -1,0 +1,103 @@
+package org.nanotek.lucene.document;
+
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.nanotek.Base;
+import org.nanotek.ConfigurationBuilder;
+import org.nanotek.base.Configuration;
+import org.nanotek.lucene.document.configuration.DocumentConfiguration;
+import org.nanotek.lucene.document.configuration.FieldConfiguration;
+
+@SuppressWarnings("serial")
+public class DocumentBuilder <T extends Serializable> implements ConfigurationBuilder<Document,DocumentConfiguration>,Base<T> {
+
+	protected T id; 
+	protected Map<? , String> dataMap = null; 
+	protected Configuration<DocumentConfiguration> baseParameters; 
+	
+	public DocumentBuilder() {
+		super();
+	}
+
+	public DocumentBuilder(Map<?, String> dataMap) {
+		super();
+		this.dataMap = dataMap;
+	}
+	
+	public DocumentBuilder(Map<?, String> dataMap, T id) {
+		super();
+		this.dataMap = dataMap;
+		this.id = id;
+	}
+
+	@Override
+	public T getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(T id) {
+		this.id = id;
+	}
+	
+	@Override
+	public Document build() {
+		assert(baseParameters !=null && dataMap !=null);
+		Document document = new Document();
+		DocumentConfiguration documentConfiguration = baseParameters.get();
+		Set<?>fldConKeySet = documentConfiguration.getFieldConfigMap().keySet();
+		for (Object key : fldConKeySet){ 
+			FieldConfiguration fieldConfiguration = documentConfiguration.getFieldConfigMap().get(key);
+//			String valueOfField = dataMap.get(configuration.getName());
+//			assert (valueOfField !=null);
+//			FieldBuilder<String> fieldBuilder = new FieldBuilder<String>(valueOfField);
+			document.add(buildField(fieldConfiguration));
+		}
+		return document;
+	}
+
+	@Override
+	public Document build(Configuration<DocumentConfiguration> baseParameters) {
+		assert (dataMap !=null);
+		Document document = new Document();
+		DocumentConfiguration documentConfiguration = baseParameters.get();
+		Set<?>fldConKeySet = documentConfiguration.getFieldConfigMap().keySet();
+		for (Object key : fldConKeySet){ 
+			FieldConfiguration fieldConfiguration = documentConfiguration.getFieldConfigMap().get(key);
+//			String valueOfField = dataMap.get(configuration.getName());
+//			assert (valueOfField !=null);
+//			FieldBuilder<String> fieldBuilder = new FieldBuilder<String>(valueOfField);
+			document.add(buildField(fieldConfiguration));
+		}
+		return document;
+	}
+
+	private Field buildField(FieldConfiguration configuration){ 
+		String valueOfField = dataMap.get(configuration.getName());
+		assert (valueOfField !=null);
+		FieldBuilder<String> fieldBuilder = new FieldBuilder<String>(valueOfField);
+		return fieldBuilder.build(configuration);
+	}
+	
+	public Map<?, String> getDataMap() {
+		return dataMap;
+	}
+
+	public void setDataMap(Map<?, String> dataMap) {
+		this.dataMap = dataMap;
+	}
+
+	public Configuration<DocumentConfiguration> getBaseParameters() {
+		return baseParameters;
+	}
+
+	public void setBaseParameters(
+			Configuration<DocumentConfiguration> baseParameters) {
+		this.baseParameters = baseParameters;
+	}
+
+}

@@ -1,0 +1,30 @@
+package org.nanotek.musicbrainz.beans.map;
+
+import org.nanotek.opencsv.BaseMap;
+import org.nanotek.opencsv.StrategyException;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+import au.com.bytecode.opencsv.bean.MappingStrategy;
+
+public class HashMapCsvMapper extends CsvToBean<BaseMap>{
+
+	public HashMapCsvMapper() {
+	}
+
+	@Override
+	public BaseMap processLine(MappingStrategy<BaseMap> mapper, String[] line) throws StrategyException{
+		BaseMap bean = null;
+		try { 
+			bean = mapper.createBean();
+			for (int col = 0; col < line.length; col++) {
+				String key = mapper.getColumnName(col);
+				String value = (key !=null && line[col] !=null)? line[col].trim():"";
+				bean.put(key, value);
+			}
+			return bean;
+		} catch (Exception e) 
+		{ 
+			throw new StrategyException (e);
+		}
+	}
+}

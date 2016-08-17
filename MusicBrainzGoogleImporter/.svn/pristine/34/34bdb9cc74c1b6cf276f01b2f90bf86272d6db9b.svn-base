@@ -1,0 +1,36 @@
+package tests.mapping;
+
+import static org.junit.Assert.*;
+
+import org.apache.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
+import org.nanotek.opencsv.MapColumnStrategy;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import tests.search.IndexSearcherTest;
+
+public class TestMapping {
+
+	ApplicationContext ctx; 
+	Logger log = Logger.getLogger(IndexSearcherTest.class);
+	@Before
+	public void setUp() throws Exception {
+		try { 
+			ctx = new ClassPathXmlApplicationContext(new String[] {
+					"spring-batch-jobs/musicbrainz-csv-mapping.xml"});
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Test
+	public void test() {
+		MapColumnStrategy strategy = (MapColumnStrategy) ctx.getBean("artistAliasMapping");
+		System.out.println(strategy.toString());
+	}
+
+}

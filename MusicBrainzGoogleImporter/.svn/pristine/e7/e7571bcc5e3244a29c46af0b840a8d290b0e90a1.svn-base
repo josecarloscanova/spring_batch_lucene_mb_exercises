@@ -1,0 +1,87 @@
+package org.nanotek.tika.job.reader.dao;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Base;
+import org.nanotek.StringBase;
+import org.nanotek.base.PageItemBase;
+import org.nanotek.hibernate.dao.DAO;
+import org.nanotek.spring.batch.TypeReader;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
+import org.nanotek.tika.MediaDetail;
+import org.nanotek.tika.file.FileIdentity; 
+import org.nanotek.tika.io.TikaMediaDetailDetector;
+
+public class FileIdentityReader extends TypeReader<List<?extends Base<?>>> {
+
+	private DAO<FileIdentity> fileIdentityDAO; 
+	private Integer maxRecords= 20;
+	private TikaMediaDetailDetector tikaMediaDetailDetector; 
+	private static final Logger log = Logger.getLogger(FileIdentityReader.class);
+	
+	@Override
+	public List<?extends Base<?>> read() throws Exception, UnexpectedInputException,
+			ParseException, NonTransientResourceException {
+		PageItemBase<Long> page = (PageItemBase<Long>) this.executionContext.get(PageItemBase.class.getName());
+		if (page == null) { 
+			page = new PageItemBase<Long>(System.nanoTime());
+			page.setStartRecord(0);
+			page.setMaxRecords(maxRecords);
+		}
+		List<FileIdentity> files = null;
+			files = fileIdentityDAO.listRecords(page.getStartRecord(), page.getMaxRecords());
+			if (files.size() == 0) { 
+				files=null; 
+			} else { 
+				page.setStartRecord(page.getStartRecord() + files.size());
+				this.executionContext.put(PageItemBase.class.getName(), page);
+			} 
+		if (files!= null)
+			for (FileIdentity fileI : files) 
+			{ 
+				Path directoryPath = Paths.get(fileI.getName());
+				Path filePath = directoryPath.resolve(Paths.get(fileI.getSortName()));
+				StringBase stringBase = new StringBase(filePath.toString());
+				MediaDetail mediaDetail  = tikaMediaDetailDetector.detect(stringBase);
+				fileI.setType(mediaDetail.getContentType());
+				fileI.setDateDetected(new Date());
+				log.debug("FILEIDENTY " + fileI.toString());
+				fileIdentityDAO.update(fileI);
+			}
+		return files;
+	}
+
+	public DAO<FileIdentity> getFileIdentityDAO() {
+		return fileIdentityDAO;
+	}
+
+
+	public void setFileIdentityDAO(DAO<FileIdentity> fileIdentityDAO) {
+		this.fileIdentityDAO = fileIdentityDAO;
+	}
+
+
+	public Integer getMaxRecords() {
+		return maxRecords;
+	}
+
+	public void setMaxRecords(Integer maxRecords) {
+		this.maxRecords = maxRecords;
+	}
+
+	public TikaMediaDetailDetector getTikaMediaDetailDetector() {
+		return tikaMediaDetailDetector;
+	}
+
+	public void setTikaMediaDetailDetector(
+			TikaMediaDetailDetector tikaMediaDetailDetector) {
+		this.tikaMediaDetailDetector = tikaMediaDetailDetector;
+	}
+	
+}

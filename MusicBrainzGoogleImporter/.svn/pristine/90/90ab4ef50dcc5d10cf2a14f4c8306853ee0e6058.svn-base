@@ -1,0 +1,9 @@
+package org.nanotek.util.text;
+
+import org.nanotek.Base;
+
+public interface Normalizer<S,V,K extends Number> extends Base<K> {
+
+	public S normalize(V value);
+	
+}

@@ -1,0 +1,71 @@
+package org.nanotek.prefs;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.nanotek.Base;
+
+
+@SuppressWarnings("serial")
+public class PreferenceSet implements Base<String> {
+	
+	private String id; 
+	
+	private Set<Preference> preferences;
+	
+	public PreferenceSet(){
+		preferences = new HashSet<Preference>();
+	} 
+	
+	public PreferenceSet (String id)
+	{ 
+		this();
+		this.id = id;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public int size() {
+		return preferences.size();
+	}
+
+	public boolean isEmpty() {
+		return preferences.isEmpty();
+	}
+	
+	public Boolean put(String key, String value) {
+		return preferences.add(new Preference(key, value));
+	}
+
+	public Iterator<Preference> iterator() {
+		return preferences.iterator();
+	}
+
+	public Collection<Preference> values() {
+		return preferences;
+	}
+
+	public String get(String name) {
+		for (Preference preference: preferences){
+			if (name.equalsIgnoreCase(preference.getKey())) 
+					return preference.getValue();
+			}
+		return null;
+	}
+
+	public Set<Preference> getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(Set<Preference> preferences) {
+		this.preferences = preferences;
+	}
+}

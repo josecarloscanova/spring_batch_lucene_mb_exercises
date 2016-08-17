@@ -1,0 +1,37 @@
+package org.nanotek.lucene.index;
+
+import org.apache.lucene.index.IndexWriter;
+
+@SuppressWarnings("serial")
+public class LuceneIndexWriterHolder extends IndexHolder<Index,IndexWriter> {
+
+	private IndexWriter targetIndex;
+	private Index index;
+	
+	
+	public LuceneIndexWriterHolder(IndexWriter targetIndex, Index index) {
+		super();
+		this.targetIndex = targetIndex;
+		this.index = index;
+	}
+
+	public Index getIndex() {
+		return index;
+	}
+
+	@Override
+	public IndexWriter getHoldee() {
+		return targetIndex;
+	}
+
+	@Override
+	public void setId(String id) {
+	}
+
+	@Override
+	public String getId() {
+		return null;
+	}
+
+	
+}

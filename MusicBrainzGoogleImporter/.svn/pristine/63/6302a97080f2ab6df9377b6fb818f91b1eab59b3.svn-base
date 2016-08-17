@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 		
+ 	<bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:spring-batch-jobs/artist/configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+		
+ 	<!-- <bean id="batchDataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.batch.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    
+    <bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="batchDataSource" />
+	</bean> -->
+	
+	<bean id="transactionManager"
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager">
+	</bean>
+    
+</beans>

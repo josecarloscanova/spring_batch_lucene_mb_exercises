@@ -1,0 +1,23 @@
+package org.nanotek.task.base;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import org.nanotek.Base;
+import org.nanotek.Task;
+import org.nanotek.task.callable.CallableTask;
+
+@SuppressWarnings("serial")
+public abstract class BaseTask<T extends Task<T,K>, K extends Serializable> implements CallableTask<T,K> ,Base<K>  {
+	
+	public abstract K getTaskId();
+	
+	public T getTask(){ 
+		return (T) this;
+	}
+	
+	public abstract String getTaskName(); 
+	
+	public abstract Date getTaskDate();
+	
+}

@@ -1,0 +1,8 @@
+package org.nanotek.mq.receive;
+
+public interface Executor<T1, T2> {
+
+			 public void holdListener(T1 t1);
+			 public void processMessage(T2 t1);
+
+}

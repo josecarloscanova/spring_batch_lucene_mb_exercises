@@ -1,0 +1,35 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.Artist;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class ArtistMapping extends ColumnPositionMappingStrategy<Artist> {
+
+	public ArtistMapping() 
+	{ 
+		String [] columns = new String [19]; 
+		columns[0] = "id";
+		columns[1] = "gid";	
+		columns[2] = "name";
+		columns[3] = "sortName";
+		columns[4] = null;
+		columns[5] = null;
+		columns[6] = null;
+		columns[7] = null;
+		columns[8] = null;
+		columns[9] = null;
+		columns[10] = null;
+		columns[11] = "type";
+		columns[12] = "gender";
+		columns[13] = "area";
+		columns[14] = null;
+		columns[15] = null;
+		columns[16] = null;
+		columns[17] = null;
+		columns[18] = null;
+		
+		this.setColumnMapping(columns);
+	}
+	
+}

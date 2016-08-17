@@ -1,0 +1,9 @@
+package tests;
+
+import org.nanotek.Base;
+
+public interface Flyer<T extends Base<?>> {
+    default public String identifyMyself(T ability) {
+        return "I am able to fly. " + ability.getId();
+    }
+}

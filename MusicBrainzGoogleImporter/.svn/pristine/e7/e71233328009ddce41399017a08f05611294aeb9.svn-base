@@ -1,0 +1,27 @@
+package org.nanotek.poi.base.ext;
+
+import org.nanotek.Position;
+
+@SuppressWarnings("serial")
+public class CellPosition<O, D> implements Position<O, D> {
+
+	private O origin; 
+	private D distance; 
+	
+	public CellPosition(O origin, D distance) {
+		super();
+		this.origin = origin;
+		this.distance = distance;
+	}
+
+	@Override
+	public O getOrigin() {
+		return origin;
+	}
+
+	@Override
+	public D getDistance() {
+		return distance;
+	}
+
+}

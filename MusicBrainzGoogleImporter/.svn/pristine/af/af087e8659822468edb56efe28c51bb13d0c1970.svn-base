@@ -1,0 +1,17 @@
+package org.nanotek.mq.send;
+
+/**
+ *  A sender interface is a "one way" communication channel.
+ *  one way by the mean constraint that the message sent is
+ *  not the same as the message received.
+ *  @author josecanovamauger
+ */
+
+import javax.jms.Destination;
+
+import org.nanotek.Base;
+import org.springframework.jms.core.MessagePostProcessor;
+
+public abstract class MessageQueueSender<D extends Destination , S extends Base<?>, T> extends QueueSender<D,S>{
+	public abstract  T send( S message , MessagePostProcessor messagePostProcessor);
+}

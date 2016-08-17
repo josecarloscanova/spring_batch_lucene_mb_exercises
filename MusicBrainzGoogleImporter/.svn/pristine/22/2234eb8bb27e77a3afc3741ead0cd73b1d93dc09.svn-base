@@ -1,0 +1,45 @@
+package org.nanotek.poi.configuration.excel;
+
+import java.util.Set;
+
+import org.nanotek.Base;
+import org.nanotek.base.Configuration;
+
+@SuppressWarnings("serial")
+public class WorkbookConfiguration implements Base<String>, Configuration<WorkbookConfiguration> {
+
+	private String id; 
+	
+	private Set<SheetConfiguration> sheetConfigurations; 
+	
+	public WorkbookConfiguration() {
+	}
+
+	public WorkbookConfiguration(Set<SheetConfiguration> sheetConfigurations) {
+		this.sheetConfigurations = sheetConfigurations;
+	}
+	
+	@Override
+	public WorkbookConfiguration get() {
+		return this;
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Set<SheetConfiguration> getSheetConfigurations() {
+		return sheetConfigurations;
+	}
+
+	public void setSheetConfigurations(Set<SheetConfiguration> sheetConfigurations) {
+		this.sheetConfigurations = sheetConfigurations;
+	}
+
+}

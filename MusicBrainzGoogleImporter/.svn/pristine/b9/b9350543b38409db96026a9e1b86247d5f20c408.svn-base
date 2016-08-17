@@ -1,0 +1,67 @@
+package org.nanotek.base;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.nanotek.Base;
+import org.nanotek.MappableReference;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class MappableReferenceBase <T extends Base<?>, R extends ColumnPositionMappingStrategy<T>> extends MappableBase<T> implements MappableReference<T,R>{
+
+	@Override
+	public <S extends Map<String, ?>> S getMap(T type) {
+		return super.getMap(type);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <S extends Map<String, ?>> S getMap(T type, R reference) 
+	{
+		ColumnPositionMappingStrategy<T> t = reduceArray(reference);
+		String[] fields = t.getColumnMapping();
+		HashMap<String,String>  baseMap = new HashMap<String,String>();
+		for (String field : fields) { 
+			try {
+				if (field !=null)
+					baseMap.put(field, BeanUtils.getProperty(type, field));
+			} catch (IllegalAccessException | InvocationTargetException
+					| NoSuchMethodException e) {
+				throw new MappableException(e);
+			}
+		}
+		return (S) baseMap;
+	}
+
+	public <Reducible extends ColumnPositionMappingStrategy<T>> Reducible reduceArray(R reference) 
+	{ 
+		return new Reduced().reduce(reference); 
+	}
+
+	class Reduced implements org.nanotek.Reducible<ColumnPositionMappingStrategy<T>> {
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <M extends ColumnPositionMappingStrategy<T>> M reduce(
+				ColumnPositionMappingStrategy<T> reducible) {
+			String [] fieldNames = reducible.getColumnMapping();
+			List<String> nameList = new ArrayList<String>(); 
+			for (String field : fieldNames) 
+			{ 
+				if (field !=null)
+					nameList.add(field);
+			}
+			M r = (M) new ColumnPositionMappingStrategy<T>();
+			String [] names = nameList.toArray(new String[nameList.size()]);
+			r.setColumnMapping(names);	
+			return r; 
+		}
+	}
+}
+
+

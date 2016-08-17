@@ -1,0 +1,133 @@
+package org.nanotek.tika.io;
+
+import static java.nio.file.FileVisitResult.CONTINUE;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
+
+import org.apache.log4j.Logger;
+import org.apache.tika.io.TemporaryResources;
+import org.apache.tika.io.TikaInputStream;
+import org.nanotek.tika.MediaDetail;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+public class ExecutorTikaFileVisitor extends SimpleFileVisitor<Path> {
+
+	protected PathMatcher matcher;
+	private int numMatches = 0;
+	private TikaMediaDetector  tikaMediaDetector;
+	private static final Logger log = Logger.getLogger(ExecutorTikaFileVisitor.class);
+	private ThreadPoolTaskExecutor taskExecutor;
+	private List<Path> stack;
+	public int tasksAccepted = 0; 
+	
+	
+	public ExecutorTikaFileVisitor() {
+		stack = new ArrayList<Path>();
+	}
+
+	public void find(Path file) {
+		Path name = file.getFileName();
+		if (name != null && matcher.matches(name)) {
+			numMatches++;
+			String type;
+			try {
+				type = Files.probeContentType(file);
+				try { 
+					taskExecutor.execute (new RunnableVisitor(matcher,tikaMediaDetector,file));
+				}catch (RejectedExecutionException ex) 
+				{ 
+					log.debug(ex);
+					stack.add(file);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				log.debug(e);
+			}finally 
+			{ 
+				tasksAccepted ++; 
+			}
+		}
+	}
+
+	// Prints the total number of
+	// matches to standard out.
+	public void done() {
+		System.out.println("Matched: " + numMatches);
+	}
+
+	// Invoke the pattern matching
+	// method on each file.
+	@Override
+	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+		find(file);
+		return CONTINUE;
+	}
+
+	// Invoke the pattern matching
+	// method on each directory.
+	@Override
+	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+		
+		find(dir);
+		return CONTINUE;
+	}
+
+	@Override
+	public FileVisitResult visitFileFailed(Path file, IOException exc) {
+		exc.printStackTrace();
+		return CONTINUE;
+	}
+
+	public int getNumMatches() {
+		return numMatches;
+	}
+
+	public void setNumMatches(int numMatches) {
+		this.numMatches = numMatches;
+	}
+
+	public PathMatcher getMatcher() {
+		return matcher;
+	}
+
+	public void setMatcher(PathMatcher matcher) {
+		this.matcher = matcher;
+	}
+
+
+	public TikaMediaDetector getTikaMediaDetector() {
+		return tikaMediaDetector;
+	}
+
+
+	public void setTikaMediaDetector(TikaMediaDetector tikaMediaDetector) {
+		this.tikaMediaDetector = tikaMediaDetector;
+	}
+
+
+	public ThreadPoolTaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+
+
+	public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
+	}
+
+	public List<Path> getStack() {
+		return stack;
+	}
+
+	
+}

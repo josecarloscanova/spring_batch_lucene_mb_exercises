@@ -1,0 +1,18 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.Track;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class TrackListMapping extends ColumnPositionMappingStrategy<Track> {
+
+	public TrackListMapping() 
+	{ 
+		String [] columns = new String [3]; 
+		columns[0] = "id";
+		columns[1] = "count";
+		columns[2] = null;
+		this.setColumnMapping(columns);
+	}
+	
+}

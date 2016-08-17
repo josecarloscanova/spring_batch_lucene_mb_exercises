@@ -1,0 +1,15 @@
+package org.nanotek.message.data;
+
+public enum MessageType {
+	
+	IndexCreate, 
+	IndexUpdate, 
+	IndexDelete,
+	IndexClose,
+	DocumentCreate, 
+	DocumentUpdate, 
+	DocumentDelete, 
+	QueryExecute, 
+	TikaExtract; 
+	
+}

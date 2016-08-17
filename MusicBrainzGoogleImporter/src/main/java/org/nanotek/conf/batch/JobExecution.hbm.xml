@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans.batch">
+
+    <class name="JobExecution" table="batch_job_execution">
+
+    	<id name="id" type="long"  column="job_execution_id">
+			 <generator class="assigned" />
+        </id>
+        
+        <property name="version" type="long"  column="version"/>
+        <property name="createTime" type="date"  column="create_time"/>
+        <property name="startTime" type="date"  column="start_time"/>
+        <property name="endTime" type="date"  column="end_time"/>
+        <property name="status" type="string"  column="status" length="10"/>
+        <property name="exitCode" type="string"  column="exit_code" length="20"/>
+        <property name="exitMessage" type="string"  column="exit_message" length="2500"/>
+        <property name="lastUpdated" type="timestamp"  column="last_updated"/>
+
+        <many-to-one name="jobInstance" 
+        column="job_instance_id" 
+        unique="true"
+        not-null="true"/>
+        
+    </class>
+    
+</hibernate-mapping>

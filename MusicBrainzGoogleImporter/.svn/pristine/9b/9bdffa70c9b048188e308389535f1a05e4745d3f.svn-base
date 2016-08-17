@@ -1,0 +1,22 @@
+package org.nanotek;
+
+import org.apache.commons.collections4.Transformer;
+
+/**
+ * Base interface for transform occurrences.
+ * 
+ * @author josecanova
+ *
+ * @param <S> Source 
+ * @param <T> Transformer
+ * @param <O> Output.
+ */
+public interface Serializer<S,O,T extends Transformer<S,O>> extends Transformer<S,O>{
+
+	@Override
+	public O transform (S s);
+	
+	public O transform(S source,T transformer);
+	
+	
+}

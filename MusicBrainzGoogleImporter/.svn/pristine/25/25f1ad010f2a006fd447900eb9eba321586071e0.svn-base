@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.nanotek.base">
+
+    <class name="School" table="SCHOOL">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="sequence">  
+                <param name="sequence">school_id_seq</param>  
+             </generator>
+        </id>
+        
+		<property name="name" type="string"  not-null="false" column="name" />
+		<property name="address" type="string"  not-null="false" column="address" />
+		<property name="city" type="string"  not-null="false" column="city"/>
+		<property name="state" type="string"  not-null="false" column="state"/>
+ 		<property name="zip" type="string" not-null="false" column="zip"/>
+ 		<property name="phone" type="string" not-null="false" column="phone"/>
+		<property name="mail" type="string" not-null="false" column="mail"/>
+
+    </class>
+    
+</hibernate-mapping>

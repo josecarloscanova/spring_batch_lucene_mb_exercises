@@ -1,0 +1,13 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.MediumCdToc;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+
+public class MediumCdTocCsvToBean extends CsvToBean<MediumCdToc> {
+
+	public MediumCdTocCsvToBean() {
+		super();
+	}
+
+}

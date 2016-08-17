@@ -1,0 +1,13 @@
+package org.nanotek.lucene.index;
+
+import org.nanotek.indexer.util.key.KeyServiceFactoryException;
+
+public interface IndexBaseSet<T> {
+
+	public T getNextKey() throws KeyServiceFactoryException;
+	
+	public enum IndexType { 
+		STANDARD, 
+		STOPWORD;
+	}
+}

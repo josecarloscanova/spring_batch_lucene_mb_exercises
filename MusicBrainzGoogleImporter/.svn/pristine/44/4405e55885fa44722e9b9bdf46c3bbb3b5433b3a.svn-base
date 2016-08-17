@@ -1,0 +1,112 @@
+package org.nanotek.musicbrainz.job.writers.lucene;
+
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.document.Document;
+//import org.apache.lucene.document.NumericField;
+import org.apache.lucene.index.IndexWriter;
+import org.nanotek.musicbrainz.beans.Artist;
+import org.nanotek.musicbrainz.beans.template.ArtistTemplate;
+import org.springframework.batch.item.ItemWriter;
+
+/**
+ * A Writer Class which performs that construction of the Document which will be added on a Lucene Instance, 
+ * it will delegate on future to a template builder based on LuceneTemplateBuilder interface. 
+ * 
+ * @author josecanovamauger
+ *
+ */
+public class ArtistIndexWriter implements ItemWriter<Artist>{
+
+	private IndexWriter indexWriter;
+	private Log log = LogFactory.getLog(ArtistIndexWriter.class);
+	private ArtistTemplate artistTemplate = null;
+//	private ArtistDAO<Artist> ArtistDAO; 
+//	private ArtistCreditDAO<ArtistCredit> artistCreditDAO; 
+//	private ArtistCreditNameDAO<ArtistCreditName> artistCreditNameDAO; 
+
+
+	@Override
+	public void write(List<? extends Artist> items) throws Exception {
+		for (Artist artist:items){ 
+			try { 
+				assert (artist !=null);
+				Document artistDocument = artistTemplate.createTemplate(artist);
+				if (artistDocument.getFields().size() > 0)
+					indexWriter.addDocument(artistDocument); 
+				else 
+					log.debug("Artist was not indexed " + artist.toString());
+			}catch (Exception ex) 
+			{ 
+				ex.printStackTrace(System.out);
+				throw ex;
+			}
+
+		}
+	}
+
+	public ArtistTemplate getArtistTemplate() {
+		return artistTemplate;
+	}
+
+	public void setArtistTemplate(ArtistTemplate artistTemplate) {
+		this.artistTemplate = artistTemplate;
+	}
+
+//	/**
+//	 * This method is not correct. Ned a Fix on Future. 
+//	 * @param Artist
+//	 * @return
+//	 * @throws Exception
+//	 */
+//	public  Document createTemplate(Artist Artist) throws Exception {
+//
+//		Document doc = new Document();
+//		StringField nameIdField = new StringField("nameId", Artist.getId().toString(), Store.YES);
+////		wordField.setOmitTermFreqAndPositions(true);
+////		wordField.setOmitNorms(true);
+//		doc.add(nameIdField);
+//
+//		StringField nameField= new  StringField ("name", Artist.getName(), Store.YES);
+////		wordField.setOmitTermFreqAndPositions(true);
+////		wordField.setOmitNorms(true);
+//		doc.add(nameField);
+//
+//		return doc;
+//	}
+
+//	public ArtistDAO<Artist> getArtistDAO() {
+//		return ArtistDAO;
+//	}
+//
+//	public void setArtistDAO(ArtistDAO<Artist> ArtistDAO) {
+//		this.ArtistDAO = ArtistDAO;
+//	}
+
+	public IndexWriter getIndexWriter() {
+		return indexWriter;
+	}
+
+	public void setIndexWriter(IndexWriter indexWriter) {
+		this.indexWriter = indexWriter;
+	}
+	
+//	public ArtistCreditDAO<ArtistCredit> getArtistCreditDAO() {
+//		return artistCreditDAO;
+//	}
+//
+//	public void setArtistCreditDAO(ArtistCreditDAO<ArtistCredit> artistCreditDAO) {
+//		this.artistCreditDAO = artistCreditDAO;
+//	}
+//
+//	public ArtistCreditNameDAO<ArtistCreditName> getArtistCreditNameDAO() {
+//		return artistCreditNameDAO;
+//	}
+//
+//	public void setArtistCreditNameDAO(
+//			ArtistCreditNameDAO<ArtistCreditName> artistCreditNameDAO) {
+//		this.artistCreditNameDAO = artistCreditNameDAO;
+//	}
+}

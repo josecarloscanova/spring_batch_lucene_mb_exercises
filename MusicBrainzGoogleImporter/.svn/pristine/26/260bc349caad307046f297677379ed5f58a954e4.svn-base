@@ -1,0 +1,21 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.ReleasePackaging;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class ReleasePackageMapping extends ColumnPositionMappingStrategy<ReleasePackaging> {
+
+	public ReleasePackageMapping() 
+	{ 
+		String [] columns = new String [6]; 
+		columns[0] = "id";
+		columns[1] = "gid";
+		columns[2] = "artistCredit";
+		columns[3] = "name";
+		columns[4] = "lenght";
+		columns[5] = "comment";
+		this.setColumnMapping(columns);
+	}
+	
+}

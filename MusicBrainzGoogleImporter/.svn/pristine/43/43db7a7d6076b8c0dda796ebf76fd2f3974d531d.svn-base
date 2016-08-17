@@ -1,0 +1,53 @@
+package test.org.nanotek.datanucleus.calendar.builder;
+
+import java.util.Calendar;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.nanotek.base.date.DateBase;
+
+public class CalendarBuilderBaseTest {
+
+	EntityManagerFactory emf;
+	EntityManager em;
+	
+	@Before
+	public void start()
+	{ 
+		emf = Persistence.createEntityManagerFactory("CalendarEvents");
+		em = emf.createEntityManager();
+	}
+	
+	@Test
+	public void test() {
+		Calendar calendar = Calendar.getInstance();
+		DateBaseBuilder dateBaseBuilder = new DateBaseBuilder(calendar);
+		DateBase dateBase = dateBaseBuilder.build();
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin(); 
+		for (int i = 0 ; i < 1000 ; i++) 
+		{ 
+			em.persist(dateBase);
+			calendar.add(Calendar.DAY_OF_YEAR, 1);
+			dateBaseBuilder = new DateBaseBuilder(calendar);
+			dateBase = dateBaseBuilder.build();
+		}
+		transaction.commit();
+	}
+	
+	@After
+	public void end()
+	{ 
+		if (em !=null && em.isOpen()) 
+			em.close();
+		if (emf !=null && emf.isOpen()) 
+			emf.close();
+	}
+	
+}

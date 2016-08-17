@@ -1,0 +1,7 @@
+package org.nanotek;
+
+public interface Dispatcher <D> {
+
+	void dispatch (D data);
+	
+}

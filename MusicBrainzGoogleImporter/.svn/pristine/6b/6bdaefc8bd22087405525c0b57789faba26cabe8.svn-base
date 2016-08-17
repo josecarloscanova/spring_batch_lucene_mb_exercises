@@ -1,0 +1,19 @@
+package org.nanotek.mq.message;
+
+import java.util.Map;
+
+import org.nanotek.Base;
+import org.nanotek.mq.MessageBuilder;
+import org.springframework.stereotype.Component;
+
+@Component
+public abstract class BaseMessageBuilder<A extends Base<?>, I extends Map<?,?>> implements MessageBuilder<A, I> {
+
+
+	@Override
+	public abstract A build();
+
+	@Override
+	public abstract A build(I info);
+	
+}

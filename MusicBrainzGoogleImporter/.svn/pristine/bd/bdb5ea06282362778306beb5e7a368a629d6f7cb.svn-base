@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:flow="http://www.springframework.org/schema/webflow-config"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:util="http://www.springframework.org/schema/util"
+ 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+          http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.0.xsd
+          http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+          http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.2.xsd
+          http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.2.xsd
+          http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi-1.2.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+          http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+">
+ 
+ <bean name="pipe" class="java.nio.channels.Pipe" factory-method="open">
+  </bean>
+  
+  <!--<bean name="applicationWindowAdapterPipe" class="java.nio.channels.Pipe" factory-method="open">
+  </bean>
+  
+  <bean name="applicationWindowPipeDispatcher" class="org.su.pipe.BasePipeDispatcher" lazy-init="true">
+  	<property name="pipe" ref="applicationWindowPipe"></property>
+  </bean>
+  
+  <bean name="applicationWindowPipeReceiver" class="org.su.pipe.BasePipeReceiver" lazy-init="true">
+  	<property name="pipe" ref="applicationWindowAdapterPipe"></property>
+  </bean>
+  
+  <bean name="applicationWindowAdapterPipeDispatcher" class="org.su.pipe.BasePipeDispatcher" lazy-init="true">
+  	<property name="pipe" ref="applicationWindowAdapterPipe"></property>
+  </bean>
+  
+  <bean name="applicationWindowAdapterPipeReceiver" class="org.su.pipe.BasePipeReceiver" lazy-init="true">
+  	<property name="pipe" ref="applicationWindowPipe"></property>
+  </bean> -->  
+  
+ <task:executor id="taskExecutor"
+	               pool-size="15-25"
+	               queue-capacity="100"/>
+ 
+ 
+ <task:executor id="awTaskExecutor"
+	               pool-size="1-5"
+	               queue-capacity="10"/>
+ 
+</beans>

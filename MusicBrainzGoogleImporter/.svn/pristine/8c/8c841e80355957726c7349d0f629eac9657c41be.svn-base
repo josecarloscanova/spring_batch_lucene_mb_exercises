@@ -1,0 +1,11 @@
+package org.nanotek.http.client;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+
+public interface HttpClientRequest<T extends Serializable> extends Base<T>{
+
+	public void setRequestHandler (ClientRequestHandler requestHandler);
+	
+}

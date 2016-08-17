@@ -1,0 +1,50 @@
+package org.nanotek.lucene.index;
+
+import java.util.Date;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class BaseDocument implements Base<String>{
+	
+	private String id; 
+	private String content; 
+	private String referURL;
+	private Date dateModified; 
+	
+	public BaseDocument() {
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getReferURL() {
+		return referURL;
+	}
+
+	public void setReferURL(String referURL) {
+		this.referURL = referURL;
+	}
+
+	public Date getDateModified() {
+		return dateModified;
+	}
+
+	public void setDateModified(Date dateModified) {
+		this.dateModified = dateModified;
+	}
+
+}

@@ -1,0 +1,12 @@
+index.global.file.name=/home/java-eclipse/lucene_index_path
+index.global.file.name.al=/home/java-eclipse/lucene_index_path/artist_alias
+index.global.file.name.java=/home/java-eclipse/lucene_index_path/tika_index
+index.global.file.name.java.hk2=/home/java-eclipse/lucene_index_path/tika_index_hk2/
+index.global.file.name.java.java_eclipse=/home/java-eclipse/lucene_index_path/tika_index_java_eclipse/
+index.global.file.name.java.java_eclipse_pdf=/home/java-eclipse/lucene_index_path/tika_index_java_eclipse_pdf/
+char.separator=\t
+music.brainz.artist.alias.file=/home/java-eclipse/musicbrainz_files/mbdump/artist_alias
+music.brainz.artist.credit.file=/home/java-eclipse/musicbrainz_files/mbdump/artist_credit
+music.brainz.artist.name.file=/home/java-eclipse/musicbrainz_files/mbdump/artist_name
+music.brainz.artist.credit.name.file=/home/java-eclipse/musicbrainz_files/mbdump.tar/mbdump/artist_credit_name
+music.brainz.artist.file=/home/java-eclipse/musicbrainz_files/mbdump/artist

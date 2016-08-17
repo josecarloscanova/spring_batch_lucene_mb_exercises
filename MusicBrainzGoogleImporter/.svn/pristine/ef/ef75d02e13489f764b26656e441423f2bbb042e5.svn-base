@@ -1,0 +1,75 @@
+/**
+ * example usage of the configurator pattern. E Lucene nao eh banco de dados, eh banco de indice.
+ * os dados ficam no banco ou nao, pode ser o sistema de arquivos. mas nao ficam no lucene.
+ * Lucene eh Bussieness Inteligence e serviço de macaco eh ficar pulando feito um idiota.
+ * Mouse Bussiness eh coisa seria.. ;-)
+**/
+package org.nanotek.tika.document;
+
+import org.apache.lucene.document.Document;
+//import org.nanotek.lucene.LuceneDocumentBuilder;
+//import org.nanotek.lucene.TikaDocumentTransformer;
+import org.apache.tika.Tika;
+import org.apache.tika.io.TikaInputStream;
+import org.nanotek.Builder;
+import org.nanotek.Kong;
+import org.nanotek.lucene.document.configuration.DocumentConfiguration;
+
+
+public  class  TikaBaseDocumentBuilder<S extends TikaInputStream, P extends Kong<?>> implements Builder<S> , TikaDocumentTransformer<S,P,Document>{
+
+	private Tika tika;
+	private String textFieldName = "TextData";
+	protected DocumentConfiguration configuration;
+
+	public TikaBaseDocumentBuilder() {
+		initTika();
+	}
+
+	private void initTika() {
+		tika = new Tika();
+	}
+
+
+	public Tika getTika() {
+		return tika;
+	}
+
+	public void setTika(Tika tika) {
+		this.tika = tika;
+	}
+
+	public String getTextFieldName() {
+		return textFieldName;
+	}
+
+	public void setTextFieldName(String textFieldName) {
+		this.textFieldName = textFieldName;
+	}
+
+	@Override
+	public Document transform(S source) throws TransformerException {
+		return null;
+	}
+
+	@Override
+	public Document transform(S source, P parameter)
+			throws TransformerException {
+		return null;
+	}
+
+	@Override
+	public S build() {
+		return null;
+	}
+
+	public DocumentConfiguration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(DocumentConfiguration configuration) {
+		this.configuration = configuration;
+	}
+
+
+}

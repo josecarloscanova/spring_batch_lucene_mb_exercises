@@ -1,0 +1,37 @@
+package org.nanotek.mq.send;
+import javax.jms.Destination;
+
+import org.nanotek.Base;
+import org.nanotek.StringKong;
+import org.nanotek.mq.MessageBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.jms.core.MessagePostProcessor;
+import org.springframework.stereotype.Component;
+
+/**
+ * Base Class to route object messages on a JMS server.
+ *
+ * @param <T>
+ */
+public class BaseSender<D extends Destination,T extends Base<?>> extends QueueSender<D,T>
+{
+    protected final JmsTemplate jmsTemplate;
+//	private MessageCreator messageCreator;
+
+    public BaseSender( final JmsTemplate jmsTemplate )
+    {
+        this.jmsTemplate = jmsTemplate;
+    }
+
+	public void setDestination(D destination) {
+		this.destination = destination;
+	}
+
+	@Override
+	public void send(T message) {
+		jmsTemplate.convertAndSend(destination,message);
+	}
+
+}

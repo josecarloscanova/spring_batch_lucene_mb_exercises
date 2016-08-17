@@ -1,0 +1,11 @@
+package org.nanotek.dao.spring;
+
+
+import org.nanotek.Base;
+import org.nanotek.beans.WorkName;
+import org.nanotek.dao.DAO;
+
+public interface WorkNameDAO<T extends WorkName> extends DAO<Base<?>> {
+
+	public T findById (String id);
+}

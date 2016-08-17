@@ -1,0 +1,64 @@
+package org.nanotek.musicbrainz.beans;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class Recording implements Base<Long> {
+
+	private Long id; 
+	private String gid; 
+	private Long artistCredit;
+	private Long name; 
+	private Long length;
+	private String comment;
+	
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public String getGid() {
+		return gid;
+	}
+	
+	public void setGid(String gid) {
+		this.gid = gid;
+	}
+	
+	public Long getArtistCredit() {
+		return artistCredit;
+	}
+	
+	public void setArtistCredit(Long artistCredit) {
+		this.artistCredit = artistCredit;
+	}
+	
+	public Long getName() {
+		return name;
+	}
+	
+	public void setName(Long name) {
+		this.name = name;
+	}
+	
+	public String getComment() {
+		return comment;
+	}
+	
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public Long getLength() {
+		return length;
+	}
+
+	public void setLength(Long length) {
+		this.length = length;
+	}
+	
+}

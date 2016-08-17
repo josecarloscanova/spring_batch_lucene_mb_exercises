@@ -1,0 +1,33 @@
+package test.org.nanotek.lucene;
+
+import org.apache.log4j.Logger;
+import org.apache.lucene.queryparser.analyzing.AnalyzingQueryParser;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.complexPhrase.ComplexPhraseQueryParser;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.nanotek.base.QueryParserConfiguration;
+
+public class TestQueryParserConfiguration {
+	
+	private static final Logger log = Logger.getLogger(TestQueryParserConfiguration.class);
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void test() {
+		QueryParserConfiguration p; 
+		p = new QueryParserConfiguration(QueryParser.class, "stringfield");
+		log.debug("QueryParserConfiguration Parser Created");
+		System.out.println("QueryParserConfiguration Parser Created");
+		//		fail("Not yet implemented");
+	}
+
+}

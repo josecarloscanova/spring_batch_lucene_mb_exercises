@@ -1,0 +1,16 @@
+package org.nanotek.spring.batch.step;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public abstract class BaseStatus<T extends Serializable, M> implements Base<T> {
+
+	protected M message; 
+	
+	public abstract M getMessage();
+
+	public abstract  void setMessage(M message);
+	
+}

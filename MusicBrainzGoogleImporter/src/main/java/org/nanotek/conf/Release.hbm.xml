@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="Release" table="RELEASE">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="identity" />
+        </id>
+        
+         <property name="releaseId" type="long" column="RELEASE_ID" />
+    	 <property name="gid" type="string" column="GID" />
+         <property name="releaseGroup" type="long" column="RELEASE_GROUP" />
+         <property name="artistCredit" type="long" column="ARTIST_CREDIT" />
+         <property name="name" type="string" column="NAME" length="2500"/>
+         <property name="barCode" type="string" column="BAR_CODE" not-null="false"/>
+         <property name="dateYear" type="string" column="DATE_YEAR" not-null="false" />
+         <property name="dateMonth" type="string" column="DATE_MONTH" not-null="false"/>
+         <property name="dateDay" type="string" column="DATE_DAY" not-null="false"/>
+         <property name="country" type="string" column="COUNTRY" not-null="false"/>
+    	 <property name="status" type="string" column="STATUS" not-null="false"/>
+    	 <property name="packaging" type="string" column="PACKAGING" not-null="false"/>
+    	 <property name="language" type="string" column="LANGUAGE" not-null="false"/>
+    	 <property name="script" type="string" column="SCRIPT" not-null="false" />
+        
+    </class>
+    
+</hibernate-mapping>

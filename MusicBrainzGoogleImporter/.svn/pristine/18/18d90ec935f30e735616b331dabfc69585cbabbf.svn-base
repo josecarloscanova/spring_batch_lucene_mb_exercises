@@ -1,0 +1,26 @@
+package org.nanotek.mq;
+
+import org.nanotek.mq.listener.QueueListener;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
+
+public class QueueReceiverTest {
+
+	public QueueReceiverTest() {
+		// TODO Auto-generated constructor stub
+	}
+
+	private static ClassPathXmlApplicationContext ctx;
+	
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		ctx = new ClassPathXmlApplicationContext(new String[] {"activemq-config/base-indexer-receiver-context.xml"});
+		QueueListener listener = (QueueListener) ctx.getBean("queueListener");
+		assert (listener !=null);
+		DefaultMessageListenerContainer container = (DefaultMessageListenerContainer) ctx.getBean("jmsContainer");
+	}
+
+}

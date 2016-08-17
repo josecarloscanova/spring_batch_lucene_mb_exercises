@@ -1,0 +1,13 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.Recording;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+
+public class RecordingCsvToBean extends CsvToBean<Recording> {
+
+	public RecordingCsvToBean() {
+		super();
+	}
+
+}

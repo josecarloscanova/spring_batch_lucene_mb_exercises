@@ -1,0 +1,59 @@
+package tests.base;
+
+import org.nanotek.Workable;
+import org.nanotek.base.School;
+import org.nanotek.hibernate.dao.DAO;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobExecutionNotRunningException;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.NoSuchJobException;
+import org.springframework.batch.core.launch.NoSuchJobExecutionException;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+
+
+public class TestSchoolDAO implements Workable<String[]>{
+
+	private ClassPathXmlApplicationContext ctx;
+
+	/**
+	 * @param args 
+	 * @throws JobParametersInvalidException 
+	 * @throws JobInstanceAlreadyCompleteException 
+	 * @throws JobRestartException 
+	 * @throws JobExecutionAlreadyRunningException 
+	 * @throws NoSuchJobException 
+	 * @throws JobExecutionNotRunningException 
+	 * @throws NoSuchJobExecutionException 
+	 */
+	public static void main(String[] args)  {
+		TestSchoolDAO load = new TestSchoolDAO();
+		load.doWork(args);
+	}
+
+	@Override
+	public void doWork(String[] args) {
+		try { 
+			ctx = new ClassPathXmlApplicationContext(new String[] {
+			"database-loaders/spring-dao-context.xml"});
+			School school = new School(); 
+			school.setName("schoolname");
+			school.setAddress("Addrees");
+			school.setCity("city");
+			school.setPhone("phone");
+			school.setZip("asdasd");
+			DAO<School> dao = (DAO<School>) ctx.getBean("schoolDAO");
+			dao.persist(school);
+			
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+	}
+
+}

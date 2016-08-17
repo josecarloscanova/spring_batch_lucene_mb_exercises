@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 	
+    <import resource="classpath:properties_config.xml" />
+    	
+ 	<!-- FLAT FILE SECTION_BEGIN -->
+	<bean lazy-init="true" id="artistNameMapping" class="org.nanotek.beans.mapping.ArtistNameMapping">
+		<property name="type" value="org.nanotek.beans.ArtistName"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="artistNameToBean" class="org.nanotek.beans.mapping.ArtistNameCsvToBean"></bean>
+	
+	<bean lazy-init="true" id="artistNameFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.artist.name.file}"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="artistNameCsvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="artistNameFileReader"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="uidService" class="org.nanotek.indexer.util.key.UIDService"></bean>
+	<bean lazy-init="true" id="uuidService" class="org.nanotek.indexer.util.key.GenericUUIDService"></bean>
+	<bean lazy-init="true" id="objIDService" class="org.nanotek.indexer.util.key.ObjIDService"></bean>
+	
+	<bean lazy-init="true" id="keyServiceFactory" class="org.nanotek.indexer.util.key.KeyServiceFactory">
+		<property name="uidService" ref="uidService"></property>
+		<property name="uuidService" ref="uuidService"></property>
+		<property name="objIDService" ref="objIDService"></property>
+	</bean> 	
+	
+	<bean lazy-init="true" id="artistNameReader" class="org.nanotek.musicbrainz.job.readers.ArtistNameReader">
+		<property name="itemMapping" ref="artistNameMapping"></property>
+		<property name="fileStr" value="${music.brainz.artist.name.file}"></property>
+		<property name="csvMap" ref="artistNameToBean"></property>
+		<property name="reader" ref="artistNameCsvReader"></property>
+		<property name="keyServiceFactory" ref="keyServiceFactory"></property>
+	</bean>
+	
+</beans>

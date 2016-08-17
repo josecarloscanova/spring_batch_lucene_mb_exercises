@@ -1,0 +1,9 @@
+package org.nanotek.http.client;
+
+import org.nanotek.Base;
+
+public interface ClientRequestHandler {
+
+	public void requestPerfomed(Base<?> response);
+	
+}

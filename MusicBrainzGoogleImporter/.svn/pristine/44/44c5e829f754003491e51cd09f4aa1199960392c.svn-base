@@ -1,0 +1,89 @@
+package org.nanotek.beans.batch;
+
+import java.util.Date;
+
+import org.nanotek.Base;
+
+/*
+ * CREATE TABLE batch_job_params
+(
+  job_instance_id bigint NOT NULL,
+  type_cd character varying(6) NOT NULL,
+  key_name character varying(100) NOT NULL,
+  string_val character varying(250),
+  date_val timestamp without time zone,
+  long_val bigint,
+  double_val double precision,
+  CONSTRAINT job_inst_params_fk FOREIGN KEY (job_instance_id)
+      REFERENCES batch_job_instance (job_instance_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+ */
+@SuppressWarnings("serial")
+public class JobParams implements Base<Long> {
+
+	private Long id; 
+	private String typeCd; 
+	private String keyName; 
+	private String stringVal; 
+	private Date dateVal; 
+	private Long longVal; 
+	private Double doubleVal;
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public String getTypeCd() {
+		return typeCd;
+	}
+	
+	public void setTypeCd(String typeCd) {
+		this.typeCd = typeCd;
+	}
+	
+	public String getKeyName() {
+		return keyName;
+	}
+	
+	public void setKeyName(String keyName) {
+		this.keyName = keyName;
+	}
+	
+	public String getStringVal() {
+		return stringVal;
+	}
+	
+	public void setStringVal(String stringVal) {
+		this.stringVal = stringVal;
+	}
+	
+	public Date getDateVal() {
+		return dateVal;
+	}
+	
+	public void setDateVal(Date dateVal) {
+		this.dateVal = dateVal;
+	}
+	
+	public Long getLongVal() {
+		return longVal;
+	}
+	
+	public void setLongVal(Long longVal) {
+		this.longVal = longVal;
+	}
+	
+	public Double getDoubleVal() {
+		return doubleVal;
+	}
+	
+	public void setDoubleVal(Double doubleVal) {
+		this.doubleVal = doubleVal;
+	} 
+	
+}

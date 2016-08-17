@@ -1,0 +1,206 @@
+package org.nanotek.beans.batch;
+
+import java.util.Date;
+
+import org.nanotek.Base;
+
+/*
+ * 
+CREATE TABLE batch_step_execution
+(
+  step_execution_id bigint NOT NULL,
+  version bigint NOT NULL,
+  step_name character varying(100) NOT NULL,
+  job_execution_id bigint NOT NULL,
+  start_time timestamp without time zone NOT NULL,
+  end_time timestamp without time zone,
+  status character varying(10),
+  commit_count bigint,
+  read_count bigint,
+  filter_count bigint,
+  write_count bigint,
+  read_skip_count bigint,
+  write_skip_count bigint,
+  process_skip_count bigint,
+  rollback_count bigint,
+  exit_code character varying(20),
+  exit_message character varying(2500),
+  last_updated timestamp without time zone,
+  CONSTRAINT batch_step_execution_pkey PRIMARY KEY (step_execution_id ),
+  CONSTRAINT job_exec_step_fk FOREIGN KEY (job_execution_id)
+      REFERENCES batch_job_execution (job_execution_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+ */
+@SuppressWarnings("serial")
+public class StepExecution implements Base<Long> {
+
+	private Long id; 
+	private Long version; 
+	private String stepName; 
+	private Date startTime; 
+	private Date endTime; 
+	private String status; 
+	private Long commitCount; 
+	private Long readCount; 
+	private Long filterCount; 
+	private Long writeCount; 
+	private Long readSkipCount; 
+	private Long processSkipCount; 
+	private Long writeSkipCount; 
+	private Long rollBackCount; 
+	private String exitCode; 
+	private String exitMessage; 
+	private Date lastUpdated; 
+	private JobExecution jobExecution; 
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+	public String getStepName() {
+		return stepName;
+	}
+
+	public void setStepName(String stepName) {
+		this.stepName = stepName;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+	public Long getCommitCount() {
+		return commitCount;
+	}
+
+
+	public void setCommitCount(Long commitCount) {
+		this.commitCount = commitCount;
+	}
+
+
+	public Long getReadCount() {
+		return readCount;
+	}
+
+
+	public void setReadCount(Long readCount) {
+		this.readCount = readCount;
+	}
+
+	public Long getFilterCount() {
+		return filterCount;
+	}
+
+	public void setFilterCount(Long filterCount) {
+		this.filterCount = filterCount;
+	}
+
+	public Long getWriteCount() {
+		return writeCount;
+	}
+
+	public void setWriteCount(Long writeCount) {
+		this.writeCount = writeCount;
+	}
+
+	public Long getReadSkipCount() {
+		return readSkipCount;
+	}
+
+	public void setReadSkipCount(Long readSkipCount) {
+		this.readSkipCount = readSkipCount;
+	}
+
+	public Long getProcessSkipCount() {
+		return processSkipCount;
+	}
+
+	public void setProcessSkipCount(Long processSkipCount) {
+		this.processSkipCount = processSkipCount;
+	}
+
+	public Long getWriteSkipCount() {
+		return writeSkipCount;
+	}
+
+	public void setWriteSkipCount(Long writeSkipCount) {
+		this.writeSkipCount = writeSkipCount;
+	}
+
+	public Long getRollBackCount() {
+		return rollBackCount;
+	}
+
+	public void setRollBackCount(Long rollBackCount) {
+		this.rollBackCount = rollBackCount;
+	}
+
+	public String getExitCode() {
+		return exitCode;
+	}
+
+	public void setExitCode(String exitCode) {
+		this.exitCode = exitCode;
+	}
+
+	public String getExitMessage() {
+		return exitMessage;
+	}
+
+	public void setExitMessage(String exitMessage) {
+		this.exitMessage = exitMessage;
+	}
+
+	public Date getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setLastUpdated(Date lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public JobExecution getJobExecution() {
+		return jobExecution;
+	}
+
+	public void setJobExecution(JobExecution jobExecution) {
+		this.jobExecution = jobExecution;
+	}
+
+}

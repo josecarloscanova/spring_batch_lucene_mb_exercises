@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd
+ 		http://www.springframework.org/schema/util
+ 		http://www.springframework.org/schema/util/spring-util.xsd
+ 		http://www.springframework.org/schema/context
+ 		http://www.springframework.org/schema/context/spring-context.xsd">
+        
+ 
+      
+    <!--<context:annotation-config />
+	<context:component-scan base-package="org.nanotek" />
+	<aop:aspectj-autoproxy />
+	
+    <import resource="classpath:database-loaders/spring-dao-context.xml" /> -->
+    
+    <bean id="tikaDefaultDetector" class="org.apache.tika.detect.DefaultDetector">
+    </bean>
+    
+    <bean id="autoDetectParser" class="org.apache.tika.parser.AutoDetectParser">
+        <constructor-arg><ref bean="tikaDefaultDetector"/></constructor-arg>
+    </bean>
+    
+    <bean id="tikaDelegateParser" class="org.nanotek.tika.io.parser.TikaParser">
+    	<property name="parser" ref="autoDetectParser"></property>
+    </bean>
+    
+    <bean id="tikaMediaDetector" class="org.nanotek.tika.io.TikaMediaDetector">
+		<property name="detector" ref="tikaDefaultDetector"></property>
+		<property name="parser" ref="tikaDelegateParser"></property>
+    </bean>
+    
+    <!-- <bean id="tikaPersistentFileVisitor" class="org.nanotek.tika.io.TikaPersistentFileVisitor">
+        <property name="dao" ref="mediaDetailsDAO"></property>
+        <property name="tikaMediaDetector" ref="tikaMediaDetector"></property>
+   		<property name="documentBuilder" ref="tikaDocumentBuilder"></property>
+    </bean>-->
+    
+	<bean id="tikaFileVisitor" class="org.nanotek.tika.io.TikaFileVisitor">
+        <property name="tikaMediaDetector" ref="tikaMediaDetector"></property>
+    </bean>
+    
+	<bean lazy-init="true" id="runnableFileVisitor" class="org.nanotek.tika.io.ExecutorTikaFileVisitor">
+        <property name="tikaMediaDetector" ref="tikaMediaDetector"></property>
+        <property name="taskExecutor" ref="taskExecutor"></property>
+    </bean>
+    
+    
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	  <property name="corePoolSize" value="150" />
+	  <property name="maxPoolSize" value="500" />
+	  <property name="queueCapacity" value="350000" />
+	</bean>
+    
+    <!-- <value>*.{java,class}</value> -->
+    <bean id="baseDirectoryScanner" class="org.nanotek.tika.fs.DirectoryScanner">
+        <!-- <property name="fileVisitor" ref="tikaPersistentFileVisitor"></property> -->
+        <property name="rootDirs">
+            <list>
+                <value>/home/java-eclipse/pdf_folder</value>
+            </list>
+        </property>
+        <property name="includes">
+             <list>
+                 <value>*.{pdf}</value>
+             </list>
+        </property>
+    </bean>
+    
+    <bean id="tika" class="org.apache.tika.Tika">
+    </bean>
+    
+    <bean id="tikaDocumentBuilder" class="org.nanotek.tika.document.TikaBaseDocumentBuilder">
+         <property name="tika" ref="tika"></property>
+    </bean>
+    
+    <!-- <bean id="tikaPersistentContainer" class="">
+        <property name="tikaDocumentBuilder" ref="tikaDocumentBuilder"></property>
+        <property name="visitor" ref="tikaPersistentFileVisitor"></property>
+    </bean> -->
+    
+</beans>

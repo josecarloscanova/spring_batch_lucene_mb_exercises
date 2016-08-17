@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="ReleaseLabel" table="RELEASE_LABEL">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="assigned" />
+        </id>
+        
+    	<property name="release" type="long" column="RELEASE"></property>
+    	<property name="label" type="long" column="LABEL"></property>
+    	<property name="catalogNumber" type="string" column="CATALOG_NUMBER"></property>
+	
+	</class>
+    
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="Label" table="LABEL">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="assigned" />
+        </id>
+        
+    	 <property name="gid" type="string" column="GID" />
+         <property name="name" type="long" column="NAME" />
+         <property name="sortName" type="long" column="SORT_NAME" />
+         <property name="type" type="string" column="TYPE" />
+         <property name="labelCode" type="string" column="LABEL_CODE" />
+         <property name="country" type="string" column="COUNTRY" />
+         <property name="beginDateYear" type="string" column="BEGIN_DATE_YEAR" />
+         <property name="beginDateMonth" type="string" column="BEGIN_DATE_MONTH" />
+         <property name="beginDateDay" type="string" column="BEGIN_DATE_DAY" />
+    	 <property name="endDateYear" type="string" column="END_DATE_YEAR" />
+    	 <property name="endDateMonth" type="string" column="END_DATE_MONTH" />
+    	 <property name="endDateDay" type="string" column="END_DATE_DAY" />
+    	 <property name="ipiCode" type="string" column="IPI_CODE" />
+        
+    </class>
+    
+</hibernate-mapping>

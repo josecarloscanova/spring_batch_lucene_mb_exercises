@@ -1,0 +1,31 @@
+package tests.tika;
+
+import java.util.Set;
+
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.mime.MediaTypeRegistry;
+import org.apache.tika.mime.MimeType;
+import org.apache.tika.mime.MimeTypeException;
+import org.apache.tika.mime.MimeTypes;
+
+public class MediaRegistryDump {
+
+	/**
+	 * @param args
+	 * @throws MimeTypeException 
+	 */
+	@SuppressWarnings("null")
+	public static void main(String[] args) throws MimeTypeException {
+		MimeTypes mts = MimeTypes.getDefaultMimeTypes();
+		
+		Set<MediaType> mediaTypes = mts.getMediaTypeRegistry().getTypes();
+		for(MediaType type:mediaTypes) 
+		{ 
+			String typeStr = type.getType() + "/" + type.getSubtype();
+			MimeType mt = mts.forName(typeStr);
+			if (mt !=null && mt.getExtensions().size() >0)
+				System.out.println(type.getType() + "/" + type.getSubtype() + " - " + mt.getExtensions().toString());
+		}
+	}
+
+}

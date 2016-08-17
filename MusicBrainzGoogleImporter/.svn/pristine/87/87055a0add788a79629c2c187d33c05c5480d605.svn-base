@@ -1,0 +1,35 @@
+package org.nanotek.dao.spring;
+
+import java.util.List;
+import org.nanotek.Base;
+
+public abstract class BaseDAO  {
+
+	protected Class<Base<?>> clazz;  
+	
+	public BaseDAO() {
+	}
+
+	public BaseDAO(Class<Base<?>> clazz) {
+		this.clazz = clazz;
+	}
+	
+	public abstract List<Base<?>> loadAll() ;
+
+	public abstract void persist(Base<?> object) ;
+
+	public abstract void update(Base<?> object) ;
+
+	public abstract void delete(Base<?> object);
+
+	public Class<Base<?>> getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Class<Base<?>> clazz) {
+		this.clazz = clazz;
+	}
+	
+	public abstract List<Base<?>> listRecords(Integer firstResult, Integer maxResults);
+
+}

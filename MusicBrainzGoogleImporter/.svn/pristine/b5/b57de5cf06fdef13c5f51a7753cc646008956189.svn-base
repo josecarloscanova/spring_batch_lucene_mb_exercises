@@ -1,0 +1,61 @@
+package org.nanotek.tika.job;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Workable;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobExecutionNotRunningException;
+import org.springframework.batch.core.launch.NoSuchJobException;
+import org.springframework.batch.core.launch.NoSuchJobExecutionException;
+import org.springframework.batch.core.launch.support.SimpleJobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TikaFileSystemDataLoad implements Workable<String[]>{
+
+	
+	private Logger log = Logger.getLogger(TikaFileSystemDataLoad.class);
+	private ClassPathXmlApplicationContext ctx;
+
+	/**
+	 * @param args 
+	 * @throws JobParametersInvalidException 
+	 * @throws JobInstanceAlreadyCompleteException 
+	 * @throws JobRestartException 
+	 * @throws JobExecutionAlreadyRunningException 
+	 * @throws NoSuchJobException 
+	 * @throws JobExecutionNotRunningException 
+	 * @throws NoSuchJobExecutionException 
+	 */
+	public static void main(String[] args)  {
+		TikaFileSystemDataLoad load = new TikaFileSystemDataLoad();
+		load.doWork(args);
+	}
+
+	@Override
+	public void doWork(String[] args) {
+		try { 
+			//TODO: Check best method to hold main thread until all jobs submitted are finished.
+			ctx = new ClassPathXmlApplicationContext(new String[] {
+			"/spring-batch-jobs/tika_media_details/spring-batch-context.xml"});
+			Job tikaFileJob = (Job) ctx.getBean("tikaFileJob");
+			SimpleJobLauncher jobLauncher = (SimpleJobLauncher) ctx.getBean("jobLauncher");
+			JobExecution jobExecution = jobLauncher.run(tikaFileJob, new JobParametersBuilder().addLong("run.id", System.currentTimeMillis()).toJobParameters());
+			BatchStatus status = jobExecution.getStatus();
+			while (status.isRunning()){  
+				Thread.sleep(2000);
+				status = jobExecution.getStatus();
+			}
+			log.debug("Logger debug Batch End");
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+	}
+
+}

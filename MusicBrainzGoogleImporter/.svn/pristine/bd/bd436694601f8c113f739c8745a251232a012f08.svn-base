@@ -1,0 +1,24 @@
+package org.nanotek.beans.mapping;
+
+import org.nanotek.beans.CdToc;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class CdTocMapping extends ColumnPositionMappingStrategy<CdToc>{
+
+	public CdTocMapping() 
+	{ 
+		String [] columns = new String [8]; 
+		
+		columns[0] = "id";
+		columns[1] = "discId";
+		columns[2] = "freedbId";
+		columns[3] = "trackCount";
+		columns[4] = "leadOutOffSet";
+		columns[5] = "trackOffSet";
+		columns[6] = "degraded";
+		columns[7] = "created";
+		
+		this.setColumnMapping(columns);
+	}
+}

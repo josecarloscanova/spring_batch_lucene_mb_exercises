@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 
+
+	private String id;
+	private String name; 
+	private Date creationDate;
+	private Version version;
+	
+ -->        
+ 
+<hibernate-mapping package="org.nanotek.lucene.index">
+
+    <class name="DocumentConfiguration" table="DOCUMENT_CONFIGURATION">
+
+    	<id name="id" type="string"  column="DOCUMENT_CONFIGURATION_ID">
+			 <generator class="assigned" />
+        </id>
+        
+		<property name="name" type="string" column="NAME" />
+		<property name="creationDate" type="timestamp" column="DATE" />
+		<property name="version" type="string" column="VERSION"/>
+
+		<set name="fieldConfigMap" table="FIELD_CONFIGURATION">
+        		<key column="FIELD_CONFIGURATION_ID"/>
+        		<many-to-many column="DOCUMENT_CONFIGURATION_ID" class="FieldConfiguration"/>
+    	</set>
+			
+    </class>
+    
+</hibernate-mapping>

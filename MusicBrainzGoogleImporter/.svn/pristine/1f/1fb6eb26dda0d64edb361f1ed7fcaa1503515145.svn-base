@@ -1,0 +1,29 @@
+package org.nanotek.poi.configuration.excel;
+
+import org.nanotek.Base;
+import org.nanotek.base.Configuration;
+
+@SuppressWarnings("serial")
+public class CellConfiguration implements Base<String>, Configuration<CellConfiguration> {
+
+	private String id; 
+	
+	public CellConfiguration() {
+	}
+
+	@Override
+	public CellConfiguration get() {
+		return this;
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
+	}
+
+}

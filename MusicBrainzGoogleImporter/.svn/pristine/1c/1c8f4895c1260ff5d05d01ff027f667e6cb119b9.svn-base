@@ -1,0 +1,12 @@
+package org.nanotek.lucene.annotations;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+
+import org.apache.lucene.document.FieldType.NumericType;
+
+@Retention(value=RUNTIME)
+public @interface Field {
+	String name() default "";
+}

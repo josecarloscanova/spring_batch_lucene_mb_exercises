@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:file-loaders/file_locations.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+    <bean lazy-init="true" id="artistAliasFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.artist.alias.file}"/>
+    </bean> 
+    
+    <bean lazy-init="true" id="artistCreditFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.artist.credit.file}"/>
+    </bean>
+    
+    <bean lazy-init="true" id="artistNameFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.artist.name.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="artistCreditNameFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.artist.credit.name.file}"/>
+    </bean>
+    
+    <bean lazy-init="true" id="artistFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.artist.file}"/>
+    </bean>
+    
+    <bean lazy-init="true" id="labelFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.label.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="labelNameFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.label.name.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="labelAliasFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.label.alias.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="languageFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.language.file"/>
+    </bean>
+
+    <bean lazy-init="true" id="cdTocFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.medium.cdtoc.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="mediumFormatFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.medium.format.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="mediumFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.medium.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="recordingFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.recording.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="releaseGroupFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.release.group.file}"/>
+    </bean>
+    
+    <bean lazy-init="true" id="releaseNameFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.release.name.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="releasePackagingFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.release.packaging.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="trackNameFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.track.name.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="workNameFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.work.name.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="workAliasFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.work.alias.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="workTypeFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.work.type.file}"/>
+    </bean>
+    
+    <bean lazy-init="true" id="trackFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.track.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="urlFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.url.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="isrcFile" class="java.io.File">
+        <constructor-arg value="${music.brainz.isrc.file}"/>
+    </bean>
+    
+    <bean lazy-init="true" id="tracklist" class="java.io.File">
+        <constructor-arg value="${music.brainz.tracklist.file}"/>
+    </bean>
+    
+    <bean lazy-init="true" id="url" class="java.io.File">
+        <constructor-arg value="${music.brainz.url.file}"/>
+    </bean>
+
+    <bean lazy-init="true" id="releaseLabel" class="java.io.File">
+        <constructor-arg value="${music.brainz.release.label.file}"/>
+    </bean>    
+    
+</beans>

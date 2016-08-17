@@ -1,0 +1,86 @@
+package org.nanotek.musicbrainz.beans;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class Track implements Base<Long> {
+
+	private Long id; 
+	private Long recording; 
+	private Long trackList; 
+	private Long position; 
+	private Long name; 
+	private Long artistCredit; 
+	private Long lenght; 
+	
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getRecording() {
+		return recording;
+	}
+
+
+	public void setRecording(Long recording) {
+		this.recording = recording;
+	}
+
+
+	public Long getTrackList() {
+		return trackList;
+	}
+
+
+	public void setTrackList(Long trackList) {
+		this.trackList = trackList;
+	}
+
+
+	public Long getPosition() {
+		return position;
+	}
+
+
+	public void setPosition(Long position) {
+		this.position = position;
+	}
+
+
+	public Long getName() {
+		return name;
+	}
+
+
+	public void setName(Long name) {
+		this.name = name;
+	}
+
+
+	public Long getArtistCredit() {
+		return artistCredit;
+	}
+
+
+	public void setArtistCredit(Long artistCredit) {
+		this.artistCredit = artistCredit;
+	}
+
+
+	public Long getLenght() {
+		return lenght;
+	}
+
+
+	public void setLenght(Long lenght) {
+		this.lenght = lenght;
+	}
+
+}

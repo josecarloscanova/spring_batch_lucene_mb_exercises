@@ -1,0 +1,186 @@
+package org.nanotek.lucene.search.local;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.Fields;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.MultiFields;
+import org.apache.lucene.index.MultiReader;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.Terms;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.MMapDirectory;
+import org.nanotek.lucene.index.Index;
+import org.nanotek.lucene.index.IndexType;
+import org.nanotek.lucene.index.Store;
+import org.nanotek.lucene.index.info.FieldStat;
+import org.nanotek.lucene.index.info.TermStats;
+import org.nanotek.lucene.search.LuceneSearcherProvider;
+import org.nanotek.search.SearcherProviderException;
+
+public class IndexSearcherProvider extends LuceneSearcherProvider {
+
+	ExecutorService executorService = null;
+
+	public IndexSearcherProvider (){}
+
+	public IndexSearcherProvider(ExecutorService executorService)
+	{
+		this.executorService = executorService;
+	}
+
+	public IndexSearcher getIndexSearcher(Index index)
+	{
+		return getIndexSearcher(index, executorService);
+	}
+
+	public ExecutorService getExecutorService() {
+		return executorService;
+	}
+
+	public void setExecutorService(ExecutorService executorService) {
+		this.executorService = executorService;
+	}
+
+	/**
+	 * Get the Index Searcher on the Store designation defined in the 
+	 * Index Store HashSet. 
+	 * 
+	 * 
+	 */
+	public IndexSearcher getIndexSearcher(final Index index, final ExecutorService executorService) {
+
+		IndexSearcher indexSearcher = null;
+		MultiReader compositeIndexReader; 
+		List<IndexReader> indexReaders; 
+
+		try {
+			if (index !=null) {
+				IndexReader indexReader = null;
+				Directory directory = null;
+				indexReaders = new ArrayList<IndexReader>();
+				File file = null;
+				if (index.getIndexType() == null)
+					index.setIndexType(IndexType.NMAPDIRECTORY);
+//				file =  new File(index.getIndexStore().iterator().next().getStoreLocation()); // new File(index.getPath());
+				Set <Store> indexStoreSet = index.getIndexStore();
+				for (Store location : indexStoreSet){ 
+					file = new File(location.getStoreLocation());
+					directory = new MMapDirectory(file);
+					if (directory !=null) {
+						indexReader = DirectoryReader.open(directory);
+						indexReaders.add(indexReader);
+//						if (executorService !=null) {
+//							indexSearcher = new IndexSearcher(indexReader , executorService);
+//						}else {
+//							indexSearcher = new IndexSearcher (indexReader);
+//						}
+					}
+				}
+				compositeIndexReader = new MultiReader(indexReaders.toArray(new IndexReader[indexReaders.size()]));
+				
+					if (executorService !=null) {
+						indexSearcher = new IndexSearcher(compositeIndexReader , executorService);
+					}else {
+						indexSearcher = new IndexSearcher (compositeIndexReader);
+					}
+
+				}
+			}  catch (IOException e){
+				throw new SearcherProviderException(e);
+			}
+			return indexSearcher;
+		}
+
+
+		public List<TermStats> getTermStats(Index index, List<Term> termList) {
+			List<TermStats> termStats = new ArrayList<>();
+			try {
+				index.getLock().lock();
+				IndexSearcher searcher = getIndexSearcher(index, executorService);
+				IndexReader reader = searcher.getIndexReader();
+				for (Term term : termList){
+					TermStats termStat = new TermStats();
+					Integer termFrequency = reader.docFreq(term);
+					Long totalTermFrequency = reader.totalTermFreq(term);
+					termStat.setIndex(index);
+					termStat.setTerm(term);
+					termStat.setTotalTermFrequency(totalTermFrequency);
+					termStat.setTermFrequency(termFrequency);
+					termStats.add(termStat);
+				}
+			}catch (IOException e){
+				throw new SearcherProviderException(e);
+			}finally { 
+				index.getLock().unlock();
+			}
+			return termStats;
+		}
+
+		public FieldStat getFieldStat(Index index, String field){
+			FieldStat fieldStat = new FieldStat();
+			IndexSearcher indexSearcher = this.getIndexSearcher(index);
+			IndexReader indexReader = indexSearcher.getIndexReader();
+			try {
+				index.getLock().lock();
+				Terms terms = MultiFields.getTerms(indexReader, field);
+				fieldStat.setFieldName(field);
+				fieldStat.setDocCount(new Long(indexReader.numDocs()));
+				if (terms !=null){ 
+					fieldStat.setDocFrequency(terms.getSumDocFreq());
+					fieldStat.setSumTotalTermFreq(terms.getSumTotalTermFreq());
+					fieldStat.setHasOffsets(terms.hasOffsets());
+					fieldStat.setHasPositions(terms.hasPositions());
+					fieldStat.setHasPayloads(terms.hasPayloads());
+				}
+			}catch (IOException e){
+				throw new SearcherProviderException(e);
+			}finally { 
+				index.getLock().unlock();
+			}
+			return fieldStat;
+		}
+
+		public List<String> getFieldNames (Index index) 
+		{ 
+			IndexSearcher indexSearcher = this.getIndexSearcher(index);
+			IndexReader indexReader = indexSearcher.getIndexReader();
+			List<String> fields = new ArrayList<String>();
+			try {
+				index.getLock().lock();
+				Fields luceneFields = MultiFields.getFields(indexReader);
+				Iterator<String> it = luceneFields.iterator(); 
+				while (it.hasNext()) 
+					fields.add(it.next());
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new SearcherProviderException(e);
+			}finally { 
+				index.getLock().unlock();
+			}
+			return fields;
+		}
+
+		public void dumpIndex(Index index)
+		{ 
+
+			IndexSearcher indexSearcher = this.getIndexSearcher(index);
+			IndexReader indexReader = indexSearcher.getIndexReader();
+			for (long i = 1 ; i< indexReader.numDocs(); i++)
+				try {
+					System.out.println(indexReader.document((int) i).toString());
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new SearcherProviderException(e);
+				}
+		}
+
+	}

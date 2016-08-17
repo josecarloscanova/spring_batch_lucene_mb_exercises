@@ -1,0 +1,64 @@
+package org.nanotek.dao.jpa;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.metamodel.Metamodel;
+
+import org.nanotek.Base;
+import org.nanotek.dao.DAO;
+
+//TODO: finalize implementation.
+public class EntityManagerDAO <T extends Base<?>> implements DAO<T>{
+
+	private EntityManager entityManager; 
+	
+	@Override
+	public void persist(T entity) {
+		entityManager.persist(entity);
+	}
+
+	@Override
+	@Deprecated
+	public void update(T entity) {
+		entityManager.persist(entity);
+	}
+
+	@Override
+	public void delete(T entity) {
+		entityManager.remove(entity);
+	}
+
+	@Override
+	public Long countRecords() {
+		return null;
+	}
+
+	//TODO: Implements LoadAll method. 
+	@Override
+	public List<T> loadAll() {
+		return null;
+	}
+
+	@Override
+	public List<T> listRecords(Integer firstResult, Integer maxResults) {
+		return null;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public T findById(Serializable id) {
+		return (T) entityManager.find(this.getClass(), id);
+	}
+	
+}

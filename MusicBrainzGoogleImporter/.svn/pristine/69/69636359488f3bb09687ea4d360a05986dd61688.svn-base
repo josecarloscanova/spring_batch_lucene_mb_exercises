@@ -1,0 +1,30 @@
+package tests.queue.sender;
+
+import org.nanotek.AbstractBase;
+import org.nanotek.mq.send.QueueSender;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
+
+public class QueueSenderTest {
+
+	public QueueSenderTest() {
+	}
+
+	private static ClassPathXmlApplicationContext ctx;
+	
+
+	/**
+	 * @param args
+	 * @throws InterruptedException 
+	 */
+	public static void main(String[] args) throws InterruptedException {
+		ctx = new ClassPathXmlApplicationContext(new String[] {"activemq-config/base-activemq-sender-context.xml"});
+		QueueSender<?,AbstractBase<String>> sender = (QueueSender<?,AbstractBase<String>>) ctx.getBean("baseSender");
+		for (int i = 0 ; i < 10 ; i++){ 
+			AbstractBase<String> a = new AbstractBase<String>("this is the message" + i);
+			sender.send(a);
+		}
+		ctx.close();
+	}
+
+}

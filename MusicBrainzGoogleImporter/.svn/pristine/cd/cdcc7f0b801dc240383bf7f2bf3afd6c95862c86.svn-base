@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.tika">
+
+    <class name="MediaDetailContent" table="MEDIA_DETAIL_CONTENT" >
+
+    	<id name="id" type="string"  column="ID"
+    	unsaved-value="null">
+			<generator class="foreign">
+            	<param name="property">mediaDetail</param>
+         	</generator>
+        </id>
+        
+		<property name="tikaSegment" type="binary" column="CONTENT_EXTRACTED" />
+        
+        <one-to-one name="mediaDetail" constrained="true"/>
+        
+    </class>
+    
+</hibernate-mapping>

@@ -1,0 +1,49 @@
+package org.nanotek.tika.job.reader.fs;
+
+import java.io.File;
+import java.nio.file.Path;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Signer;
+import org.nanotek.hibernate.dao.DAO;
+import org.nanotek.tika.file.FileIdentity;
+
+public class PersistentSignerFileFinder extends PersistentFileFinder implements Signer<File,String>{
+	
+	private static final Logger log = Logger.getLogger(PersistentSignerFileFinder.class);
+	//MD5FileSigner
+	private Signer<File,String> fileSigner; 
+	
+	public PersistentSignerFileFinder(String pattern) {
+		super(pattern);
+	}
+	
+	public PersistentSignerFileFinder(String pattern, DAO<FileIdentity> dao) {
+		super(pattern,dao);
+	}
+	
+	@Override
+	public void storeMatchPath(Path path)
+	{ 
+		FileIdentity fileIdentity = FileIdentityBuilder.setPath(path).build(); 
+		String fileSignature = sign (path.toFile());
+		fileIdentity.setCksum(fileSignature);
+		log.debug("FILE SIGNATURE " + " " + path.toString() + " " + fileIdentity.getCksum());
+		dispatch(fileIdentity);
+	}
+	
+	@Override
+	public String sign(File toSign) {
+		String signature = fileSigner.sign(toSign);
+		return signature;
+	}
+
+	public Signer<File, String> getFileSigner() {
+		return fileSigner;
+	}
+
+	public void setFileSigner(Signer<File, String> fileSigner) {
+		this.fileSigner = fileSigner;
+	}
+
+}

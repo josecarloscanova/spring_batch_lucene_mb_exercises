@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd
+ 		http://www.springframework.org/schema/context
+    	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<import resource="classpath:database-loaders/hibernate-context.xml" />
+	<import resource="classpath:xstream-config-xml/base-xstream-config.xml" />
+	
+	<context:annotation-config/>
+	<context:component-scan base-package="org.nanotek.hibernate.dao" />
+	<aop:aspectj-autoproxy />
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />	
+	 
+	<bean id="dao" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.tika.file.FileProcessed"></property>
+	</bean>	
+	
+	<bean id="identityDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.tika.file.FileIdentity"></property>
+	</bean>	
+	
+	<bean id="schoolDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.base.School"></property>
+	</bean>	
+	
+	<bean id="contactDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.base.Contact"></property>
+	</bean>	
+	
+	<bean id="mediaDetailDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.tika.MediaDetail"></property>
+	</bean>	
+	
+	<bean id="normalizedContactDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.base.NormalizedContact"></property>
+	</bean>	
+	
+	<bean id="atContactBaseDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.base.ATContactBase"></property>
+	</bean>	
+	
+	<bean id="officeUrlDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.base.OfficeUrl"></property>
+	</bean>	
+	
+	<bean id="officeDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.base.Office"></property>
+	</bean>	
+	
+	<bean id="urlDAO" class="org.nanotek.hibernate.dao.GeneralPurposeDAO">
+	 	<property name="hibernateTemplate" ref="hibernateTemplate"/>
+		<!-- <property name="sessionFactory" ref="sessionFactory"></property> -->
+		<property name="clazz" value="org.nanotek.base.Url"></property>
+	</bean>	
+	
+	
+	<!-- <bean id="viewResolverBundle" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+  		<property name="basename" value="views"/>
+	</bean> 
+      Resolve views based on string names 
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		  <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		  <property name="prefix" value="/WEB-INF/jsp/"/>
+		  <property name="suffix" value=".jsp"/>
+	</bean>-->
+	
+	
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		  <property name="mediaTypes">
+		    <map>
+		      <entry key="atom" value="application/atom+xml"/>
+		      <entry key="html" value="text/html"/>
+		      <entry key="json" value="application/json"/>
+		    </map>
+		  </property>
+		  <property name="viewResolvers">
+		    <list>
+		      <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+		      <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		        <property name="prefix" value="/WEB-INF/jsp/"/>
+		        <property name="suffix" value=".jsp"/>
+		      </bean>
+		    </list>
+		  </property>
+		  <property name="defaultViews">
+		    <list>
+		      <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+		    </list>
+		  </property>
+		</bean>
+	
+	  <bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller"/>
+	  <bean id="xmlMessageConverter"
+	        class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+	    <constructor-arg ref="xstreamMarshaller"/>
+	    <property name="supportedMediaTypes" value="application/xml"/>
+	  </bean>
+	  
+	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
+ 		<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+		  <list>
+		    <ref bean="jacksonMessageConverter"/>
+		    <ref bean="stringHttpMessageConverter"/>
+		  </list>
+		</property>
+		</bean>
+
+	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+		 <property name="prefixJson" value="true"/> 
+		 <property name="disableCaching" value="true"/>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <ref bean="stringHttpMessageConverter"/>
+        <ref bean="jacksonMessageConverter"/>
+      </list>
+    </property>
+	</bean>
+
+	<bean id="stringHttpMessageConverter"
+       class="org.springframework.http.converter.StringHttpMessageConverter"/>
+	
+</beans>

@@ -1,0 +1,20 @@
+package org.nanotek.lucene.job.readers;
+
+import org.apache.lucene.search.Filter;
+import org.nanotek.StringBase;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
+
+public class StreamTokenReader implements ItemReader<StringBase> {
+
+	private Filter filter; 
+	
+	@Override
+	public StringBase read() throws Exception, UnexpectedInputException,
+			ParseException, NonTransientResourceException {
+		return null;
+	}
+
+}

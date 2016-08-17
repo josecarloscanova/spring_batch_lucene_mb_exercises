@@ -1,0 +1,93 @@
+package org.nanotek.hibernate.dao;
+
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.nanotek.Base;
+import org.nanotek.base.PageItemBase;
+import org.nanotek.dao.DAOException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+public class GeneralPurposeDAO<T extends Base<?>> extends BaseDAO<T> implements DAO<T> {
+
+	public GeneralPurposeDAO() {}
+	
+	@Transactional (readOnly = false, propagation = Propagation.SUPPORTS)
+	public T findById (Serializable id)
+	{ 
+		return hibernateTemplate.get(clazz, id);
+	}
+
+	@Override
+	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	public List<T> listRecords(PageItemBase<?> pageItemBase) {
+		try {
+			assert (pageItemBase.getStartRecord() !=null && pageItemBase.getMaxRecords() !=null);
+			return listRecords(pageItemBase.getStartRecord(),  pageItemBase.getMaxRecords(),Order.asc("id"));
+		} catch (DataAccessException e) {
+			throw new DAOException(e);
+		}
+	}
+	
+	@Override
+	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	public List<T> listRecords(Integer firstResult, Integer maxResults) {
+		try {
+			return listRecords(firstResult,  maxResults,Order.asc("id"));
+		} catch (DataAccessException e) {
+			throw new DAOException(e);
+		}
+	}
+	
+	@Override
+	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	public List<T> listRecords(Integer firstResult, Integer maxResults,Order order) {
+		try {
+			DetachedCriteria criteria = DetachedCriteria.forClass(clazz);
+			criteria.addOrder(order);
+			return listRecords( firstResult,  maxResults,  criteria );
+		} catch (DataAccessException e) {
+			throw new DAOException(e);
+		}
+	}
+	
+	@Override
+	public List<T> listRecords(
+			PageItemBase<?> pageItemBase,DetachedCriteria criteria) {
+		return listRecords(pageItemBase.getStartRecord() , pageItemBase.getMaxRecords() , criteria);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	public List<T> listRecords(Integer firstResult, Integer maxResults, DetachedCriteria criteria) {
+		try {
+			return hibernateTemplate.findByCriteria(criteria,firstResult.intValue(),maxResults.intValue());
+		} catch (DataAccessException e) {
+			throw new DAOException(e);
+		}
+	}
+	
+	@Transactional (readOnly = false, propagation = Propagation.SUPPORTS)
+	public Long countRecords() {
+		return hibernateTemplate.execute(new HibernateCallback<Long>(){
+			@Override
+			public Long doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				Query hibernateQuery = session.createQuery("Select count(c) from " + clazz.getName()  + " c");
+				return (Long) hibernateQuery.uniqueResult();
+			} 
+			
+		});
+	}
+	
+}

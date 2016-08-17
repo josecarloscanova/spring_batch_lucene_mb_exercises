@@ -1,0 +1,74 @@
+package org.nanotek.lucene.util;
+
+import java.io.File;
+import java.util.UUID;
+
+import org.apache.lucene.index.IndexWriter;
+import org.nanotek.lucene.index.IndexSet;
+
+@SuppressWarnings("serial")
+public class LuceneIndexHolder extends BaseHolder<File,IndexWriter>
+{
+
+	private File document;
+	private IndexWriter writer;
+	private String id;
+
+	public LuceneIndexHolder()
+	{}
+			
+	public LuceneIndexHolder(File document , IndexWriter writer){
+		this.document = document; 
+		this.writer = writer; 
+	}
+	
+	public LuceneIndexHolder(File document , UUID uuid , IndexSet indexSet) 
+	{ 
+		this.document = document; 
+		this.writer = indexSet.get(uuid);
+	}
+	
+	public LuceneIndexHolder(File document, IndexWriter writer, String id) {
+		super();
+		this.document = document;
+		this.writer = writer;
+		this.id = id;
+	}
+	
+	@Override
+	public File getKey() {
+		return document;
+	}
+
+	@Override
+	public IndexWriter getValue() {
+		return writer;
+	}
+
+
+	public File getDocument() {
+		return document;
+	}
+
+	public void setDocument(File document) {
+		this.document = document;
+	}
+
+	public IndexWriter getWriter() {
+		return writer;
+	}
+
+	public void setWriter(IndexWriter writer) {
+		this.writer = writer;
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+}

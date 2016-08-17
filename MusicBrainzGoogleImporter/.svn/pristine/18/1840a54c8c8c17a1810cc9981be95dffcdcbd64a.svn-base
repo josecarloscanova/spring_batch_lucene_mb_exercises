@@ -1,0 +1,34 @@
+package org.nanotek.mq.send;
+
+import org.nanotek.mq.MessageBuilder;
+import org.nanotek.mq.MessageException;
+import org.nanotek.mq.SenderService;
+import org.nanotek.Base;
+
+public class MetaIndexerSenderService implements SenderService{
+
+	private Sender<Base<?>> messageSenderService;
+
+	public MetaIndexerSenderService() {
+	}
+
+	public void sendMessage(Base<?> messageContainer)
+	{
+		try {
+			messageSenderService.send(messageContainer);
+		}catch(Exception ex)
+		{
+			throw new MessageException(ex);
+		}
+	}
+
+	public Sender<?> getMessageSenderService() {
+		return messageSenderService;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setMessageSenderService(Sender<?> messageSenderService) {
+		this.messageSenderService = (Sender<Base<?>>) messageSenderService;
+	}
+
+}

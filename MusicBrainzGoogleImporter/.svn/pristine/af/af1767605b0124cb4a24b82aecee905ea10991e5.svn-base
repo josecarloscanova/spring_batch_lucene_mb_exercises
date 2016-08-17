@@ -1,0 +1,20 @@
+package org.nanotek.hibernate.dao;
+
+import java.util.Iterator;
+
+/**
+ * Iterates over records on a default order given a 
+ * configured Data Access Object. 
+ * 
+ * @author josecanovamauger
+ *
+ * @param <D>
+ * @param <E>
+ */
+public interface DAOIterator<D, E> extends Iterator<E> {
+
+	public void setDAO(D dao);
+	
+	public Iterator <E> iterator(); 
+
+}

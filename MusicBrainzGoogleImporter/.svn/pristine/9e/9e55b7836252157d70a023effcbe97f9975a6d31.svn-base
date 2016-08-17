@@ -1,0 +1,7 @@
+package org.nanotek;
+
+public interface Holder<T> {
+
+	public T getHoldee();
+	
+}

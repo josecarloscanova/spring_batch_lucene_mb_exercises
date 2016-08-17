@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.nanotek.base">
+
+        <class name="OfficeUrl" table="office_url_load_ajax_search">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="sequence">  
+                <param name="sequence">office_url_id_seq</param>  
+             </generator>
+        </id>
+        
+		<property name="name" type="string" length="1000"  not-null="false" column="name" />
+		<property name="url" type="string" length="1000" not-null="false" column="address" />
+		<property name="contactInfo" type="string" length="2000" not-null="false" column="contactInfo" />
+	    <property name="recordType" type="string" length="1" not-null="false" column="recordType" />
+	    
+		<set name="officeDetails" inverse="true" lazy="false" >
+	        <key  column="office_url_id" not-null="true"/>
+	        <one-to-many class="OfficeDetail"/>
+	    </set>
+	    
+    </class>
+    
+</hibernate-mapping>

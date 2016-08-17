@@ -1,0 +1,75 @@
+package test.org.nanotek.lucene.brainz.search;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import org.nanotek.lucene.query.result.CompositeQueryResult;
+import org.nanotek.lucene.query.result.ScoreDocument;
+import org.nanotek.lucene.query.result.SimpleQueryResult;
+import org.nanotek.query.QueryResult;
+import org.nanotek.query.event.QueryEvent;
+import org.nanotek.query.event.QueryListener;
+import org.nanotek.query.result.ResultBase;
+import org.nanotek.query.result.SimpleQueryResultTransformer;
+
+import static org.junit.Assert.*;
+
+public class QueryListenerProcessor<T extends QueryEvent<QueryResult<?>>> implements QueryListener<T> {
+
+	Logger log = Logger.getLogger(QueryListenerProcessor.class);
+	
+	public QueryListenerProcessor() {
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void processed(T t) {
+		
+		log.debug(t.getClass().getName());
+		CompositeQueryResult<List<SimpleQueryResult<?,?>>> a = (CompositeQueryResult<List<SimpleQueryResult<?,?>>>) t.getSource();
+		TopDocs docs = a.getTopDocs();
+		log.debug(a.getClass().getName());
+		assertFalse(docs ==null);
+		ScoreDoc[] scoreDocs = docs.scoreDocs;
+		assertFalse(scoreDocs ==null);
+		for (ScoreDoc scoreDoc : scoreDocs) 
+		{ 
+			log.debug("Document ID " + scoreDoc.doc);
+		}
+		
+		List<SimpleQueryResult<?,?>> queryResults = a.result();
+		SimpleQueryResultTransformer<Long> transformer = new SimpleQueryResultTransformer<>(); 
+		log.debug("-----LENGHT : " + scoreDocs.length + " " + queryResults.size()); 
+		for (SimpleQueryResult<?,?> res : queryResults)
+		{ 
+			log.debug("-----");
+			log.debug("-----");
+			ResultBase<?> result = transformer.transform((SimpleQueryResult<ScoreDocument, Long>) res); 
+			log.debug("RESULT BASE");
+			log.debug(result.getId());
+			log.debug(result.getResultMap().get("name"));
+			log.debug("Shard Index " + result.getShardIndex());
+			log.debug(" SCORE " + result.getScore());
+//			log.debug(" LAST DOC " + result.getScoreDocBase().getDoc());
+//			log.debug("LAST SCORE " + result.getScoreDocBase().getScore());
+//			for (Object key :result.getResultMap().keySet()) 
+//			{ 
+//				log.debug("key " + key + "  value:" + result.getResultMap().get(key));
+//			}
+			log.debug(result.getShardIndex() + " " + result.getScore() + "  " + result.getDoc());
+			log.debug("-----");
+			log.debug("-----");
+			log.debug(res.getClass().getName());
+			log.debug(res.getScoreDocument().getClass().getName());
+//			ScoreDocument scoreDocument = res.getScoreDocument();
+//			log.debug(scoreDocument.getDocument().get("name"));
+//			log.debug(scoreDocument.getDocument().get("stamp"));
+		}
+		log.debug("-----LENGHT : " + scoreDocs.length); 
+		log.debug("-----HITS : "  + docs.totalHits);
+		
+	}
+
+}

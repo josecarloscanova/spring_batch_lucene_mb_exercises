@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="Medium" table="MEDIUM">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="sequence">  
+                <param name="sequence">medium_id_seq</param>  
+             </generator>
+        </id>
+        
+        <property name="mediumId" type="long" column="MEDIUM_ID" />
+        <property name="trackCount" type="long" column="TRACK_COUNT" />
+        <property name="release" type="long" column="RELEASE" />
+        <property name="position" type="long" column="POSITION" not-null="false"  />
+         <property name="format" type="long" column="FORMAT" />
+        <property name="name" type="string"  column="NAME" length="2500"  not-null="false"/>
+        
+    </class>
+    
+</hibernate-mapping>

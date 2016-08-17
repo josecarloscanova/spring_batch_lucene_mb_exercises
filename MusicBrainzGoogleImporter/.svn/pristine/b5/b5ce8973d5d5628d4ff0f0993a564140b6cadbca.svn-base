@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="ArtistKey" table="ARTIST_KEY">
+
+    	<id name="id" type="string"  column="ID">
+			 <generator class="uuid"/>
+        </id>
+        
+		<property name="key" unique="true" type="long"  column="KEY_ID"/>
+        <property name="gid" type="string" column="GID" />
+		<property name="nameId" type="long" column="NAME_ID" />
+		<property name="sortNameId" type="long" column="SORT_NAME_ID" />
+		<property name="typeId" type="long" column="TYPE_ID" />
+		<property name="genderId" type="long" column="GENDER_ID" />
+		<property name="countryId" type="long" column="COUNTRY_ID" />
+    
+    </class>
+    
+</hibernate-mapping>

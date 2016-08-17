@@ -1,0 +1,33 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.Recording;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class RecordingMapping extends ColumnPositionMappingStrategy<Recording> {
+
+	
+	private Long id; 
+	private String gid; 
+	private Long artistCredit;
+	private Long name; 
+	private Long lenght;
+	private String comment;
+	
+	
+	public RecordingMapping() 
+	{ 
+		String [] columns = new String [8]; 
+		columns[0] = "id";
+		columns[1] = "gid";
+		columns[2] = "artistCredit";
+		columns[3] = "name";
+		columns[4] = "lenght";
+		columns[5] = "comment";
+		columns[6] = null;
+		columns[7] = null;
+		
+		this.setColumnMapping(columns);
+	}
+	
+}

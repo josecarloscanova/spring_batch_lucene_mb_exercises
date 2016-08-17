@@ -1,0 +1,31 @@
+package org.nanotek.tika.io.media;
+
+import org.nanotek.Factory;
+import org.nanotek.tika.MediaDetail;
+
+/**
+ * One day i will remember why i created such factory class... ;-) 
+ * @author java-eclipse
+ *
+ */
+public class MediaDetailFactory implements Factory<MediaDetail>{
+
+	private MediaDetailFactory() {
+	}
+	
+	public static MediaDetail getDetail()
+	{ 
+			return new MediaDetailFactory().build();
+	}
+	
+	@Override
+	public MediaDetail build() {
+		MediaDetail mediaDetail = null; 
+		try {
+			mediaDetail =  MediaDetail.class.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return mediaDetail;
+	}
+}

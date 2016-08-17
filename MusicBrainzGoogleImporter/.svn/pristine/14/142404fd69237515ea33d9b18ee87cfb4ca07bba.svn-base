@@ -1,0 +1,9 @@
+package org.nanotek;
+
+public interface Instantiable<I> {
+
+        public Class<I> getClazz();
+
+        public I getInstance();
+
+}

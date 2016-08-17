@@ -1,0 +1,99 @@
+package org.nanotek;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+/**
+ * Extends StringBase Class associating a position relative to a "defined origin". 
+ * 
+ * @author josecanova
+ *
+ */
+@Entity
+@SuppressWarnings("serial")
+public class StringPositionBase implements Base<Long>{
+	
+	@Id
+	private Long id; 
+	
+	private Integer position; 
+	
+	@OneToOne
+	private StringBase stringBase;
+
+	public StringPositionBase (){
+		super();
+	} 
+	
+	public StringPositionBase(Integer position, StringBase stringBase) 
+	{
+		super();
+		this.stringBase = stringBase; 
+	}
+	
+	public StringPositionBase(Long id, Integer position, StringBase stringBase) {
+		super();
+		this.id = id;
+		this.position = position;
+		this.stringBase = stringBase;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public StringBase getStringBase() {
+		return stringBase;
+	}
+
+	public void setStringBase(StringBase stringBase) {
+		this.stringBase = stringBase;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((position == null) ? 0 : position.hashCode());
+		result = prime * result
+				+ ((stringBase == null) ? 0 : stringBase.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StringPositionBase other = (StringPositionBase) obj;
+		if (position == null) {
+			if (other.position != null)
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		if (stringBase == null) {
+			if (other.stringBase != null)
+				return false;
+		} else if (!stringBase.equals(other.stringBase))
+			return false;
+		return true;
+	}
+
+}

@@ -1,0 +1,13 @@
+package org.nanotek;
+
+/**
+ * Target class for the builder method. 
+ * 
+ * @author josecanovamauger
+ *
+ * @param <T> the target object.
+ */
+public interface Builder<T> extends Factory<T>{
+	@Override
+	public T build();
+}

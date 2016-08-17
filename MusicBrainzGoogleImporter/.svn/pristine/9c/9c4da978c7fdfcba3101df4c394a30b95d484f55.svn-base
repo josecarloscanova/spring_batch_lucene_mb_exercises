@@ -1,0 +1,6 @@
+package org.nanotek;
+
+@FunctionalInterface 
+public interface Addressable<R,A> {
+	public A address (R  record);
+}

@@ -1,0 +1,8 @@
+package org.nanotek.musicbrainz.job.lucene;
+
+import org.nanotek.Workable;
+
+
+public interface LuceneJob<I> extends Workable<I>{
+
+}

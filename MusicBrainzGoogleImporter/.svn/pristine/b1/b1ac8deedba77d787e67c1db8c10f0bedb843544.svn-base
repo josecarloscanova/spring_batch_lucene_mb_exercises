@@ -1,0 +1,14 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.Gender;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+
+public class GenderCsvToBean extends CsvToBean<Gender> {
+
+	
+	public GenderCsvToBean() {
+		super();
+	}
+
+}

@@ -1,0 +1,13 @@
+package org.nanotek.query;
+
+import org.nanotek.Dispatcher;
+
+
+public interface QueryDispatcher <C> extends Dispatcher<QueryObject<?>>{
+
+	@Override
+	public void dispatch(QueryObject<?> query);
+	
+	public void dispatch(QueryObject<?> query , C context);
+
+}

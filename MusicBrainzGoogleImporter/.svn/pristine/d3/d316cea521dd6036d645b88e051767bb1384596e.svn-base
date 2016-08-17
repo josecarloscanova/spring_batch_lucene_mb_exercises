@@ -1,0 +1,57 @@
+package org.nanotek.hibernate.dao.impl;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.nanotek.base.OfficeDetail;
+import org.nanotek.base.PageItemBase;
+import org.nanotek.hibernate.dao.GeneralPurposeDAO;
+import org.nanotek.hibernate.dao.OfficeDetailDAO;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+public class OfficeDetailDAOImpl extends GeneralPurposeDAO<OfficeDetail> implements
+		OfficeDetailDAO<OfficeDetail> {
+
+	private static final Logger log = Logger.getLogger(OfficeDetailDAOImpl.class);
+	
+	@Override
+	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	public List<?> getOfficesForEdition() {
+		
+		
+//		List<OfficeDetail> officesDetail = officeDetailDAO.loadAll();
+		DetachedCriteria  criteria = DetachedCriteria.forClass(OfficeDetail.class);
+		criteria.setProjection(Projections.projectionList()
+		.add(Projections.distinct(Projections.property("officeUrl"))))
+		.setFetchMode("officeUrl", FetchMode.SELECT);
+		
+		Long numRecords = countRecords();
+		PageItemBase<Long> itemBase = new PageItemBase<Long>(); 
+		itemBase.setStartRecord(0);
+		itemBase.setMaxRecords(numRecords.intValue());
+		
+		List<?> result = listRecords(itemBase, criteria);
+	
+		for (Object obj : result) 
+		{ 
+			try {
+				Object instanceId = BeanUtilsBean.getInstance().getProperty(obj, "id");
+				BeanUtilsBean.getInstance().getProperty(obj, "name");
+				BeanUtilsBean.getInstance().getProperty(obj, "url");
+				BeanUtilsBean.getInstance().getProperty(obj, "contactInfo");
+			} catch (IllegalAccessException | InvocationTargetException
+					| NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.nanotek.base">
+
+    <class name="Office" table="OFFICE">
+
+    	<id name="id" type="long"  column="OFFICE_ID">
+			 <generator class="sequence">  
+                <param name="sequence">office_url_id_seq</param>  
+             </generator>
+        </id>
+        
+		<property name="name" type="string" unique="true" not-null="true" column="name" />
+		<property name="discriminator" type="integer" unique="false" not-null="false"  column="discriminator" />
+
+
+		<set name="urls" inverse="true" lazy="false" >
+	        <key  column="office_id" not-null="true"/>
+	        <one-to-many class="Url"/>
+	    </set>
+    
+    </class>
+    
+</hibernate-mapping>

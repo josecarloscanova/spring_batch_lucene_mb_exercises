@@ -1,0 +1,13 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.Track;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+
+public class TrackCsvToBean extends CsvToBean<Track> {
+
+	public TrackCsvToBean() {
+		super();
+	}
+
+}

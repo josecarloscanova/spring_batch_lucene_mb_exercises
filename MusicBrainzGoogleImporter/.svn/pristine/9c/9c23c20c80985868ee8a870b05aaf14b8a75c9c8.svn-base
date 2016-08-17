@@ -1,0 +1,200 @@
+package org.nanotek.lucene.query;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+//import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.util.Version;
+import org.nanotek.Base;
+import org.nanotek.base.QueryParserConfiguration;
+import org.nanotek.lucene.index.Index;
+import org.nanotek.lucene.query.result.CompositeQueryResult;
+import org.nanotek.lucene.query.result.ScoreDocBase;
+import org.nanotek.lucene.query.result.ScoreDocument;
+import org.nanotek.lucene.query.result.SimpleQueryResult;
+import org.nanotek.lucene.search.local.IndexSearcherProvider;
+import org.nanotek.query.ContextKeys;
+import org.nanotek.query.QueryBase;
+import org.nanotek.query.QueryContext;
+import org.nanotek.query.QueryDispatcher;
+import org.nanotek.query.QueryException;
+import org.nanotek.query.QueryObject;
+import org.nanotek.query.QueryResult;
+import org.nanotek.query.event.QueryResultBase;
+
+/**
+ *
+ * The Base Dispatcher to manipulate simple IndexSearcher Objects.
+ * Designed for small index and running on servers or local machines.
+ * 
+ * @author josecanovamauger
+ *
+ */
+public class BaseQueryDispatcher<T extends Base<?>>  implements QueryDispatcher<QueryContext> {
+
+	private static final Logger  log = Logger.getLogger(BaseQueryDispatcher.class);
+	//private IndexReader indexReader;
+	protected Version luceneVersion;
+	protected QueryParser queryParser;
+	//TODO: Configure IndexSearcher on Spring
+	//TODO:Fix how to manage the IndexSercherProvider and IndexSearcher.
+	protected IndexSearcher  indexSearcher;
+	protected IndexSearcherProvider indexSearcherProvider;
+//	private final List<QueryListener<?>> dispatcherListeners; 
+	
+	public BaseQueryDispatcher() {
+	}
+
+	
+	@Override
+	public void dispatch(QueryObject<?> query) {
+		//for now do nothing. 
+		//TODO: Implement a context aware queryContext retrieval, if need it. 
+		throw new RuntimeException ("Not yet implemented");
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void dispatch(QueryObject<?> queryObject , final QueryContext queryContext) {
+		
+		int maxResult;
+		TopDocs topDocs = null;
+		List<?> documents = null;
+		QueryResult<?> results =  null;
+		
+		
+		try {
+			if (indexSearcher == null) 
+				indexSearcher = indexSearcherProvider.getIndexSearcher((Index) queryContext.get(ContextKeys.CURRENT_INDEX));
+			if (indexSearcher !=null)
+			{
+				/*
+				 * TODO: Implement objects  for query parsing holding.
+				 */
+				QueryBase queryBase = queryObject.getQuery();
+				String escapedQuery = QueryParser.escape(queryBase.getQuery());
+				Base<?> targetField = queryContext.get(ContextKeys.TARGET_FIELD);
+				
+				Query query = getPlatformQuery ( escapedQuery ,  queryContext, targetField ); 
+				
+				if (queryContext.get(ContextKeys.LAST_SCORED_DOC)!=null)
+				{
+					ScoreDocBase base = (ScoreDocBase) queryContext.get(ContextKeys.LAST_SCORED_DOC);
+					ScoreDoc scoreDoc = new ScoreDoc(base.doc, base.getScore(), base.getShardIndex());
+					maxResult = queryContext.getMaxHits();
+					topDocs   = indexSearcher.searchAfter(scoreDoc, query, maxResult);
+				} else {
+					topDocs = indexSearcher.search(query, queryContext.getMaxHits());
+				}
+				if (topDocs !=null && topDocs.totalHits > 0) {
+					documents = getDocuments(indexSearcher , topDocs);
+				}
+				results = new CompositeQueryResult<List<SimpleQueryResult<?,?>>> ((List<SimpleQueryResult<?, ?>>) documents);
+				
+				if (null != documents && documents.size()>0) { 
+					((CompositeQueryResult<List<SimpleQueryResult<?,?>>> ) results).setTopDocs(topDocs);
+//					((CompositeQueryResult<List<SimpleQueryResult<?,?>>> ) results).setDocuments(documents);
+				}
+				QueryResultBase<?> resultBase = (QueryResultBase<?>) queryContext.get(ContextKeys.HOOKED_EVENT);
+				//TODO:Throw an Exception of "'No Results found', if no results are found!!!"
+				if (topDocs.totalHits <=0) 
+					throw new QueryException("No Results Found");
+				resultBase.setId(results);
+				resultBase.setScoreDocBase(defineLastScoreDoc(queryContext,topDocs));
+				System.out.println("");
+			}else {
+				throw new QueryException (" Searcher is Null ");
+			}
+		} catch (Exception e) {
+			if(e.getClass().equals(QueryException.class)) throw ((QueryException)e);
+			throw new QueryException (e);
+		}
+//		return results;
+	}
+
+
+	public Query getPlatformQuery (String escapedQuery , QueryContext queryContext,Base<?> targetField ) throws ParseException {
+		QueryParser qp = null;
+		QueryParserConfiguration queryConfiguration = (QueryParserConfiguration) queryContext.get(ContextKeys.QUERY_PARSER);
+		if (queryConfiguration!=null)
+			qp = queryConfiguration.get();
+				
+		return getPlatformQuery ( escapedQuery , targetField , qp);
+	}
+
+	public Query getPlatformQuery (String escapedQuery ,Base<?> targetField 
+									, QueryParser queryParser) throws ParseException { 
+			if (queryParser == null){ 
+				this.queryParser = new QueryParser((luceneVersion !=null)?luceneVersion:Version.LUCENE_48, (String) targetField.getId(), new StandardAnalyzer((luceneVersion !=null)?luceneVersion:Version.LUCENE_47));
+			}
+			return queryParser.parse(escapedQuery);
+		}
+
+	private ScoreDocBase defineLastScoreDoc(final QueryContext queryContext, 
+											final TopDocs topDocs) {
+		ScoreDoc scoreDoc = topDocs.scoreDocs[topDocs.scoreDocs.length-1];
+		ScoreDocBase base = new ScoreDocBase (scoreDoc.score , scoreDoc.doc , scoreDoc.shardIndex);
+		return base;
+	}
+
+
+	private List<SimpleQueryResult<?,?>> getDocuments(IndexSearcher indexSearcher,
+			TopDocs topDocs) throws IOException {
+		List<SimpleQueryResult<?,?>> documents = new ArrayList<SimpleQueryResult<?,?>>();
+		ScoreDoc[] hits = topDocs.scoreDocs;
+		int numTotalHits = topDocs.totalHits;
+		log.debug(numTotalHits + " total matching documents");
+		for (int i = 0 ; i < hits.length; i++)
+		{
+			Document doc = indexSearcher.doc(hits[i].doc);
+			if (doc !=null) {
+				ScoreDocument scoreDoc = new ScoreDocument((long) hits[i].doc,hits[i],doc);
+//				scoreDoc.setScoreDoc(hits[i]);
+//				scoreDoc.setDocument(doc);
+				SimpleQueryResult<ScoreDocument,?> result = new SimpleQueryResult<ScoreDocument,Long>(System.currentTimeMillis());
+				documents.add(result);
+				result.setScoreDocument(scoreDoc);
+			}else { 
+				log.info(" nullable document " + i + "  "  + hits[i].shardIndex + " "  + hits[i].score );
+			}
+		}
+		return documents;
+	}
+
+	public Version getLuceneVersion() {
+		return luceneVersion;
+	}
+
+
+	public void setLuceneVersion(Version luceneVersion) {
+		this.luceneVersion = luceneVersion;
+	}
+
+
+	public QueryParser getQueryParser() {
+		return queryParser;
+	}
+
+
+	public void setQueryParser(QueryParser queryParser) {
+		this.queryParser = queryParser;
+	}
+
+	public IndexSearcherProvider getIndexSearcherProvider() {
+		return indexSearcherProvider;
+	}
+
+	public void setIndexSearcherProvider(IndexSearcherProvider indexSearcherProvider) {
+		this.indexSearcherProvider = indexSearcherProvider;
+	}
+}

@@ -1,0 +1,15 @@
+package org.nanotek.task.callable;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Receiver;
+import org.nanotek.Task;
+
+public abstract class CallableTaskReceiver<T extends  Task<T,V>,V> implements CallableTask<T,V> , Receiver<V> {
+
+
+	private static Logger logger = Logger.getLogger(CallableTaskReceiver.class);
+	
+	public CallableTaskReceiver() {
+	}
+
+}

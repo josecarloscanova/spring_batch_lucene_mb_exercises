@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 
+
+	private String id;
+	private String name; 
+	private Date creationDate;
+	private Version version;
+	
+	protected String id; 
+	protected String name; 
+	protected Boolean storeTermVector  = true;
+	protected Boolean storeOffsetWithTermVector  = true;
+	protected Boolean storePositionWithTermVector  = true;
+	protected Boolean omitTermFreqAndPositions = true;
+	protected Boolean indexed = true; 
+	protected Boolean omitNorms = false;
+	protected Field.Store store = Field.Store.YES; 
+	protected NumericType numericType = null;
+	protected Boolean tokenized = false; 
+	protected IndexOptions indexOptions = IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS;
+	
+ -->        
+ 
+<hibernate-mapping package="org.nanotek.lucene.index">
+
+    <class name="FieldConfiguration" table="FIELD_CONFIGURATION">
+
+    	<id name="id" type="string"  column="FIELD_CONFIGURATION_ID">
+			 <generator class="assigned" />
+        </id>
+        
+		<property name="name" type="string" column="NAME" />
+		<property name="storeTermVector" type="boolean" column="STORE_TERM_VECTOR" />
+		<property name="storePositionWithTermVector" type="boolean" column="STORE_POSITION_WITH_TERM_VECTOR" />
+		<property name="indexed" type="boolean" column="INDEXED" />
+		<property name="omitNorms" type="boolean" column="OMIT_NORMS" />
+		<property name="store" type="string" column="STRING" />
+		<property name="numericType" type="string" column="NUMERIC_TYPE" />
+		<property name="tokenized" type="string" column="TOKENIZED" />
+		<property name="indexOptions" type="string" column="INDEX_OPTIONS" />
+		
+		<set name="fieldConfigMap" table="FIELD_CONFIGURATION">
+        		<key column="FIELD_CONFIGURATION_ID"/>
+        		<many-to-many column="DOCUMENT_CONFIGURATION_ID" class="FieldConfiguration"/>
+    	</set>
+			
+    </class>
+    
+</hibernate-mapping>

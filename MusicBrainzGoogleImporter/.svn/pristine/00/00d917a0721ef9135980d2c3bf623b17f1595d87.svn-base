@@ -1,0 +1,27 @@
+package org.nanotek.lucene;
+
+@SuppressWarnings("serial")
+public class PathNotValidException extends RuntimeException {
+
+	public PathNotValidException() {
+		super();
+	}
+
+	public PathNotValidException(String message, Throwable cause,
+			boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
+
+	public PathNotValidException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public PathNotValidException(String message) {
+		super(message);
+	}
+
+	public PathNotValidException(Throwable cause) {
+		super(cause);
+	}
+
+}

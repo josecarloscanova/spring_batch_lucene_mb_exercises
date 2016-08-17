@@ -1,0 +1,13 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.WorkType;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+
+public class WorkTypeCsvToBean extends CsvToBean<WorkType> {
+
+	public WorkTypeCsvToBean() {
+		super();
+	}
+
+}

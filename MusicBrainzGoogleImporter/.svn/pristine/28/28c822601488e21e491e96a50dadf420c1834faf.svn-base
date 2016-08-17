@@ -1,0 +1,7 @@
+package org.nanotek.tika;
+
+public interface ContentExtractor<T> {
+
+	public void extractContent(T t) throws ContentExtractionException;
+	
+}

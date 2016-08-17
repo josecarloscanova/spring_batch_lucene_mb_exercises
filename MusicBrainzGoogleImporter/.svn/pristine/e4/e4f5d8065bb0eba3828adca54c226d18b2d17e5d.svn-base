@@ -1,0 +1,9 @@
+package org.nanotek.task.callable;
+
+import org.nanotek.BaseTask;
+import org.nanotek.Dispatcher;
+import org.nanotek.Task;
+
+public abstract class CallableTaskDispatcher <V> implements CallableTask<BaseTask<?>,V> , Dispatcher<V> {
+
+}

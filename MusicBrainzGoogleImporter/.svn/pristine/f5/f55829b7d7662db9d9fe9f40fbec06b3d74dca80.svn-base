@@ -1,0 +1,31 @@
+package tests.org.nanotek.base;
+
+import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.nanotek.base.Contact;
+
+import tests.org.nanotek.kong.Instantiator;
+
+public class TestInstantiator {
+
+	private static final Logger log = Logger.getLogger(TestInstantiator.class);
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Test
+	public void test() {
+		Instantiator inst = new Instantiator(Contact.class);
+		log.debug(inst.getInstance());
+		log.debug(inst.getClazz().getName());
+		log.debug(inst.get().get());
+	}
+
+}

@@ -1,0 +1,96 @@
+package org.nanotek.musicbrainz.job.readers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.nanotek.Base;
+import org.nanotek.indexer.util.key.KeyServiceFactory;
+import org.nanotek.jobs.GenericReader;
+import org.nanotek.musicbrainz.beans.Artist;
+import org.nanotek.musicbrainz.beans.mapping.ArtistCsvToBean;
+import org.nanotek.musicbrainz.beans.mapping.ArtistMapping;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
+
+import au.com.bytecode.opencsv.CSVReader;
+
+public class ArtistNameReader extends GenericReader{
+
+	protected String fileStr; 
+	protected List<Base<?>> readList; 
+	protected CSVReader reader;
+	protected ArtistMapping itemMapping;
+	protected ArtistCsvToBean csvMap;
+	protected KeyServiceFactory keyServiceFactory;
+
+	private Log log = LogFactory.getLog(ArtistNameReader.class);
+	
+	public ArtistNameReader() 
+	{ 
+		readList = new ArrayList<Base<?>>();
+	}
+	
+	@Override
+	public Base<?> read() throws Exception, UnexpectedInputException,
+			ParseException, NonTransientResourceException {
+		String [] nextLine;
+		Artist artist = null;
+		if ((nextLine = reader.readNext()) != null) {
+			artist = csvMap.processLine(getItemMapping(), nextLine);
+			log.debug("Artist Loaded "  +  artist.toString());
+		}
+		return artist;
+	}
+
+	public String getFileStr() {
+		return fileStr;
+	}
+
+	public void setFileStr(String fileStr) {
+		this.fileStr = fileStr;
+	}
+
+	public List<Base<?>> getReadList() {
+		return readList;
+	}
+
+	public void setReadList(List<Base<?>> readList) {
+		this.readList = readList;
+	}
+
+	public CSVReader getReader() {
+		return reader;
+	}
+
+	public void setReader(CSVReader reader) {
+		this.reader = reader;
+	}
+
+	public ArtistMapping getItemMapping() {
+		return itemMapping;
+	}
+
+	public void setItemMapping(ArtistMapping itemMapping) {
+		this.itemMapping = itemMapping;
+	}
+
+	public ArtistCsvToBean getCsvMap() {
+		return csvMap;
+	}
+
+	public void setCsvMap(ArtistCsvToBean csvMap) {
+		this.csvMap = csvMap;
+	}
+
+	public KeyServiceFactory getKeyServiceFactory() {
+		return keyServiceFactory;
+	}
+
+	public void setKeyServiceFactory(KeyServiceFactory keyServiceFactory) {
+		this.keyServiceFactory = keyServiceFactory;
+	}
+
+}

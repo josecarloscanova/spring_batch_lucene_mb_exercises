@@ -1,0 +1,35 @@
+package org.nanotek.poi.generator;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.nanotek.Base;
+import org.nanotek.Generator;
+
+/**
+ * Variant from BaseWorkBookGenerator that uses a delegate class that details
+ * more specific information into the WorkBook. 
+ * @author josecanovamauger.
+ *
+ */
+@SuppressWarnings("serial")
+public class WorkBookGeneratorDelegate extends BaseGenerator<Workbook> {
+	
+	Generator<Workbook,Base<?>> customGenerator;
+	
+	public WorkBookGeneratorDelegate(Generator<Workbook,Base<?>> customGenerator) {
+		this.customGenerator = customGenerator;
+	}
+
+	@Override
+	public Workbook generate(Base<?> info) {
+		return customGenerator.generate(info);
+	}
+
+	public Generator<Workbook, Base<?>> getCustomGenerator() {
+		return customGenerator;
+	}
+
+	public void setCustomGenerator(Generator<Workbook, Base<?>> customGenerator) {
+		this.customGenerator = customGenerator;
+	}
+
+}

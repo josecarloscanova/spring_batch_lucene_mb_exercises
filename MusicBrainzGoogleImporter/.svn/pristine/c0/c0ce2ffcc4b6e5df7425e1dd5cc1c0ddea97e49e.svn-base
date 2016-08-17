@@ -1,0 +1,9 @@
+package org.nanotek;
+
+import java.io.Serializable;
+
+public interface Report<T, I extends Serializable> extends Base<I>{
+	
+	public T getReport(); 
+	
+}

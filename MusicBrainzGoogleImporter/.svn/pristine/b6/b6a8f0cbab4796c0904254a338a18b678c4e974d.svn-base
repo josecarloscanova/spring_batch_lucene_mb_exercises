@@ -1,0 +1,48 @@
+package org.nanotek.base.date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
+
+import org.nanotek.Base;
+/**
+ * Date like registry. Can be used to be combined with other registries to maintain
+ * historical events. 
+ * 
+ * Date registries that can be combined on specific resolutions from 
+ * Year-Month-Day to Second-MiliSecond. 
+ * 
+ * @author josecanovamauger
+ *
+ */
+@Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@SuppressWarnings("serial")
+public class Datable implements Base<Long>{
+	
+	@Id
+	private Long id; 
+	
+	@OneToOne
+	protected CalendarBase calendarBase;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
+	public CalendarBase getCalendarBase() {
+		return calendarBase;
+	}
+
+	public void setCalendarBase(CalendarBase calendarBase) {
+		this.calendarBase = calendarBase;
+	} 
+	
+}

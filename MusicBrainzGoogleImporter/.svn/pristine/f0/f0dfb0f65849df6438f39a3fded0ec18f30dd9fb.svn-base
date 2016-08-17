@@ -1,0 +1,38 @@
+package org.nanotek.sign;
+
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import org.apache.log4j.Logger;
+import org.nanotek.Signer;
+
+public class MD5FileSigner extends FileSignerSupport <File,String>implements Signer<File,String>{
+
+	private Logger log = Logger.getLogger(MD5FileSigner.class);
+	
+	public MD5FileSigner() {
+	}
+	
+	@Override
+	protected String signFile(File file) {
+		StringBuilder sb = null; 
+		try {
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			ByteBuffer readBuffer = readFile(file);
+			digest.update(readBuffer.array());
+			byte[] ckSumResult = digest.digest();
+			sb = new StringBuilder();
+			log.debug ("Key SIZE " + ckSumResult.length);
+			for (byte b: ckSumResult) { 
+				String hex=Integer.toHexString(0xff & b);
+				sb.append(hex);
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			log.debug(e);
+		}
+		return sb.toString();
+	}
+
+}

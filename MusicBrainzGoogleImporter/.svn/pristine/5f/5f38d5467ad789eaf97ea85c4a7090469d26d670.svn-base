@@ -1,0 +1,65 @@
+package org.nanotek.lucene.analysis;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.nanotek.lucene.document.configuration.DocumentConfiguration;
+import org.nanotek.lucene.document.configuration.FieldConfiguration;
+import org.nanotek.lucene.index.config.IndexConfiguration;
+
+
+/**
+ * 
+ * Builder Class to provide a mechanism for distinct analyzer (Per Field Configuration) on 
+ * Spring configuration base classes, defines the mechanism on document configuration
+ * to define different analyzers for Fields (A.K.A same information on document being scanned 
+ * and indexed using different strategies). 
+ * 
+ * @author josecarloscanovamauger
+ *
+ * @param <T> 
+ */
+public class PerFieldAnalyzerBuilder  implements AnalyzerBuilder<PerFieldAnalyzerWrapper> {
+
+	
+	private DocumentConfiguration documentConfiguration;
+	private IndexConfiguration indexConfiguration;
+
+	public PerFieldAnalyzerBuilder(DocumentConfiguration documentConfiguration) {
+		this.documentConfiguration = documentConfiguration; 
+	}
+	
+	@Override
+	public PerFieldAnalyzerWrapper build() {
+		List<? extends FieldConfiguration> fcs = toList(documentConfiguration.getFieldConfigMap().values()); 
+		Map<String, Analyzer> analyzerWrapperMap = new HashMap<String,Analyzer>(); 
+		for (FieldConfiguration fc : fcs) 
+		{ 
+			if (fc.getAnalyzer() !=null){ 
+				analyzerWrapperMap.put(fc.getName(), fc.getAnalyzer());
+			}
+		}
+		return new PerFieldAnalyzerWrapper(new StandardAnalyzer(indexConfiguration.getIndex().getVersion()),analyzerWrapperMap);
+	}
+
+
+	private List<? extends FieldConfiguration> toList(
+			Collection<FieldConfiguration> values) {
+		return new ArrayList<> (values);
+	}
+
+	public IndexConfiguration getIndexConfiguraiton() {
+		return indexConfiguration;
+	}
+
+	public void setIndexConfiguraiton(IndexConfiguration indexConfiguraiton) {
+		this.indexConfiguration = indexConfiguraiton;
+	}
+
+}

@@ -1,0 +1,9 @@
+package org.nanotek.query;
+
+import org.nanotek.Actuator;
+
+public interface QueryActor <T extends QueryProcessor<?,?>,P extends QueryContext,M extends QueryObject<?>>  {
+	
+	public <R> R doAct(P role, T type, M merde);
+	
+}

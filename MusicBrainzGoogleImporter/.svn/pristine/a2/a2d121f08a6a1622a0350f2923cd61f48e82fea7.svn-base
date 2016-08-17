@@ -1,0 +1,102 @@
+package org.nanotek.musicbrainz.job.base;
+
+import java.util.List;
+import java.util.Set;
+
+//import org.springframework.batch.admin.service.JobService;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.batch.core.launch.JobExecutionNotRunningException;
+import org.springframework.batch.core.launch.NoSuchJobException;
+import org.springframework.batch.core.launch.NoSuchJobExecutionException;
+import org.springframework.batch.core.launch.support.SimpleJobOperator;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.validation.Validator;
+
+public class ArtistCreditNameDataLoad {
+
+	private static ClassPathXmlApplicationContext ctx;
+
+	/**
+	 * @param args
+	 * @throws JobParametersInvalidException 
+	 * @throws JobInstanceAlreadyCompleteException 
+	 * @throws JobRestartException 
+	 * @throws JobExecutionAlreadyRunningException 
+	 * @throws NoSuchJobException 
+	 * @throws JobExecutionNotRunningException 
+	 * @throws NoSuchJobExecutionException 
+	 */
+	public static void main(String[] args)  {
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+		"/spring-batch-jobs/artist_credit_name/spring-batch-artist-credit-name-context.xml"});
+		Job artistCreditJob = (Job) ctx.getBean("artistCreditNameIndexJob");
+		boolean started = false; 
+		//		JobService jobService = (JobService) ctx.getBean("jobService");
+		//		jobService.stopAll();
+		SimpleJobOperator jobOperator =   (SimpleJobOperator) ctx.getBean("jobOperator");
+		JobExplorer jobExplorer = (JobExplorer) ctx.getBean("jobExplorer");
+		Validator validator = (Validator) ctx.getBean("validator");
+		try { 
+			List<String> jobNames = jobExplorer.getJobNames();
+			for (String jobName:jobNames) { 
+				List<JobInstance>jobInstances = jobExplorer.getJobInstances(jobName, 0, 1000);
+				for (JobInstance jobInstance:jobInstances) 
+				{ 
+					if (jobName.equals("artistCreditNameIndexJob"))
+					{ 
+						List<Long> executions = jobOperator.getExecutions(jobInstance.getId());
+						for (Long execution : executions) 
+						{ 
+							JobExecution jobExecution = jobExplorer.getJobExecution(execution);
+							jobExecution.upgradeStatus(BatchStatus.FAILED);
+							jobExecution.stop();
+							started = true;
+							jobOperator.restart(execution);
+						}
+					}else { 
+						jobOperator.abandon(jobInstance.getId());
+					} 
+				}
+				if (jobName.equals("artistCreditNameIndexJob")) {
+					Set<Long> executions = jobOperator.getRunningExecutions(jobName);
+					java.util.Iterator<Long> it = executions.iterator();
+					while (it.hasNext()){
+						JobExecution execution = jobExplorer.getJobExecution(it.next());
+						execution.setStatus(BatchStatus.ABANDONED);
+						execution.stop();
+					}
+				}
+			}
+			if (!started)
+				jobOperator.start("artistCreditNameIndexJob", "");
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+	}
+
+	//	public JobExecution abandon(Long jobExecutionId) throws NoSuchJobExecutionException,
+	//	JobExecutionAlreadyRunningException {
+	//
+	//		JobExecution jobExecution = getJobExecution(jobExecutionId);
+	//		if (jobExecution.getStatus().isLessThan(BatchStatus.STOPPING)) {
+	//			throw new JobExecutionAlreadyRunningException(
+	//					"JobExecution is running or complete and therefore cannot be aborted");
+	//		}
+	//
+	//		logger.info("Aborting job execution: " + jobExecution);
+	//		jobExecution.upgradeStatus(BatchStatus.ABANDONED);
+	//		jobRepository.update(jobExecution);
+	//		return jobExecution;
+	//
+	//	}
+
+}

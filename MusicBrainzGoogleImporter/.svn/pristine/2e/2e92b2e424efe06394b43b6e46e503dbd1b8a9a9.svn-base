@@ -1,0 +1,137 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.*,java.net.*" %>
+<%@ page import="org.nanotek.base.*" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>OfficeUrl</title>
+<script type="text/javascript" src="/javascript/js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="/javascript/js/jquery-ui-1.10.4.js"></script>
+<script type="text/javascript" src="/javascript/script_utils.js"></script>
+<script type="text/javascript" src="/javascript/interval.js"></script>
+<script type="text/javascript"> 
+$(function() {
+	console.log("JQUERY READY ready!");
+ 	 hash = $(location).attr('hash');
+ 	 if (hash){
+ 		 console.log(hash);
+ 	 }
+});
+
+$( document ).ready(function() {
+	$(".result")
+	.click(function() 
+	 	{
+			console.log("origin");
+			console.log(this.id);
+			id = this.id; 
+			ajaps.callbacksuccess=	function (data){
+				  	console.log (" " + data);
+				  	//alert (data.office.id + " " + data.office.name + " " + data.office.url);
+				  	office = data.office;
+				  	$("#officeid").val(office.id);
+				  	$("#officename").val(office.name);
+				  	$("#officeurl").val(office.url);
+				  	$("#officeContactInfo").val(office.contactInfo);
+				};
+			ret = ajaps.send(ajaps.buildRequest("getOffice/"+id,""),null,ajaps.set);
+			console.log("endorigin");
+			return true;
+		});
+	
+	$( "#officeform" ).on( "submit", function( event ) {
+		  event.preventDefault();
+		  console.log( $( this ).serializeArray() );
+		  
+		  
+		  //var data =  JSON.stringify($( this ).serializeArray());
+		  office.id = $("#officeid").val(); 
+		  office.name = $("#officename").val(); 
+		  office.url = $("#officeurl").val();
+		  office.contactInfo = $("#officeContactInfo").val(); 
+		  
+		  var data =  JSON.stringify(office);
+		  ajaps.contentType='application/json';
+		  ajaps.callbacksuccess =  formSucessHandler;
+	      ajaps.callbackerror = 
+	    	  function (xhr,sts,error) { 
+	    	  		console.log("error request " + xhr);
+	    	  		console.log ("error " + error);
+	    	  		console.log (" sts " + sts);
+	      		};
+		  ret = ajaps.send(ajaps.buildRequest("update/"+$("#officeid")[0].value,data,"POST"),"",ajaps.set);
+		  console.log("sending update " + ret);
+		  //$( "#showvalues" ).text("Serialized form " + JSON.stringify($( this ).serializeArray()));
+		 $( "#showvalues" ).text("Serialized form " +  JSON.stringify(office));
+		});
+});
+
+
+function formSucessHandler(data){
+  	console.log (" " + data);
+  	//alert (data.office.id + " " + data.office.name + " " + data.office.url);
+  	office = data.office;
+  	$("#officeid").val(office.id);
+  	$("#officename").val(office.name);
+  	$("#officeurl").val(office.url);
+  	$("#officeContactInfo").val(office.contactInfo);
+};
+//$( document ).ready(function() {
+
+</script>
+</head>
+<body>
+<table width="1200" border=1>
+<tr>
+<td>
+	<iframe name="targetLink" src="" width="800" height="400">
+	</iframe>
+</td>
+<td>
+	<form name="contactform" action="saveContact" id="officeform">
+		<span><label for="office.id">id:</label><input type="text" name="id" id="officeid" size="10" value=""/></span>	
+		<br/>
+		<span><label for="office.name">name:</label> <input type="text" name="name" id="officename" size="60" value=""/></span>	
+		<br/>
+		<span><label for="office.url">url:</label> <input type="text" name="url" id="officeurl" size="60" value=""/></span>	
+		<br/>
+		<textarea rows="10" cols="80" name="contactInfo" id="officeContactInfo" title="Contact Info"></textarea>
+		<br/>
+		<input type=submit name=btnsave value="save" />
+	</form>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+	<div id="showvalues"></div>
+</td>
+</tr>
+</table>
+<br/>
+<%="Office List"%>
+<br/>
+<ul>
+<%
+List<OfficeUrl> offices = (List<OfficeUrl>)request.getAttribute("offices");
+for (OfficeUrl officeUrl : offices) {
+String urlValue=URLDecoder.decode(URLDecoder.decode(officeUrl.getUrl()));%>
+<li>
+   <div class="result" id="<%=officeUrl.getId()%>">   
+	   <b class="name"><%=URLDecoder.decode(officeUrl.getName())%></b>
+	   <p>
+	   <a href="<%=urlValue%>" class="urlOffice" target="targetLink">
+	   <%=URLDecoder.decode(URLDecoder.decode(officeUrl.getUrl()))%></a>
+	   </p>
+   </div>
+</li>	
+<%}%>
+</ul>
+<br/> 
+<%=request.getAttribute("message") %>
+<br/>
+</body>
+</html>

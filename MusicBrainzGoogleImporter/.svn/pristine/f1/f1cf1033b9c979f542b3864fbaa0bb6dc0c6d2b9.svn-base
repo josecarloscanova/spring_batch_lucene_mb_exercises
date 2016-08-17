@@ -1,0 +1,45 @@
+package org.nanotek.mq.listener;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
+import javax.jms.TextMessage;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Base;
+import org.springframework.stereotype.Component;
+
+@Component
+public class QueueListener<T extends Base<?>> implements MessageListener
+{
+	
+	Logger log = Logger.getLogger(QueueListener.class);
+
+    @SuppressWarnings("unchecked")
+	public void onMessage( final Message message )
+    {
+        if ( message instanceof TextMessage )
+        {
+            final TextMessage textMessage = (TextMessage) message;
+            try
+            {
+                System.out.println( textMessage.getText() );
+            }
+            catch (final JMSException e)
+            {
+                e.printStackTrace();
+            }
+        }else { 
+        	ObjectMessage messageObject = (ObjectMessage)message; 
+        	T base;
+			try {
+				base = (T) messageObject.getObject();
+	        	System.err.println("Message Object Received " + base.getId());
+			} catch (JMSException e) {
+				e.printStackTrace();
+				log.debug("Message Listener Not property configured.");
+			}
+        }
+    }
+
+}

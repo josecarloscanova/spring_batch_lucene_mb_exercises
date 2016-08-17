@@ -1,0 +1,36 @@
+package org.nanotek.base.google.query;
+
+import java.util.UUID;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import org.nanotek.Base;
+import org.nanotek.query.QueryObject;
+
+@Entity
+@SuppressWarnings("serial")
+public class GoogleQueryBase <T extends Base<?>> implements QueryObject<T> , Base<String>{
+
+	@Id
+	private String id; 
+	
+
+	@Override
+	public <Q extends Base<?>> Q getQuery() {
+		return null;
+	}
+
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
+	}
+
+}

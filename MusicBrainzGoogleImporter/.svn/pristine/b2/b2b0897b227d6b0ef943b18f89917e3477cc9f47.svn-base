@@ -1,0 +1,26 @@
+package org.nanotek.tika.pdf;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.regex.Pattern;
+
+import org.apache.lucene.analysis.pattern.PatternTokenizer;
+
+@SuppressWarnings("serial")
+public class LineBreakAnalyzer extends PdfAnalyzer {
+
+	public LineBreakAnalyzer() {
+	}
+
+	@Override
+	public void analyzeContentSegment() {
+		StringReader reader = new StringReader(this.getPdfExtracted()); 
+		PatternTokenizer tokenizer = new PatternTokenizer(reader,  Pattern.compile("\n"), -1);
+		try {
+			tokenizer.reset();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

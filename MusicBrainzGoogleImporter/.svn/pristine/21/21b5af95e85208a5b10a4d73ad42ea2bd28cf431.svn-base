@@ -1,0 +1,175 @@
+package org.nanotek.poi;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import org.nanotek.base.Contact;
+import org.nanotek.base.School;
+import org.nanotek.hibernate.dao.DAO;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+
+public class TraillerSeparator {
+
+	public TraillerSeparator() {
+	}
+
+	public static void main(String[] args) throws IOException, URISyntaxException {
+		BufferedReader reader = Files.newBufferedReader(Paths.get("/home/java-eclipse/workspace/MusicBrain-Libraries/src/camara_japao.txt"), StandardCharsets.UTF_8);
+		LineNumberReader lnr = new LineNumberReader (reader);
+		String v = null ;
+		int incrementer = 0; 
+		StringBuilder acumulator = new StringBuilder();
+		ArrayList<String> list = new ArrayList<String>();
+		List<Map<String,String>> valueMapList = new ArrayList<Map<String,String>>();
+		String record = "";
+		while ((v = lnr.readLine())!=null)
+		{   
+			HashMap<String,String> valueMap = new HashMap<String,String>();
+			if (v.trim().equals("") && incrementer>0)
+			{ 
+				acumulator.insert(0, "<line>");
+				acumulator.insert(acumulator.length(), "</line>");
+				record = acumulator.toString();
+				list.add(record);
+				acumulator = new StringBuilder();
+			}else if (!v.trim().equals("")){ 
+				acumulator.append("|" + v + "|");
+			}
+			v = v.trim();
+			incrementer++;
+		}
+		StringBuilder resultBuilder ; 
+		ArrayList<String> lineRecord = new ArrayList<String>();
+		for (String str : list) 
+		{ 
+			resultBuilder = new StringBuilder();
+			resultBuilder.append("<p>");
+			//			StringTokenizer tokenizer = new StringTokenizer(str,"||");
+			//			while (tokenizer.hasMoreTokens()) 
+			//			{ 
+			//				System.out.println("<line>");
+			resultBuilder.append(str);
+			//				System.out.println("</line>");
+			//			}
+			//			System.out.println(str);
+			resultBuilder.append("</p>");
+			String line = resultBuilder.toString(); 
+			line = line.replace("||", "</cell><cell>");
+			line = line.replace("|", "<cell>");
+			//			System.out.println(line);
+			lineRecord.add(line);
+		}
+		File outFile = new File("/home/java-eclipse/records.address.xml");
+		if (!outFile.exists())
+			outFile.createNewFile();
+		else 
+		{ 
+			outFile.delete(); 
+			outFile.createNewFile();
+		}
+		FileWriter fileWriter = new FileWriter(outFile);
+		fileWriter.write("<root>");
+		for (String lineResult : lineRecord)
+		{ 
+			fileWriter.write(lineResult);
+			Map<String,String> values = separateValues(lineResult);
+			valueMapList.add(values);
+		}
+		fileWriter.write("</root>");
+		fileWriter.close();
+		printValueMapList(valueMapList);
+		saveToDataBase(valueMapList); 
+
+		//		System.out.println("</p>");
+	}
+
+	private static void saveToDataBase(List<Map<String, String>> valueMapList) {
+		ClassPathXmlApplicationContext ctx;
+
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+				"database-loaders/spring-dao-context.xml"});
+		DAO<Contact> dao = (DAO<Contact>) ctx.getBean("contactDAO");
+
+		for (Map<String,String> map: valueMapList) 
+		{ 
+			Contact contact = new Contact();
+			if (map.get("name") !=null && map.get("fone") !=null && map.get("zip") !=null && map.get("city") !=null && map.get("address") !=null) { 
+				contact.setName(URLEncoder.encode(map.get("name").trim()));
+				contact.setDescription(URLEncoder.encode(map.get("description")));
+				contact.setAddress(URLEncoder.encode(map.get("address").trim()));
+				contact.setCity(URLEncoder.encode(map.get("city").trim()));
+				contact.setZip(URLEncoder.encode(map.get("zip").trim()));
+				contact.setPhone(URLEncoder.encode(map.get("fone").trim().replace("Telefone:", "").replace("Telefone", "")));
+				try { 
+				dao.persist(contact);
+				}catch (Throwable e) 
+				{ 
+					e.printStackTrace();
+				}
+			}
+		}
+
+
+	}
+
+	public static void printValueMapList(List<Map<String,String>> valueMapList)
+	{ 
+		for (Map<String,String> map: valueMapList) 
+		{ 
+			for (String value : map.keySet()){ 
+				System.err.print(value.toUpperCase() + " " + map.get(value)+ " ");
+			}
+			System.out.println();
+		}
+	}
+
+	public static Map<String,String> separateValues(String lineRecord) 
+	{ 
+		Map<String,String> values = new HashMap<String,String>();
+		String[] tokeNizer =  lineRecord.split("<cell>");
+		if (tokeNizer.length > 6){ 
+			for(int incrementer = 0 ; incrementer < tokeNizer.length;incrementer++){  
+				//				System.out.print(incrementer + "  " + tokeNizer[incrementer]);
+				if (incrementer==1) { 
+					values.put("name", tokeNizer[incrementer].trim().replace("</cell>", ""));
+				} else if (incrementer==2){  
+					values.put("description",tokeNizer[incrementer].trim().replace("</cell>", ""));
+				} else if (incrementer==3){ 
+					values.put("address",tokeNizer[incrementer].trim().replace("</cell>", ""));
+				}else if (incrementer==4) { 
+					values.put("city", tokeNizer[incrementer].trim().replace("</cell>", ""));
+				} else if (incrementer==5){  
+					values.put("zip", tokeNizer[incrementer].trim().replace("</cell>", ""));
+				} else if (incrementer==6){  
+					values.put("description", tokeNizer[incrementer].trim().replace("</cell>", ""));
+				} else if (incrementer==7) { 
+					values.put("fone", tokeNizer[incrementer].trim().replace("</cell>", "")); 
+				} else { 
+					if (lineRecord.toString().toUpperCase().contains("FAX")){ 
+						values.put("FAX", tokeNizer[incrementer].trim().replace("</cell>", "")); 
+					}else if ((lineRecord.toString().toUpperCase().contains("WEBSITE"))){ 
+						values.put("SITE", tokeNizer[incrementer].trim().replace("</cell>", "")); 
+					}
+				}
+				System.out.println("");
+			}
+
+		}
+
+		return values;
+	}
+}

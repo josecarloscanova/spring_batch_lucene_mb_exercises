@@ -1,0 +1,22 @@
+package org.nanotek.beans.mapping;
+
+import org.nanotek.beans.WorkAlias;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class WorkAliasMapping extends ColumnPositionMappingStrategy<WorkAlias> {
+
+	public WorkAliasMapping() 
+	{ 
+		
+		String [] columns = new String [9]; 
+		columns[0] = "id";
+		columns[1] = "work";
+		columns[2] = "name";
+		columns[3] = "locale";
+		columns[5] = null;
+		columns[6] = null;
+		this.setColumnMapping(columns);
+	}
+	
+}

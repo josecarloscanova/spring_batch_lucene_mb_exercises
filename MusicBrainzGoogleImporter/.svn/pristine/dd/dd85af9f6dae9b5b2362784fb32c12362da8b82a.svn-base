@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.tika">
+
+    <class name="MediaDetail" table="MEDIA_DETAIL" >
+
+    	<id name="id" type="string"  column="ID"
+    	unsaved-value="null">
+			<generator class="foreign">
+            	<param name="property">fileIdentity</param>
+         	</generator>
+        </id>
+        
+		<property name="location" type="string" column="LOCATION" length="12000"/>
+		<property name="contentType" type="string" column="CONTENT_TYPE" length="5000"/>
+        <property name="size" type="long" column="SIZE"/>
+        <property name="dateUpdate" type="date" column="DATE_UPDATE" update="false"/>
+        <property name="readable" type="char" column="READABLE" />
+        
+        <!-- <set name="indexes" table="MEDIA_DETAIL_INDEX" inverse="true">
+            <key column="id"/>
+            <many-to-many column="media_id" class="org.nanotek.cms.domain.lucene.Index"/>
+        </set> -->
+        
+        <one-to-one name="fileIdentity" constrained="true"/>
+        
+    </class>
+    
+</hibernate-mapping>

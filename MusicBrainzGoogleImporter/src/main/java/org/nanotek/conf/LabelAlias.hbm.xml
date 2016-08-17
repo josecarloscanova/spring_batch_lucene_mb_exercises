@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="LabelAlias" table="LABEL_ALIAS">
+        
+    	<id name="id" type="long"  column="ID">
+			 <generator class="assigned" />
+        </id>
+        
+        <property name="label" type="long"></property>
+        <property name="locale" type="string"></property>
+        <property name="name" type="long"></property>
+        <property name="aliasId" type="long"></property>
+        
+    </class>
+    
+</hibernate-mapping>

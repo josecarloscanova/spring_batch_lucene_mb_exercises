@@ -1,0 +1,15 @@
+package org.nanotek.lucene.index.info.terms;
+
+import org.nanotek.base.LongBase;
+
+/**
+ * TODO: Implement a TermScope to replace the field configuration on the 
+ * Term definition.
+ * 
+ * @author josecanovamauger
+ *
+ */
+@SuppressWarnings("serial")
+public class TermScope extends LongBase {
+
+}

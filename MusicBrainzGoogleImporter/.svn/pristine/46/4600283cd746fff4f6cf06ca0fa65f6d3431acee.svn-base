@@ -1,0 +1,11 @@
+package org.nanotek.lucene.search;
+
+import org.nanotek.lucene.index.Index;
+
+public interface LuceneSearcherService {
+
+	public void createIndexSearcher (Index index);
+	public void search (String searchPhrase);
+//	public QueryResult<?> search (QueryObject<?> query);
+	
+}

@@ -1,0 +1,93 @@
+package org.nanotek.poi.configuration.excel;
+
+import java.util.Set;
+
+import org.nanotek.Base;
+import org.nanotek.base.Configuration;
+
+@SuppressWarnings("serial")
+public class SheetConfiguration implements Base<String>, Configuration<SheetConfiguration> {
+
+	private String id; 
+	
+	private String sheetName;
+	
+	private Set<RowConfiguration> rowConfigurations; 
+	
+	private Short columnWidth; 
+	
+	private Short defaultColumnWidth; 
+	
+	private Short defaultColumnHeight; 
+	
+	private Short columnHeight; 
+	
+	public SheetConfiguration() {
+	}
+
+	public SheetConfiguration(Set<RowConfiguration> rowConfigurations) {
+		this.rowConfigurations = rowConfigurations;
+	}
+
+	@Override
+	public SheetConfiguration get() {
+		return this;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Short getColumnWidth() {
+		return columnWidth;
+	}
+
+	public void setColumnWidth(Short columnWidth) {
+		this.columnWidth = columnWidth;
+	}
+
+	public Short getDefaultColumnWidth() {
+		return defaultColumnWidth;
+	}
+
+	public void setDefaultColumnWidth(Short defaultColumnWidth) {
+		this.defaultColumnWidth = defaultColumnWidth;
+	}
+
+	public Short getDefaultColumnHeight() {
+		return defaultColumnHeight;
+	}
+
+	public void setDefaultColumnHeight(Short defaultColumnHeight) {
+		this.defaultColumnHeight = defaultColumnHeight;
+	}
+
+	public Short getColumnHeight() {
+		return columnHeight;
+	}
+
+	public void setColumnHeight(Short columnHeight) {
+		this.columnHeight = columnHeight;
+	}
+
+	public Set<RowConfiguration> getRowConfigurations() {
+		return rowConfigurations;
+	}
+
+	public void setRowConfigurations(Set<RowConfiguration> rowConfigurations) {
+		this.rowConfigurations = rowConfigurations;
+	}
+
+	public String getSheetName() {
+		return sheetName;
+	}
+
+	public void setSheetName(String sheetName) {
+		this.sheetName = sheetName;
+	}
+
+}

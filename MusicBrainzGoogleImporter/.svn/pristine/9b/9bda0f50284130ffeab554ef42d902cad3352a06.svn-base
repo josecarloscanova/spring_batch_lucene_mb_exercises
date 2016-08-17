@@ -1,0 +1,26 @@
+package tests;
+
+import java.lang.reflect.Type;
+
+import org.nanotek.AbstractBase;
+import org.nanotek.Base;
+import org.nanotek.musicbrainz.beans.Artist;
+
+public class Pegasus<A extends Base<?>> extends Horse<A> implements  Flyer<A> , Mythical<A> {
+    public static void main(String... args) {
+        Pegasus<Base<?>> myApp = new Pegasus<>();
+        Artist base = new Artist();
+        base.setId(1916L);
+        System.out.println(myApp.identifyMyself(base));
+    }
+    
+    @SuppressWarnings("unchecked")
+	@Override
+    public String identifyMyself(A race) {
+    	A flyAbility = (A) new AbstractBase<String>("Fly Ability on High Lands");
+    	A mythical = (A) new AbstractBase<String>("Legendary Creature");
+    	System.out.println(Mythical.super.identifyMyself(mythical));
+    	System.out.println(Flyer.super.identifyMyself(flyAbility));
+    	return super.identifyMyself(race);
+    }
+}

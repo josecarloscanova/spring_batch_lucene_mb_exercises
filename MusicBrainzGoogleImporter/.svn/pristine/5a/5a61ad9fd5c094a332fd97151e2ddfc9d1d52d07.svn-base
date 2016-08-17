@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:flow="http://www.springframework.org/schema/webflow-config"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:util="http://www.springframework.org/schema/util"
+ 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+          http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.0.xsd
+          http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+          http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.2.xsd
+          http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.2.xsd
+          http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi-1.2.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+          http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+          
+    <bean lazy-init="true" id="longType" class="org.apache.lucene.document.FieldType$NumericType" factory-method="valueOf" scope="prototype">
+		<constructor-arg value="LONG"/>
+	</bean>      
+
+    <bean lazy-init="true" id="doubleType" class="org.apache.lucene.document.FieldType$NumericType" factory-method="valueOf" scope="prototype">
+		<constructor-arg value="DOUBLE"/>
+	</bean>      
+
+    <bean lazy-init="true" id="intType" class="org.apache.lucene.document.FieldType$NumericType" factory-method="valueOf" scope="prototype">
+		<constructor-arg value="INT"/>
+	</bean>  
+	
+	<bean lazy-init="true" id="floatType" class="org.apache.lucene.document.FieldType$NumericType" factory-method="valueOf" scope="prototype">
+		<constructor-arg value="FLOAT"/>
+	</bean>
+		
+	<bean id="intNotStored"
+        class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+  			<property name="staticField" value="org.apache.lucene.document.IntField.TYPE_NOT_STORED"/>
+	</bean>
+	
+	<bean id="intStored"
+        class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+  			<property name="staticField" value="org.apache.lucene.document.IntField.TYPE_STORED"/>
+	</bean>
+	
+	<!-- <bean lazy-init="true" id="intNotStored" class="org.apache.lucene.document.FieldType">
+		<constructor-arg type="org.apache.lucene.document.FieldType"  value="org.apache.lucene.document.IntField.TYPE_NOT_STORED"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="intStored" class="org.apache.lucene.document.FieldType">
+		<constructor-arg  type="org.apache.lucene.document.FieldType" value="org.apache.lucene.document.IntField.TYPE_STORED"></constructor-arg>
+	</bean> -->
+	
+	<bean id="longNotStored"
+        class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+  			<property name="staticField" value="org.apache.lucene.document.LongField.TYPE_NOT_STORED"/>
+	</bean>
+	
+	<bean id="longStored"
+        class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+  			<property name="staticField" value="org.apache.lucene.document.LongField.TYPE_STORED"/>
+	</bean>
+	
+	
+	<!--<bean lazy-init="true" id="longNotStored" class="org.apache.lucene.document.FieldType">
+		<constructor-arg type="org.apache.lucene.document.FieldType" value="org.apache.lucene.document.LongField.TYPE_NOT_STORED"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="longStored" class="org.apache.lucene.document.FieldType">
+		<constructor-arg  type="org.apache.lucene.document.FieldType" value="org.apache.lucene.document.LongField.TYPE_STORED"></constructor-arg>
+	</bean>-->
+	
+	
+	<bean id="doubleNotStored"
+        class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+  			<property name="staticField" value="org.apache.lucene.document.DoubleField.TYPE_NOT_STORED"/>
+	</bean>
+	
+	<bean id="doubleStored"
+        class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+  			<property name="staticField" value="org.apache.lucene.document.DoubleField.TYPE_STORED"/>
+	</bean>
+
+	<!-- <bean lazy-init="true" id="doubleNotStored" class="org.apache.lucene.document.FieldType">
+		<constructor-arg type="org.apache.lucene.document.FieldType"  value="org.apache.lucene.document.DoubleField.TYPE_NOT_STORED"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="doubleStored" class="org.apache.lucene.document.FieldType">
+		<constructor-arg  type="org.apache.lucene.document.FieldType" value="org.apache.lucene.document.DoubleField.TYPE_STORED"></constructor-arg>
+	</bean> -->
+
+</beans>	 

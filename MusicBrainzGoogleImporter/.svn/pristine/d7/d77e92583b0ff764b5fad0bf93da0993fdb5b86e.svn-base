@@ -1,0 +1,15 @@
+package org.nanotek.base;
+
+import java.rmi.server.UID;
+
+import org.nanotek.Base;
+
+public interface GUIBase extends Base<UID> {
+
+	@Override
+	public UID getId();
+	
+	@Override
+	public void setId(UID id);
+	
+}

@@ -1,0 +1,40 @@
+package org.nanotek.base.music.record;
+
+import java.util.Set;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class MusicalRecord implements Base<Long>{
+
+	private Long id; 
+	private Set<Base<?>> musicalRecordsAttributes;  
+	
+	public MusicalRecord() 
+	{}
+	
+	public MusicalRecord(Set<Base<?>> musicalRecordsAttributes) {
+		super();
+		this.musicalRecordsAttributes = musicalRecordsAttributes;
+	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Set<Base<?>> getMusicalRecordsAttributes() {
+		return musicalRecordsAttributes;
+	}
+
+
+	public void setMusicalRecordsAttributes(Set<Base<?>> musicalRecordsAttributes) {
+		this.musicalRecordsAttributes = musicalRecordsAttributes;
+	}
+
+}

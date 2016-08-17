@@ -1,0 +1,41 @@
+package org.nanotek.mq.converters;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+import org.nanotek.Kong;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.support.converter.MessageConversionException;
+import org.springframework.amqp.support.converter.MessageConverter;
+
+@SuppressWarnings("serial")
+public abstract class BaseConverter<$K extends Serializable> implements MessageConverter , ConverterBase<Kong<$K>,$K>{
+
+	protected String id;
+
+	@Override
+	public void setId(Kong<$K> id) {
+	}
+
+	@Override
+	public Kong<$K> getId() {
+		return null;
+	}
+
+	@Override
+	public Base<$K> convert(Kong<$K> convertee) {
+		return null;
+	}
+
+	@Override
+	public Object fromMessage(Message arg0) throws MessageConversionException {
+		return null;
+	}
+
+	@Override
+	public Message toMessage(Object arg0, MessageProperties arg1)
+			throws MessageConversionException {
+		return null;
+	}
+}

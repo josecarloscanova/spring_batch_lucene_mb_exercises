@@ -1,0 +1,71 @@
+package org.nanotek.task.callable;
+
+import org.apache.log4j.Logger;
+import org.nanotek.BaseTask;
+import org.nanotek.task.ConcreteTaskBase;
+
+public class CallableTaskDispatcherBase <V extends ConcreteTaskBase<?>> extends CallableTaskDispatcher<V> 
+{
+
+	private static final Logger log = Logger.getLogger(CallableTaskDispatcherBase.class);
+
+	protected V task; 
+
+	public CallableTaskDispatcherBase() {
+	}
+
+	public static void main(String [] args)
+	{ 
+		CallableTaskDispatcherBase<ConcreteTaskBase<Long>> base = new CallableTaskDispatcherBase<ConcreteTaskBase<Long>>();
+		try {
+			ConcreteTaskBase<Long> task =  new ATask();
+			base.setTask(task);
+			BaseTask<?> task1 = base.call();
+			log.debug(task1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	@Override
+	public void dispatch(V data) {
+		try {
+			log.debug("Dispatching");
+			data.call();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void setTask(V task) {
+		this.task = task;
+	}
+
+	@Override
+	public V getTask() {
+		return task;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public BaseTask<?> call() throws Exception {
+		this.dispatch(task);
+		return task;
+	}
+
+}
+
+
+class ATask extends ConcreteTaskBase<Long>
+{ 
+	private static final Logger ataskLogger = Logger.getLogger(ATask.class);
+	@Override
+	public ConcreteTaskBase<Long> call() throws Exception {
+		ataskLogger.debug("Now I am the atask");
+		return this;
+	}
+
+}
+

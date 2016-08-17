@@ -1,0 +1,22 @@
+package org.nanotek.spring.batch;
+
+import java.util.List;
+import java.util.Queue;
+
+import org.apache.log4j.Logger;
+import org.nanotek.spring.batch.TypeWriter;
+
+public class QueueTypeWriter<T extends Queue<?>> extends TypeWriter<T> {
+
+	private Logger log = Logger.getLogger(QueueTypeWriter.class);
+	public QueueTypeWriter() {
+	}
+
+	@Override
+	public void write(List<? extends T> items) throws Exception {
+		assert(items.size()==1);
+		Queue<?> processedQueue  = items.get(0);
+		log.debug("Here you have a list of " + processedQueue.size());
+		log.debug(processedQueue.size());
+	}
+}

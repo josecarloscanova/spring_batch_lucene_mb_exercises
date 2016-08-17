@@ -1,0 +1,25 @@
+package org.nanotek.task.callable;
+
+import java.util.concurrent.Callable;
+
+import org.nanotek.Task;
+
+/**
+ * 
+ * @author josecanova
+ *
+ * @param <T> The task to be executed, it is not a delegate "method" because 
+ * it is not defined a "specific signature method" to be executed by the task 
+ * but define that the Object it is a task that executed certain "Task Object" 
+ * inside a Known Contract Callable Interface. 
+ * 
+ * @param <V> The value of the 
+ */
+
+public interface CallableTask<T,V> extends Task<T,V>, Callable<T> {
+
+	public V getTask();
+	@Override
+	public T call() throws Exception;
+	
+}

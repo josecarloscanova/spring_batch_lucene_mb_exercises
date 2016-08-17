@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<import resource="classpath:properties_config.xml" /> 
+    
+	<bean lazy-init="true" id="standardAnalyser" class="org.apache.lucene.analysis.standard.StandardAnalyzer">
+		<constructor-arg type="org.apache.lucene.util.Version" ref="defaultVersion"/>
+	</bean>
+	
+    <bean lazy-init="true" id="defaultVersion" class="org.apache.lucene.util.Version" factory-method="valueOf">
+		<constructor-arg value="LUCENE_35"/>
+	</bean>
+	
+	<bean lazy-init="true" id="indexFilePath" class="java.io.File">
+		<constructor-arg value="${lucene.index.base}${lucene.index.recording}"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="indexFsDirectory" class="org.apache.lucene.store.SimpleFSDirectory">
+		<constructor-arg ref="indexFilePath"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="indexWriterConfig" class="org.apache.lucene.index.IndexWriterConfig">
+		<constructor-arg ref="defaultVersion"></constructor-arg>
+		<constructor-arg ref="standardAnalyser"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="indexWriter" class="org.apache.lucene.index.IndexWriter"> 
+		<constructor-arg ref="indexFsDirectory"></constructor-arg>
+		<constructor-arg ref="indexWriterConfig"></constructor-arg>
+	</bean>	
+	
+</beans>

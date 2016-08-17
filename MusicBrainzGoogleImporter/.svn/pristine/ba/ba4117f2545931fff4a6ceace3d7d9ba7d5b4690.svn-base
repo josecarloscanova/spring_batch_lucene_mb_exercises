@@ -1,0 +1,42 @@
+package tests.xtream;
+
+import org.nanotek.lucene.index.Index;
+import org.nanotek.xstream.XStreamBaseSerializer;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class XStreamBaseSerializerTest {
+
+	private static ClassPathXmlApplicationContext ctx;
+
+	public XStreamBaseSerializerTest() {
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		ctx = new ClassPathXmlApplicationContext(new String[] {"xstream-config-xml/base-xstream-config.xml"});
+		XStreamBaseSerializer jsonStreamSerializer = ((XStreamBaseSerializer)ctx.getBean("jsonStreamSerializer",new Object[]{Index.class}));
+		XStreamBaseSerializer domStreamSerializer = ((XStreamBaseSerializer)ctx.getBean("domStreamSerializer",new Object[]{Index.class}));
+		XStreamBaseSerializer staxStreamSerializer = ((XStreamBaseSerializer)ctx.getBean("staxStreamSerializer",new Object[]{Index.class}));
+		Index index = new Index();
+//		index.setId(500L);
+//		index.setAnalyzerType(AnalyzerType.CJK);
+//		index.setIndexType(IndexType.NMAPDIRECTORY);
+//		Link location = new Link ()
+//		location.setHref("http://this is a simple location");
+//		location.setHreflang("en_US");
+//		location.setTitle("Location Title");
+//		index.setLocation(location);
+		jsonStreamSerializer.toXML(index, System.err);
+		domStreamSerializer.toXML(index, System.err);
+		staxStreamSerializer.toXML(index , System.out);
+		String indexStr = jsonStreamSerializer.toXML(index);
+//		String indexStr = "{\"Index\":{\"id\":500,\"indexAlias\":\"My Index Alias\",\"indexType\":\"NMAPDIRECTORY\",\"analyzerType\":\"CJK\"}}";
+		index = (Index) jsonStreamSerializer.fromXML(indexStr);
+		System.out.println("\n" + index.getId() + "\n" );
+//		System.out.println(index.getLocation().getHref());
+//		ctx.close();
+	}
+
+}

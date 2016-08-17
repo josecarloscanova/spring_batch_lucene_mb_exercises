@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
+
+    <!-- Online Store -->
+    <persistence-unit name="MusicBrainzImport">
+        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+        <class>org.nanotek.StringBase</class>
+        <class>org.nanotek.base.Name</class>
+        <class>org.nanotek.base.BirthDateBase</class>
+        <class>org.nanotek.base.AbstractBase</class>
+        <class>org.nanotek.base.LongBase</class>
+        <class>org.nanotek.base.music.Record</class>
+        <class>org.nanotek.base.artist.Artist</class>
+        <class>org.nanotek.base.music.gender.MusicalGender</class>
+        <exclude-unlisted-classes/>
+
+        <properties>
+        
+            <property name="datanucleus.autoCreateSchema" value="true"/>
+            <property name="datanucleus.autoCreateTables" value="true"/>
+            <property name="datanucleus.autoCreateColumns" value="true"/>
+			<property name="datanucleus.autoCreateConstraints" value="true"/>
+			
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/musicbrainz"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="postgres123"/>
+        
+        </properties>
+        
+    </persistence-unit>
+    
+    <persistence-unit name="CalendarEvents">
+        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+        <class>org.nanotek.base.date.CalendarBase</class>
+        <class>org.nanotek.base.date.Datable</class>
+        <class>org.nanotek.base.date.DateBase</class>
+        <class>org.nanotek.base.date.DayBase</class>
+        <class>org.nanotek.base.date.MinuteBase</class>
+        <exclude-unlisted-classes/>
+        <properties>
+            <property name="datanucleus.autoCreateSchema" value="true"/>
+            <property name="datanucleus.autoCreateTables" value="true"/>
+            <property name="datanucleus.autoCreateColumns" value="true"/>
+			<property name="datanucleus.autoCreateConstraints" value="true"/>
+			
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/calendar"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="postgres123"/>
+        </properties>
+        
+    </persistence-unit>
+    
+</persistence>

@@ -1,0 +1,17 @@
+package org.nanotek.dao;
+
+import java.io.Serializable;
+import java.util.List;
+
+public interface DAO <T>{
+	
+	public void persist(T object);
+	public void update (T object); 
+	public void delete (T object);
+
+	public Long countRecords();
+	public List<T> loadAll(); 
+	public List<T> listRecords(Integer firstResult , Integer maxResults);
+	public T findById (Serializable id);
+	
+}

@@ -1,0 +1,48 @@
+package org.nanotek.lucene.index;
+
+import org.nanotek.Base;
+
+/**
+ * An Edge which represents a relation between 2 entities that defines 
+ * an Index Description. 
+ * @see {org.nanotek.config.Index.java}
+ * @author java-eclipse
+ *
+ */
+@SuppressWarnings("serial")
+public class IndexRelation implements Base<String> {
+
+	private String id; 
+	private String relationName; 
+	private String relationType;
+	
+	public IndexRelation() {
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
+	public String getRelationName() {
+		return relationName;
+	}
+
+	public void setRelationName(String relationName) {
+		this.relationName = relationName;
+	}
+
+	public String getRelationType() {
+		return relationType;
+	}
+
+	public void setRelationType(String relationType) {
+		this.relationType = relationType;
+	}
+
+}

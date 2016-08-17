@@ -1,0 +1,62 @@
+package org.nanotek.musicbrainz.beans;
+
+import javax.validation.constraints.NotNull;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class ArtistCredit implements Base<Long> {
+
+	@NotNull
+	private Long id;
+	@NotNull
+	private String name; 
+	@NotNull
+	private Long artistCount; 
+	@NotNull
+	private Long refCount;
+	
+	private String created; 
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getArtistCount() {
+		return artistCount;
+	}
+
+	public void setArtistCount(Long artistCount) {
+		this.artistCount = artistCount;
+	}
+
+	public Long getRefCount() {
+		return refCount;
+	}
+
+	public void setRefCount(Long refCount) {
+		this.refCount = refCount;
+	}
+
+	public String getCreated() {
+		return created;
+	}
+
+	public void setCreated(String created) {
+		this.created = created;
+	}
+	
+}

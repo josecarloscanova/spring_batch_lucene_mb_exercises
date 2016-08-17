@@ -1,0 +1,83 @@
+package org.nanotek.hibernate.dao;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.nanotek.Base;
+import org.nanotek.base.PageItemBase;
+import org.nanotek.dao.DAOException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+
+public abstract class BaseDAO<T extends Base<?>> {
+
+	private static final Logger log = Logger.getLogger(BaseDAO.class);
+	protected Class<T> clazz;  
+	@Autowired
+	protected  HibernateTemplate hibernateTemplate;
+
+	public BaseDAO() {
+	}
+
+	public BaseDAO(Class<T> clazz) {
+		this.clazz = clazz;
+	}
+
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
+		log.debug("Setting Hibernate Template on DAO  " + ((clazz !=null) ? clazz.getName():""));
+	}
+
+	@Transactional (readOnly = true, propagation = Propagation.SUPPORTS)
+	public List<T> loadAll() {
+		return hibernateTemplate.loadAll(clazz);
+	}
+
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
+	public void persist(final T object) {
+		hibernateTemplate.persist(object);
+	}
+
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
+	public void update(final T object) {
+//		hibernateTemplate.update(object);
+		log.debug("Update Object " + object);
+		hibernateTemplate.saveOrUpdate(object);
+	}
+
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
+	public void delete(final T object) {
+		hibernateTemplate.delete(object);
+	}
+
+	public Class<T> getClazz() {
+		if (clazz == null) throw new DAOException ("DAO not properly configured clazz not found");
+		return clazz;
+	}
+
+	public void setClazz(Class<T> clazz) {
+		this.clazz = clazz;
+	}
+
+	public abstract List<T> listRecords(PageItemBase<?> pageItemBase);
+	
+	public abstract List<T> listRecords(Integer firstResult, Integer maxResults);
+
+	public abstract List<T> listRecords(Integer firstResult, Integer maxResults,Order order);
+	
+	public abstract List<T> listRecords(Integer firstResult, Integer maxResults, DetachedCriteria criteria);
+
+	public abstract Long countRecords();
+	
+}

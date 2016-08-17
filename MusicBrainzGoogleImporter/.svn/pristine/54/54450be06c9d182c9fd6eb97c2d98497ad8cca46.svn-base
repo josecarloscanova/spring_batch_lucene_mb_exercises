@@ -1,0 +1,99 @@
+package tests.org.nanotek.musicbrainz.data.load.csv.spring.musicbrainz;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import org.nanotek.batch.BlockExecutor;
+import org.nanotek.beans.ReleaseGroup;
+import org.nanotek.dao.DAO;
+import org.nanotek.opencsv.BaseCsvMapper;
+import org.nanotek.opencsv.CsvBaseMapper;
+import org.nanotek.opencsv.CsvTabReader;
+import org.nanotek.opencsv.MapColumnStrategy;
+import org.springframework.context.ApplicationContext;
+
+public class CsvLoaderReleaseGroup extends CsvContextLoader{
+
+	private static final Logger log = Logger.getLogger(CsvLoaderReleaseGroup.class);
+
+	public CsvLoaderReleaseGroup() {
+	}
+	
+	public static void main(String args[]) {
+		new CsvLoaderReleaseGroup().initialize().run();
+	}
+
+	@Test
+	@SuppressWarnings("resource")
+	public void run()
+	{ 
+		try {
+			
+			CsvBaseMapper  csvMap = new CsvBaseMapper("Release" , buildHashMap());
+			File MediumFileBean = (File)csvContext.getBean("releaseGroupFile");
+			FileReader csvFileReader = new FileReader (MediumFileBean);
+			CsvTabReader csvTabReader = new CsvTabReader(csvFileReader);
+
+			MapColumnStrategy <CsvBaseMapper, ReleaseGroup> mapStrategy = new MapColumnStrategy<CsvBaseMapper, ReleaseGroup> (csvMap);
+			mapStrategy.setType(ReleaseGroup.class);
+			BaseCsvMapper<ReleaseGroup> mapCsvMapper = new BaseCsvMapper<ReleaseGroup>();
+			String [] nextLine; 
+			int lineCount = 0;
+			final List<ReleaseGroup> mediumList =  new ArrayList<ReleaseGroup>();
+			while ((nextLine = csvTabReader.readNext()) != null) {		
+				final ReleaseGroup base = mapCsvMapper.processLine(mapStrategy, nextLine);
+				lineCount++;
+				mediumList.add(base);
+			}
+			executeDataInsert(mediumList, dataBaseContext);
+			log.info("Line Count " + lineCount );
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.debug(e);
+		}
+	}
+
+	@SuppressWarnings({"rawtypes" , "unchecked"})
+	public void executeDataInsert(final List<?> mediumList , ApplicationContext dataBaseContext)
+	{ 
+		final DAO<ReleaseGroup> dao = (DAO<ReleaseGroup>) dataBaseContext.getBean("releaseGroupDAO");
+		final BlockExecutor runnerExecutor = (BlockExecutor) dataBaseContext.getBean("blockExecutor");
+		new Thread (
+					new Runnable (){
+						public void run(){
+							runnerExecutor.execute(mediumList, dao);
+						}
+					}
+				).run();
+	}
+
+
+	public static Map<String,Integer> buildHashMap()
+	{ 
+		
+		
+//		columns[0] = "id";
+//		columns[1] = "gid";
+//		columns[2] = "name";
+//		columns[3] = "artistCredit";
+//		columns[4] = "type";
+//		
+		Map<String,Integer> csvMap = new HashMap<String,Integer>();
+
+		csvMap.put("releaseGroupId",0);
+		csvMap.put("gid", 1);
+		csvMap.put("name", 2);
+		csvMap.put("artistCredit", 3);
+		csvMap.put("type", 4);
+		
+		return csvMap;
+	}
+
+}

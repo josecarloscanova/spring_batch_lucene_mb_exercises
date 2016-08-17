@@ -1,0 +1,67 @@
+package org.nanotek.musicbrainz.job.writers.lucene;
+
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.document.Document;
+//import org.apache.lucene.document.NumericField;
+import org.apache.lucene.index.IndexWriter;
+import org.nanotek.lucene.template.base.BaseTemplate;
+import org.nanotek.musicbrainz.beans.ArtistAlias;
+import org.springframework.batch.item.ItemWriter;
+
+/**
+ * A Writer Class which performs that construction of the Document which will be added on a Lucene Instance, 
+ * it will delegate on future to a template builder based on LuceneTemplateBuilder interface. 
+ * 
+ * @author josecanovamauger
+ *
+ */
+public class ArtistAliasIndexWriter implements ItemWriter<ArtistAlias>{
+
+	private IndexWriter indexWriter;
+	private Log log = LogFactory.getLog(ArtistAliasIndexWriter.class);
+	private BaseTemplate<ArtistAlias> baseTemplate = null;
+//	private ArtistDAO<Artist> ArtistDAO; 
+//	private ArtistCreditDAO<ArtistCredit> artistCreditDAO; 
+//	private ArtistCreditNameDAO<ArtistCreditName> artistCreditNameDAO; 
+
+
+	@Override
+	public void write(List<? extends ArtistAlias> items) throws Exception {
+		for (ArtistAlias artist:items){ 
+			try { 
+				assert (artist !=null);
+				Document artistDocument = baseTemplate.createTemplate(artist);
+				if (artistDocument.getFields().size() > 0)
+					indexWriter.addDocument(artistDocument); 
+				else 
+					log.debug("Artist was not indexed " + artist.toString());
+			}catch (Exception ex) 
+			{ 
+				ex.printStackTrace(System.out);
+				throw ex;
+			}
+
+		}
+	}
+
+
+	public IndexWriter getIndexWriter() {
+		return indexWriter;
+	}
+
+	public void setIndexWriter(IndexWriter indexWriter) {
+		this.indexWriter = indexWriter;
+	}
+
+	public BaseTemplate<ArtistAlias> getBaseTemplate() {
+		return baseTemplate;
+	}
+
+	public void setBaseTemplate(BaseTemplate<ArtistAlias> baseTemplate) {
+		this.baseTemplate = baseTemplate;
+	}
+
+}

@@ -1,0 +1,101 @@
+package org.nanotek.tika.job.writer;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Queue;
+
+import org.apache.log4j.Logger;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexWriter;
+import org.nanotek.Base;
+import org.nanotek.tika.MediaDetail;
+import org.nanotek.tika.io.TikaMediaDetailDetector;
+import org.springframework.batch.item.ItemWriter;
+
+@Deprecated
+public class QueueBaseWriter implements ItemWriter<Queue<Base<?>>> {
+
+	private static final Logger log = Logger.getLogger(QueueBaseWriter.class);
+
+	private TikaMediaDetailDetector tikaMediaDetector; 
+	private MediaDetailBaseTemplate mediaDetailBaseTemplate;
+	private IndexWriter indexWriter; 
+	private ThreadGroup tikaThreadGroup; 
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void write(List<? extends Queue<Base<?>>> items) throws Exception {
+		Queue<Base<?>> queueBase = items.get(0);
+		Base<String> element;
+		if (queueBase !=null)
+		{ 
+			while ((element = (Base<String>) queueBase.poll())!= null)
+			{ 
+				new DetectorRunnable(element).run();
+			}
+		}
+	}
+
+	public TikaMediaDetailDetector   getTikaMediaDetector() {
+		return tikaMediaDetector;
+	}
+
+	public void setTikaMediaDetector(TikaMediaDetailDetector  tikaMediaDetector) {
+		this.tikaMediaDetector = tikaMediaDetector;
+	}
+
+	public MediaDetailBaseTemplate getMediaDetailBaseTemplate() {
+		return mediaDetailBaseTemplate;
+	}
+
+	public void setMediaDetailBaseTemplate(
+			MediaDetailBaseTemplate mediaDetailBaseTemplate) {
+		this.mediaDetailBaseTemplate = mediaDetailBaseTemplate;
+	}
+
+	public IndexWriter getIndexWriter() {
+		return indexWriter;
+	}
+
+	public void setIndexWriter(IndexWriter indexWriter) {
+		this.indexWriter = indexWriter;
+	}
+
+	class DetectorRunnable implements Runnable  
+	{ 
+
+		private Base<String> element;
+
+		public DetectorRunnable(Base<String> element) 
+		{ 
+			this.element = element; 
+		}
+
+		@Override
+		public void run() {
+			log.debug("Base Element to Index " + element.getId());
+			MediaDetail detail = tikaMediaDetector.detect(element);
+			if (detail == null)
+				log.debug("NO MEDIA DETAIL FOUND ON FILE ++++++" + element.getId() + " ++++++ ");
+			else 
+				log.debug(detail.toString());
+			Document document = mediaDetailBaseTemplate.createTemplate(detail);
+			if (document !=null && document.getFields().size() > 0)
+				try {
+					indexWriter.addDocument(document);
+					
+				} catch (IOException e) {
+					log.debug(e);
+					e.printStackTrace();
+				}	
+		}
+	}
+
+	public ThreadGroup getTikaThreadGroup() {
+		return tikaThreadGroup;
+	}
+
+	public void setTikaThreadGroup(ThreadGroup tikaThreadGroup) {
+		this.tikaThreadGroup = tikaThreadGroup;
+	} 
+}

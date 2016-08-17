@@ -1,0 +1,6 @@
+package org.nanotek.base.music;
+
+@SuppressWarnings("serial")
+public class CopyRightRecord extends Record {
+
+}

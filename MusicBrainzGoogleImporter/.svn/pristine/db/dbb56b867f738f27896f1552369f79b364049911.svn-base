@@ -1,0 +1,192 @@
+package org.nanotek.tika.io;
+
+import static java.nio.file.FileVisitResult.CONTINUE;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.attribute.BasicFileAttributes;
+
+import org.apache.tika.io.TemporaryResources;
+import org.apache.tika.io.TikaInputStream;
+import org.nanotek.Base;
+import org.nanotek.dao.DAO;
+import org.nanotek.mq.send.BaseSender;
+import org.nanotek.tika.MediaDetail;
+
+public class TikaPersistentFileVisitor implements FileVisitor<Path> {
+
+	private PathMatcher matcher;
+	private int numMatches = 0;
+	private DAO<Base<?>> dao;
+	private TikaMediaDetector  tikaMediaDetector;
+//	private LuceneDocumentBuilder<TikaInputStream> documentBuilder;
+//	private LuceneIndexWriteService<TikaInputStream> indexWriterService;
+
+	private BaseSender<? , ?> sender;
+
+	public TikaPersistentFileVisitor()
+	{
+
+	}
+//
+//	public TikaPersistentFileVisitor (final LuceneIndexWriteService<TikaInputStream> indexWriterService)
+//	{
+//		this.indexWriterService = indexWriterService;
+//	}
+
+	public TikaPersistentFileVisitor(String pattern) {
+		this();
+		matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+	}
+
+	// Compares the glob pattern against
+	// the file or directory name.
+	void visitFile(Path file) {
+		Path name = file.getFileName();
+		TikaInputStream input = null;
+		if (name != null && matcher.matches(name)) {
+			TemporaryResources tmp = null;
+			numMatches++;
+//			String type;
+			try {
+//				File targetFile = name.toFile();
+//				System.out.format("%s\t", file.toString());
+//				System.out.println();
+				tmp = new TemporaryResources();
+				input = TikaInputStream.get(new FileInputStream(file.toString()), tmp);
+				MediaDetail mediaDetails = tikaMediaDetector.detectMediaType(input);
+				mediaDetails.setLocation(file.toFile().getAbsolutePath());
+//				type = Files.probeContentType(file);
+				System.out.format("%s\t", mediaDetails.toString());
+				System.out.println();
+//				if (indexWriterService !=null)
+//				{
+					input = TikaInputStream.get(new FileInputStream(file.toString()), tmp);
+//					TextDocumentBuilder docBuilder = new TextDocumentBuilder();
+//					Document document = docBuilder.buildDocument(file.toFile().getAbsolutePath());
+//					Document document = documentBuilder.buildDocument(input);
+//					Field fileLocationField = new TextField("file_location", file.toString() , Field.Store.YES); //$NON-NLS-1$ //$NON-NLS-2$
+//					document.add(fileLocationField);
+//					indexWriterService.indexDocument(input);
+//				}
+				if (dao !=null)
+					dao.update(mediaDetails);
+			} catch (Exception e) {
+				e.printStackTrace();
+//				throw new RuntimeException(e);
+			}finally {
+				if (input !=null) {
+					try {
+						input.close();
+						if (tmp !=null)
+							tmp.dispose();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+		}
+	}
+
+	// Prints the total number of
+	// matches to standard out.
+	public void done() {
+		System.out.println("Matched: " + numMatches);
+	}
+
+	// Invoke the pattern matching
+	// method on each file.
+	@Override
+	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+		visitFile(file);
+		return CONTINUE;
+	}
+
+	// Invoke the pattern matching
+	// method on each directory.
+	@Override
+	public FileVisitResult preVisitDirectory(Path dir,
+			BasicFileAttributes attrs) {
+		visitFile(dir);
+		return CONTINUE;
+	}
+
+	@Override
+	public FileVisitResult
+	visitFileFailed(Path file, IOException exc) {
+		System.err.println(exc);
+		return CONTINUE;
+	}
+
+	@Override
+	public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+			throws IOException {
+		return CONTINUE;
+	}
+
+	public DAO<Base<?>> getDao() {
+		return dao;
+	}
+
+	public void setDao(DAO<Base<?>> dao) {
+		this.dao = dao;
+	}
+
+	public TikaMediaDetector getTikaMediaDetector() {
+		return tikaMediaDetector;
+	}
+
+	public void setTikaMediaDetector(TikaMediaDetector tikaMediaDetector) {
+		this.tikaMediaDetector = tikaMediaDetector;
+	}
+
+	public PathMatcher getMatcher() {
+		return matcher;
+	}
+
+	public void setMatcher(PathMatcher matcher) {
+		this.matcher = matcher;
+	}
+
+//	public IndexWriter getIndexWriter() {
+//		return indexWriter;
+//	}
+//
+//	public void setIndexWriter(IndexWriter indexWriter) {
+//		this.indexWriter = indexWriter;
+//	}
+
+//	public LuceneDocumentBuilder<TikaInputStream> getDocumentBuilder() {
+//		return documentBuilder;
+//	}
+//
+//	public void setDocumentBuilder(LuceneDocumentBuilder<TikaInputStream> documentBuilder) {
+//		this.documentBuilder = documentBuilder;
+//	}
+//
+//	public LuceneIndexWriteService<TikaInputStream> getIndexWriterService() {
+//		return indexWriterService;
+//	}
+//
+//	public void setIndexWriterService(
+//			LuceneIndexWriteService<TikaInputStream> indexWriterService) {
+//		this.indexWriterService = indexWriterService;
+//	}
+
+//	private IndexWriter indexWriter;
+
+	public BaseSender<? , ? > getSender() {
+		return sender;
+	}
+
+	public void setSender(BaseSender<? , ? > sender) {
+		this.sender = sender;
+	}
+
+}

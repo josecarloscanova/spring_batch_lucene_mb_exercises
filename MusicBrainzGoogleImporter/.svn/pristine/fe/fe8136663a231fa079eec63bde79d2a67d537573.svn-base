@@ -1,0 +1,106 @@
+package org.nanotek.tika.job.reader;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Base;
+import org.nanotek.StringBase;
+import org.nanotek.jobs.GenericReader;
+import org.nanotek.spring.batch.step.StampFinderStep;
+import org.nanotek.tika.job.reader.fs.FileFinder;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemStream;
+import org.springframework.batch.item.ItemStreamException;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
+
+/**
+ * An ItemReader to scan a directory, and 
+ * store results on a database table for future processing. 
+ * 
+ * 
+ * @author josecanovamauger.
+ *
+ */
+
+public class ConfigurableContextItemReader extends GenericReader implements ItemStream{
+
+	private boolean done = false; 
+	private String startingDir;
+	private String globPattern = "**.java";
+	private String pattern;
+	private ExecutionContext executionContext;
+	private static final Logger log = Logger.getLogger(ConfigurableContextItemReader.class);
+	private FileFinder finder;
+
+	@Override
+	public Base<?> read() throws Exception, UnexpectedInputException,
+	ParseException, NonTransientResourceException {
+		StampFinderStep step = null; 
+		if (!done) { 
+				step =  StampFinderFactory.newStampFinder(); 
+				StringBase base = new StringBase(Long.toString(step.getId()));
+				step.setMessage(base);
+				setPattern(base.getId());
+				Files.walkFileTree(Paths.get(startingDir), finder);
+				finder.done();
+				done = true;
+				executionContext.put(Long.toString(step.getId()), finder.getPathMap());
+//				log.debug("number of Files Found on Pattern " + finder.getPathMap().size());
+		}
+		return step;
+	}
+
+	public String getStartingDir() {
+		return startingDir;
+	}
+
+	public void setStartingDir(String startingDir) {
+		this.startingDir = startingDir;
+	}
+
+	public String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+
+	@Override
+	public void open(ExecutionContext executionContext)
+			throws ItemStreamException {
+		log.debug("Execution Context CLAZZ " + executionContext.getClass().toString());
+		this.executionContext = executionContext;
+	}
+
+	@Override
+	public void update(ExecutionContext executionContext)
+			throws ItemStreamException {
+		log.debug("Execution Context CLAZZ ON UPDATE" + executionContext.getClass().toString());
+
+	}
+
+	@Override
+	public void close() throws ItemStreamException {
+		this.executionContext = null;
+	}
+
+	public String getGlobPattern() {
+		return globPattern;
+	}
+
+	public void setGlobPattern(String globPattern) {
+		this.globPattern = globPattern;
+	}
+
+	public FileFinder getFinder() {
+		return finder;
+	}
+
+	public void setFinder(FileFinder finder) {
+		this.finder = finder;
+	}
+}

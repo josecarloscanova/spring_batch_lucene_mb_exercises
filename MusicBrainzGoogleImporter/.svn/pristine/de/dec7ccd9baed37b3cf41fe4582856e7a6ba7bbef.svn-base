@@ -1,0 +1,60 @@
+package org.nanotek.musicbrainz.dao;
+
+import java.util.List;
+
+import org.nanotek.Base;
+import org.nanotek.dao.DAO;
+import org.nanotek.musicbrainz.beans.ArtistCreditName;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
+
+public class ArtistCreditNameDAOReader implements IArtistCreditNameDAOReader{
+
+	private Integer startRecord = 0; 
+	private Integer maxResults = 0; 
+	private DAO<Base<?>> artistCreditNameDAO; 
+	
+	@Override
+	public  List<Base<?>> read() throws Exception, UnexpectedInputException,
+			ParseException, NonTransientResourceException {
+		 List<Base<?>> artists = artistCreditNameDAO.listRecords(startRecord, maxResults);
+		return (artists.size()>0)?artists:null;
+	}
+
+	public Integer getStartRecord() {
+		return startRecord;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nanotek.lucene.job.readers.IArtistKeyReader#setStartIndex(java.lang.Integer)
+	 */
+	@Override
+	public void setStartRecord(Integer startIndex) {
+		this.startRecord = startIndex;
+	}
+
+	public Integer getMaxResults() {
+		return maxResults;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.nanotek.lucene.job.readers.IArtistKeyReader#setMaxResults(java.lang.Integer)
+	 */
+	@Override
+	public void setMaxResults(Integer maxResults) {
+		this.maxResults = maxResults;
+	}
+
+	public DAO<Base<?>> getArtistCreditNameDAO() {
+		return artistCreditNameDAO;
+	}
+
+	public void setArtistCreditNameDAO(
+			DAO<Base<?>> artistCreditNameDAO) {
+		this.artistCreditNameDAO = artistCreditNameDAO;
+	}
+
+
+
+}

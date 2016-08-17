@@ -1,0 +1,12 @@
+package tests.org.nanotek.kong;
+
+import org.nanotek.Instantiable;
+import org.nanotek.Kong;
+
+public interface TemporalImaginary<$I, T extends Kong<?>> extends Instantiable<$I> , Kong<Kong<?>> {
+
+        public Class<$I> getClazz();
+
+        @Override
+        public $I getInstance();
+}

@@ -1,0 +1,51 @@
+package org.nanotek.lucene.manage;
+
+import java.util.List;
+
+import org.apache.lucene.index.IndexWriter;
+import org.nanotek.lucene.index.Index;
+import org.nanotek.lucene.index.config.IndexConfiguration;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class LuceneIndexManagerService implements  IndexManager<IndexWriter,IndexConfiguration>,ApplicationContextAware {
+
+	private ApplicationContext context;
+
+	@Override
+	public void setApplicationContext(ApplicationContext arg0)
+			throws BeansException {
+			this.context = arg0;
+	}
+
+	@Override
+	public IndexWriter createIndex(IndexConfiguration parameters) {
+		Index index = parameters.get();
+//		Analyzer analyzer = index.getAnalyzer();
+//		String pathStr = index.getPath();
+//		Path indexPath = Paths.get(pathStr).normalize();
+//		checkPathValid(indexPath);
+////		IndexHolder<UUID> indexWriterConfig = new IndexWriterBuilder().setIndex(index).build();
+//		IndexWriter indexWriter = new IndexWriter(d,conf);
+		return null;
+	}
+
+	@Override
+	public List<IndexWriter> getIndexes(IndexConfiguration parameters) {
+		return null;
+	}
+
+	@Override
+	public IndexWriter mergeIndexes(List<IndexWriter> indexes) {
+		return null;
+	}
+
+	@Override
+	public void deleteIndex(IndexWriter index) {
+		throw new RuntimeException ("Not implemented");
+	}
+
+	
+	
+}

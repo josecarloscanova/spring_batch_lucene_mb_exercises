@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.tika.file">
+
+    <class name="FileIdentity" table="TIKA_FILE_IDENTITY">
+
+    	<id name="id" type="string"  column="ID">
+			 <generator class="assigned" />
+        </id>
+        
+		<property name="name" type="string" column="PARENT_LOCATION" />
+		<property name="sortName" type="string" column="FILE_NAME" />
+		<property name="cksum" type="string" column="CK_SUM"></property>
+		<property name="type" type="string"  column="TYPE"/>
+		<property name="pattern" type="string" column="PATTERN"/>
+ 		<property name="dateDetected" type="date" not-null="false" column="DATE_UPDATE"/>
+ 		
+    </class>
+    
+</hibernate-mapping>

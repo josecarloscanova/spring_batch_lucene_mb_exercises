@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:b="http://www.springframework.org/schema/batch" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:p="http://www.springframework.org/schema/p"  
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 		
+	<!-- <import resource="classpath:spring-dao-context.xml" /> -->
+	
+	<!--<import resource="classpath:spring-label-name-context.xml" />
+	<import resource="classpath:spring-batch-datasource.xml" />
+	<import resource="classpath:spring-job-repo.xml" />
+	<import resource="classpath:spring-key-service-factory.xml" />
+	<import resource="classpath:spring-release-name-context.xml" />
+	<import resource="classpath:spring-track-name-context.xml" />
+	<import resource="classpath:spring-work-name-context.xml" /> -->
+	
+	<import resource="classpath:spring-batch-jobs/artist/lucene/lucene_context_configuration.xml" />
+	
+	<bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:spring-batch-jobs/artist/configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+	<!-- FLAT FILE SECTION_BEGIN -->
+	<bean lazy-init="true" id="artistMapping" class="org.nanotek.musicbrainz.beans.mapping.ArtistMapping">
+		<property name="type" value="org.nanotek.musicbrainz.beans.Artist"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="artistToBean" class="org.nanotek.musicbrainz.beans.mapping.ArtistCsvToBean"></bean>
+	
+
+	<bean lazy-init="true" id="artistFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.artist.file}"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="artistCsvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="artistFileReader"></constructor-arg>
+	</bean>
+
+	<bean lazy-init="true" id="artistReader" class="org.nanotek.musicbrainz.job.readers.ArtistNameReader">
+		<property name="itemMapping" ref="artistMapping"></property>
+		<property name="fileStr" value="${music.brainz.artist.file}"></property>
+		<property name="csvMap" ref="artistToBean"></property>
+		<property name="reader" ref="artistCsvReader"></property>
+		<property name="keyServiceFactory" ref="keyServiceFactory"></property>
+	</bean>
+	
+	<bean id="artistTemplate" class="org.nanotek.musicbrainz.beans.template.ArtistTemplate">
+		<property name="clazz" value="org.nanotek.musicbrainz.beans.Artist"></property>
+		<property name="validator" ref="validator"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="artistWriter" class="org.nanotek.musicbrainz.job.writers.lucene.ArtistIndexWriter">
+		<property name="indexWriter" ref="indexWriter"></property>
+		<property name="artistTemplate" ref="artistTemplate"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="stepListener" class="org.nanotek.lucene.job.listeners.IndexWriterStepListener"> 
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean>
+	
+	 <bean lazy-init="true" id="artistChunkLister" class="org.nanotek.lucene.job.listeners.IndexWriterChunkListener">
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean>
+	
+	<!--<bean lazy-init="true" id="artistIndexProcessor" class="org.nanotek.musicbrainz.job.processor.ArtistNameIndexProcessor">
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean> -->
+	
+	<b:job id="artistIndexJob" job-repository="jobRepository" restartable="true">
+	    <b:step id="artistIndexLoad">
+	    	<b:tasklet>
+	    		<b:chunk reader="artistReader" commit-interval="10000" writer="artistWriter"></b:chunk>
+	    		<b:listeners>
+	    			<b:listener ref="artistChunkLister"/>
+	    		</b:listeners>
+	    	</b:tasklet>
+	    	<b:listeners>
+            		<b:listener ref="stepListener"/>
+       		</b:listeners>
+	    </b:step>
+	</b:job>
+
+</beans>

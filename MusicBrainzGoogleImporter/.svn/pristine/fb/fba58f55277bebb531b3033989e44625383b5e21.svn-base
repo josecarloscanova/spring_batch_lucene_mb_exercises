@@ -1,0 +1,95 @@
+package org.nanotek.musicbrainz.beans.template;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.document.Document;
+import org.nanotek.base.Configurable;
+import org.nanotek.base.Configurator;
+import org.nanotek.base.MappableReferenceBase;
+import org.nanotek.lucene.document.DocumentBuilder;
+import org.nanotek.lucene.document.configuration.DocumentConfiguration;
+import org.nanotek.lucene.template.base.BaseTemplate;
+import org.nanotek.musicbrainz.beans.Artist;
+import org.nanotek.musicbrainz.beans.mapping.ArtistMapping;
+
+@SuppressWarnings("serial")
+public class ArtistTemplate extends BaseTemplate<Artist> implements Configurator<DocumentConfiguration, Artist, Long>{
+
+	@Override
+	public void setId(Long id) {
+	}
+
+	@Override
+	public Long getId() {
+		return null;
+	}
+
+	private Log log = LogFactory.getLog(ArtistTemplate.class);
+
+	/**
+	 * REVIEW: Implement an Interceptor to throw an Exception in case of the 
+	 * nullity of the document. 
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Document createTemplate(Artist info) {
+
+		Set<ConstraintViolation<Artist>> constraintViolations = 
+				validator.validate(info);
+		Document document = null;
+		log.debug(" VALIDATOR TEST: ConstraintViolations " + constraintViolations.size());
+		if (constraintViolations.size() <= 0) { 
+			DocumentConfiguration	artistDocumentConfiguration = (DocumentConfiguration) applicationContext.getBean("artistDocumentConfiguration"); 
+			assert (artistDocumentConfiguration!=null);
+			ConfigurableReferenceBase<MappableReferenceBase<Artist,ArtistMapping>> configurable = new ConfigurableReferenceBase<MappableReferenceBase<Artist,ArtistMapping>>(info);
+			DocumentBuilder builder = new DocumentBuilder();
+			builder.setDataMap(configurable.getTarget().getMap(configurable.getOriginBase()));
+			document = builder.build(artistDocumentConfiguration);
+		}else { 
+			document = new Document();
+			checkError(constraintViolations);
+		}
+
+		return document;
+
+	}
+
+	@Override
+	public Configurable<Artist, Long> configure(Artist info) {
+		return new ConfigurableReferenceBase<MappableReferenceBase<Artist,ArtistMapping>>(info);
+	}
+
+	class ConfigurableReferenceBase<T extends MappableReferenceBase<Artist,ArtistMapping>> implements Configurable<Artist,Long>{
+
+		private Artist base; 
+
+		ConfigurableReferenceBase (Artist base){ 
+			this.base = base;
+		}
+
+		@Override
+		public void setId(Long id) {
+		}
+
+		@Override
+		public Long getId() {
+			return base.getId();
+		}
+
+		@Override
+		public Artist getOriginBase() {
+			return (Artist) base;
+		}
+
+		@Override
+		public T getTarget() {
+			return (T) new MappableReferenceBase<Artist,ArtistMapping>();
+		}
+	}
+
+
+}

@@ -1,0 +1,27 @@
+package org.nanotek.poi.generator;
+
+import org.nanotek.AbstractBase;
+import org.nanotek.Base;
+import org.nanotek.Generator;
+
+@SuppressWarnings("serial")
+public abstract class BaseGenerator<G> extends AbstractBase<String> implements Generator<G, Base<?>> {
+
+	private Base<?> referenceData; 
+	
+	public BaseGenerator() {
+	}
+
+	public Base<?> getReferenceData() {
+		return referenceData;
+	}
+
+
+	public void setReferenceData( Base<?> referenceData) {
+		this.referenceData = referenceData;
+	}
+
+	@Override
+	public abstract G generate(Base<?> info);
+
+}

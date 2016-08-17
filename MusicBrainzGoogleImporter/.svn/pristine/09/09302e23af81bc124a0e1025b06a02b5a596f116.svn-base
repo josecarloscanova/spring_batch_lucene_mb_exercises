@@ -1,0 +1,58 @@
+package org.nanotek.lucene.query.result.document;
+
+import org.nanotek.Base;
+import org.nanotek.PostConstructor;
+import org.nanotek.base.Configurable;
+import org.nanotek.lucene.document.configuration.DocumentConfiguration;
+import org.nanotek.lucene.query.result.ScoreDocument;
+
+@SuppressWarnings({"serial","unchecked"})
+public class ConfigurableDocumentBase<I extends Base<?>> extends DocumentBase implements Configurable<I,Long>,PostConstructor<I>{
+
+	private DocumentBase documentBase; 
+	private ScoreDocument scoreDocument; 
+	private DocumentConfiguration configuration; 
+	
+	public ConfigurableDocumentBase() {
+		super();
+	}
+
+	public ConfigurableDocumentBase(
+			DocumentBase documentBase,
+			ScoreDocument scoreDocument, 
+			DocumentConfiguration configuration) {
+		super();
+		this.documentBase = documentBase;
+		this.scoreDocument = scoreDocument;
+		this.configuration = configuration;
+		
+		postConstruct(); 
+		
+	}
+	
+	private void postConstruct() {
+		validateConfiguration();
+	}
+
+	private void validateConfiguration() {
+	}
+
+	@Override
+	public I getOriginBase() {
+		return (I) scoreDocument;
+	}
+
+	@Override
+	public <T> T getTarget() {
+		return (T) documentBase;
+	}
+
+	public DocumentConfiguration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(DocumentConfiguration configuration) {
+		this.configuration = configuration;
+	}
+
+}

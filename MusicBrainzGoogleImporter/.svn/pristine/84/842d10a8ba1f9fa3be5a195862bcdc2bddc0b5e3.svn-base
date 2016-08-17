@@ -1,0 +1,7 @@
+package org.nanotek;
+
+public interface Generator <G,I> {
+
+	public G generate(I info);
+	
+}

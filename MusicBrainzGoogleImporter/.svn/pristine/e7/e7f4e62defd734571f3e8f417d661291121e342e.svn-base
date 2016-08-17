@@ -1,0 +1,9 @@
+package org.nanotek.mq;
+
+public interface Receiver<T, K, P> {
+
+	public void processMessage(T messageType, K bodyMessage);
+
+	public void processMessage(T messageType, K bodyMessage,P parameters);
+	
+}

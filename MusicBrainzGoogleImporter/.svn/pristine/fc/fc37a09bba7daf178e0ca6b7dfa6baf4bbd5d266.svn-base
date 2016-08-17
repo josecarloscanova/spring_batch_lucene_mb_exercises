@@ -1,0 +1,67 @@
+package org.nanotek.musicbrainz.job.writers.lucene;
+
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.document.Document;
+//import org.apache.lucene.document.NumericField;
+import org.apache.lucene.index.IndexWriter;
+import org.nanotek.lucene.template.base.BaseTemplate;
+import org.nanotek.musicbrainz.beans.ArtistCreditName;
+import org.springframework.batch.item.ItemWriter;
+
+/**
+ * A Writer Class which performs that construction of the Document which will be added on a Lucene Instance, 
+ * it will delegate on future to a template builder based on LuceneTemplateBuilder interface. 
+ * 
+ * @author josecanovamauger
+ *
+ */
+public class ArtistCreditNameIndexWriter implements ItemWriter<ArtistCreditName>{
+
+	private IndexWriter indexWriter;
+	private Log log = LogFactory.getLog(ArtistCreditNameIndexWriter.class);
+	private BaseTemplate<ArtistCreditName> baseTemplate = null;
+//	private ArtistDAO<Artist> ArtistDAO; 
+//	private ArtistCreditDAO<ArtistCredit> artistCreditDAO; 
+//	private ArtistCreditNameDAO<ArtistCreditName> artistCreditNameDAO; 
+
+
+	@Override
+	public void write(List<? extends ArtistCreditName> items) throws Exception {
+		for (ArtistCreditName artistCreditName:items){ 
+			try { 
+				assert (artistCreditName !=null);
+				Document artistDocument = baseTemplate.createTemplate(artistCreditName);
+				if (artistDocument.getFields().size() > 0)
+					indexWriter.addDocument(artistDocument); 
+				else 
+					log.debug("Artist was not indexed " + artistCreditName.toString());
+			}catch (Exception ex) 
+			{ 
+				ex.printStackTrace(System.out);
+				throw ex;
+			}
+
+		}
+	}
+
+
+	public IndexWriter getIndexWriter() {
+		return indexWriter;
+	}
+
+	public void setIndexWriter(IndexWriter indexWriter) {
+		this.indexWriter = indexWriter;
+	}
+
+	public BaseTemplate<ArtistCreditName> getBaseTemplate() {
+		return baseTemplate;
+	}
+
+	public void setBaseTemplate(BaseTemplate<ArtistCreditName> baseTemplate) {
+		this.baseTemplate = baseTemplate;
+	}
+
+}

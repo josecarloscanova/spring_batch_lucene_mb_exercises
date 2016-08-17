@@ -1,0 +1,100 @@
+package org.nanotek.mq.indexer.service;
+
+import org.nanotek.Base;
+import org.nanotek.Kong;
+import org.nanotek.StringKong;
+import org.nanotek.lucene.manage.LuceneIndexWriterService;
+import org.nanotek.message.data.MessageType;
+import org.nanotek.mq.MessageException;
+import org.nanotek.mq.ReceiverService;
+//import org.springframework.jms.listener.DefaultMessageListenerContainer;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+//T extends MessageType
+
+public class MetaIndexerReceiverService implements ReceiverService  <Base<Kong<String>>,Message,MessageProperties>, ApplicationContextAware   {
+
+	private ApplicationContext context;
+	LuceneIndexWriterService<?,?> indexWriteService;
+
+	public MetaIndexerReceiverService() {
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext context)
+			throws BeansException {
+		this.context = context;
+	}
+
+	@Override
+	public void processMessage(Base<Kong<String>> messageType,
+			Message bodyMessage) {
+		MessageProperties parameters = (MessageProperties) context.getBean("defaultReceiverParameter");
+		throw new MessageException("Service NOT YET Implemented");
+	}
+
+
+	@Override
+	public void processMessage(Base<Kong<String>> messageType,
+			Message bodyMessage, MessageProperties parameters) {
+		throw new MessageException("Service NOT YET Implemented");
+	}
+
+
+	private Base<?> getBaseMessage(Base<?> message) {
+		System.err.println("MESSAGE ARRIVED NOW WHAT?");
+		return new StringKong(Long.toString(System.currentTimeMillis()));
+	}
+
+	public void processMessage(MessageType messageType,
+			Base<?> bodyMessage) throws MessageException {
+		try{
+			switch(messageType) {
+			case IndexCreate:
+				System.err.println("INDEX REQUEST CREATE INDEX");
+				createIndex(bodyMessage);
+				break;
+			case IndexDelete:
+				System.err.println("INDEX REQUEST DELETE NOT YET IMPLEMENTED");
+			case DocumentCreate:
+				System.err.println("INDEX REQUEST DOCUMENT CREATED");
+				addDocument(bodyMessage);
+				break;
+			case IndexClose:
+				System.err.println("INDEX REQUEST DOCUMENT CREATED");
+				closeIndex(bodyMessage);
+				break;
+			default:
+				break;
+			}
+		}catch(Exception ex){
+			throw new MessageException(ex);
+		}
+	}
+
+	private void closeIndex(Base<?> bodyMessage) {
+//		indexWriteService.shutDownService();
+		throw new MessageException("Service NOT YET STARTED");
+	}
+
+	private void addDocument(Base<?> bodyMessage) {
+			throw new MessageException("Service NOT YET Implemented");
+	}
+
+	private void createIndex(Base<?> bodyMessage) {
+		throw new MessageException("Service NOT YET Implemented");
+	}
+
+	public LuceneIndexWriterService<?,?> getIndexWriteService() {
+		return indexWriteService;
+	}
+
+	public void setIndexWriteService(LuceneIndexWriterService<?,?>indexWriteService) {
+		this.indexWriteService = indexWriteService;
+	}
+
+}

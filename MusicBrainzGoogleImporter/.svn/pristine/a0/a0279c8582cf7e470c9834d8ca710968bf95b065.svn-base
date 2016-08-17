@@ -1,0 +1,8 @@
+package org.nanotek.base.feed;
+
+public enum FeedGroupType {
+
+	RSS, 
+	ATOM
+	
+}

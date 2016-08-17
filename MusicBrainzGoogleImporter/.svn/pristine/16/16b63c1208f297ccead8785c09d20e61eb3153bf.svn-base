@@ -1,0 +1,7 @@
+package org.nanotek.base;
+
+public interface Groupable<G> {
+
+	public G getGroup();
+	
+}

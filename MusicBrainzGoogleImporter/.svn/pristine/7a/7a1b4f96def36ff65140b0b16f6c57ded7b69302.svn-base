@@ -1,0 +1,16 @@
+package org.nanotek.mq.send;
+
+/**
+ *  A sender interface is a "one way" communication channel.
+ *  one way by the mean constraint that the message sent is
+ *  not the same as the message received.
+ *  @author josecanovamauger
+ */
+
+import org.nanotek.Base;
+
+public interface Sender<S extends Base<?>> {
+
+	public void send( S message );
+
+}

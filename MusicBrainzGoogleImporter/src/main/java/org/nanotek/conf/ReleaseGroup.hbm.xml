@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="ReleaseGroup" table="RELEASE_GROUP">
+	
+    	<id name="id" type="long"  column="ID">
+			 <generator class="identity" />
+        </id>
+        
+        <property name="releaseGroupId" type="long" column="RELEASE_GROUP_ID" />
+    	<property name="gid" type="string" column="GID" />
+        <property name="name" type="string" column="NAME" length="2500"/>
+        <property name="artistCredit" type="long" column="ARTIST_CREDIT" />
+        <property name="type" type="integer" column="TYPE" />
+        
+    </class>
+    
+</hibernate-mapping>

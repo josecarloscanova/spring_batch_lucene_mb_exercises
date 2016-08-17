@@ -1,0 +1,152 @@
+package org.nanotek.poi;
+
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.net.URLDecoder;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.nanotek.Workable;
+import org.nanotek.base.School;
+import org.nanotek.hibernate.dao.DAO;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobExecutionNotRunningException;
+import org.springframework.batch.core.launch.NoSuchJobException;
+import org.springframework.batch.core.launch.NoSuchJobExecutionException;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+
+public class SchoolReportExcel implements Workable<String[]>{
+
+	Logger log = Logger.getLogger(SchoolReportExcel.class);
+	
+	private ClassPathXmlApplicationContext ctx;
+
+	/**
+	 * @param args 
+	 * @throws JobParametersInvalidException 
+	 * @throws JobInstanceAlreadyCompleteException 
+	 * @throws JobRestartException 
+	 * @throws JobExecutionAlreadyRunningException 
+	 * @throws NoSuchJobException 
+	 * @throws JobExecutionNotRunningException 
+	 * @throws NoSuchJobExecutionException 
+	 */
+	public static void main(String[] args)  {
+		SchoolReportExcel load = new SchoolReportExcel();
+		load.doWork(args);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void doWork(String[] args) {
+		try { 
+			SchoolReportExcel report = new SchoolReportExcel();
+			FileOutputStream out = new FileOutputStream("/tmp/school_workbook61aa.xls");
+			ctx = new ClassPathXmlApplicationContext(new String[] {
+			"database-loaders/spring-dao-context.xml"});
+			DAO<School> dao = (DAO<School>) ctx.getBean("schoolDAO");
+			List<School> schoolList = dao.loadAll();
+			Workbook workBook = report.prepareReport(); 
+			Sheet sheet = workBook.getSheet("school");
+			report.prepareSheet (sheet);
+			int lineNum = 1; 
+			for (School school : schoolList) 
+			{ 
+				log.debug(URLDecoder.decode(school.toString()));
+				report.createSchoolRecord (sheet , school , lineNum);
+				lineNum++;
+			}
+			workBook.write(out);
+			out.close();
+			
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private void createSchoolRecord(Sheet sheet, School school , Integer rowNum) {
+		Row row = sheet.createRow(rowNum);
+		createCell (row, adjustValue (school.getName()) , 0);
+		createCell(row,adjustValue (school.getAddress()),1);
+		createCell(row,adjustValue (school.getCity()),2);
+		createCell(row,adjustValue (school.getState()),3);
+		createCell(row,adjustValue (school.getZip()),4);
+		String specialTreatMent = school.getPhone(); 
+		specialTreatMent = adjustValue (specialTreatMent);
+		specialTreatMent = removeQuotes(specialTreatMent, 1);
+		createCell(row,specialTreatMent,5);
+		createCell(row , adjustValue (school.getMail()),6);
+	}
+
+	private String adjustValue(String name) {
+		if (name ==null) return "";
+		String oldValue = name;
+		oldValue = decode(oldValue);
+		oldValue = removeQuotes (oldValue);
+//		reaplaceChar (oldValue , "'"); 
+		return oldValue;
+	}
+
+	private String  removeQuotes(String oldValue) {
+		String val = oldValue.trim();
+		return val.substring(1, val.length()-1);
+	}
+
+	private String  removeQuotes(String oldValue , Integer decrement) {
+		String val = oldValue.trim();
+		return val.substring(0, val.length()-decrement);
+	}
+
+	@SuppressWarnings("deprecation")
+	private String decode(String oldValue) {
+		return URLDecoder.decode(oldValue);
+	}
+
+	private String replaceChar(String oldValue, String string) {
+		return oldValue.replaceFirst("'", string);
+		
+	}
+
+	private void createCell(Row row, String value, int i) {
+		row.createCell(i).setCellValue(value);
+	}
+
+	private void prepareSheet(Sheet sheet) {
+		Row row = sheet.createRow(0);
+		Cell cell = row.createCell(0);
+		cell.setCellValue("name".toUpperCase());
+		cell = row.createCell(1);
+		cell.setCellValue("address".toUpperCase());
+		cell = row.createCell(2);
+		cell.setCellValue("city".toUpperCase());
+		cell = row.createCell(3);
+		cell.setCellValue("state".toUpperCase());
+		cell = row.createCell(4);
+		cell.setCellValue("zip".toUpperCase());
+		cell = row.createCell(5);
+		cell.setCellValue("phone".toUpperCase());
+		cell = row.createCell(6);
+		cell.setCellValue("mail".toUpperCase());
+	}
+
+	private Workbook prepareReport() {
+
+		Workbook wb = new HSSFWorkbook();
+		// create a new sheet
+		Sheet s = wb.createSheet("school");
+
+		return wb;
+	}
+
+}

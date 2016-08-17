@@ -1,0 +1,162 @@
+package org.nanotek.tika;
+
+import java.util.Date;
+import java.util.Set;
+
+import org.nanotek.Base;
+import org.nanotek.StringKong;
+import org.nanotek.lucene.index.Index;
+import org.nanotek.tika.file.FileIdentity;
+
+import com.sun.syndication.feed.atom.Link;
+
+@SuppressWarnings("serial")
+public class MediaDetail extends StringKong implements Base<String>{
+
+	private String location;
+	private String contentType;
+	private Long size;
+	private Date dateUpdate;
+	private Character readable;
+	private Link referenceLink;
+	private Link originLink;
+	private Set<Index> indexes;
+	private String tikaStringContent;
+	private byte [] tikaSegmentConverted;
+	
+	private FileIdentity fileIdentity;
+	
+	public MediaDetail() {
+		super(Long.toString(System.currentTimeMillis()));
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+
+	public Date getDateUpdate() {
+		return dateUpdate;
+	}
+
+	public void setDateUpdate(Date dateUpdate) {
+		this.dateUpdate = dateUpdate;
+	}
+
+	public Character getReadable() {
+		return readable;
+	}
+
+	public void setReadable(Character readable) {
+		this.readable = readable;
+	}
+	
+	public Link getReferenceLink() {
+		return referenceLink;
+	}
+
+	public void setReferenceLink(Link referenceLink) {
+		this.referenceLink = referenceLink;
+	}
+
+	public Link getOriginLink() {
+		return originLink;
+	}
+
+	public void setOriginLink(Link originLink) {
+		this.originLink = originLink;
+	}
+
+	public Set<Index> getIndexes() {
+		return indexes;
+	}
+
+	public void setIndexes(Set<Index> indexes) {
+		this.indexes = indexes;
+	}
+	
+
+	public String getTikaStringContent() {
+		return tikaStringContent;
+	}
+
+	public void setTikaStringContent(String tikaStringContent) {
+		this.tikaStringContent = tikaStringContent;
+	}
+
+	public FileIdentity getFileIdentity() {
+		return fileIdentity;
+	}
+
+	public void setFileIdentity(FileIdentity fileIdentity) {
+		this.fileIdentity = fileIdentity;
+	}
+	
+	public byte[] getTikaSegmentConverted() {
+		return tikaSegmentConverted;
+	}
+
+	public void setTikaSegmentConverted(byte[] tikaSegmentConverted) {
+		this.tikaSegmentConverted = tikaSegmentConverted;
+	}
+	
+	@Override
+	public String toString() {
+		return "MediaDetails [location=" + location + ", contentType="
+				+ contentType + ", size=" + size + ", dateUpdate=" + dateUpdate
+				+ ", readable=" + readable + "]";
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((location == null) ? 0 : location.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		MediaDetail other = (MediaDetail) obj;
+		if (location == null) {
+			if (other.location != null) {
+				return false;
+			}
+		} else if (!location.equals(other.location)) {
+			return false;
+		}
+		return true;
+	}
+
+
+}

@@ -1,0 +1,12 @@
+package org.nanotek;
+
+/**
+ * Tag interface for Header related implementation classes. 
+ * 
+ * @author josecanova
+ *
+ * @param <T>
+ */
+public interface Header<T> {
+
+}

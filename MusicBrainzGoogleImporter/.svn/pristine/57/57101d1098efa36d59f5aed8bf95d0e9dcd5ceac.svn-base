@@ -1,0 +1,15 @@
+package org.nanotek.report;
+
+import org.nanotek.Base;
+import org.nanotek.Generator;
+
+
+public abstract class ReportGenerator<G extends Base<?> , I extends Base<?>> implements Generator<G, I> {
+
+	public ReportGenerator() {
+	}
+
+	@Override
+	public abstract G generate(I info);
+
+}

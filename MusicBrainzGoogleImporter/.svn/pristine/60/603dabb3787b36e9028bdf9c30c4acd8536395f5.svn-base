@@ -1,0 +1,10 @@
+package org.nanotek;
+
+import org.nanotek.base.person.Person;
+
+
+
+public interface PersonalContact <P extends Person>{
+
+	public P getPerson();
+}

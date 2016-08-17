@@ -1,0 +1,21 @@
+package tests.org.nanotek.poi;
+
+import org.nanotek.base.Contact;
+import org.nanotek.hibernate.dao.DAO;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class QueryTest {
+
+	public QueryTest() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public static void main(String[] args) {
+		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(new String[] {
+		"database-loaders/spring-dao-context.xml"});
+		DAO<Contact> dao = (DAO<Contact>) ctx.getBean("contactDAO");
+		System.out.println(dao.countRecords());
+
+	}
+
+}

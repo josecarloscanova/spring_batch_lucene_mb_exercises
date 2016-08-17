@@ -1,0 +1,51 @@
+package org.nanotek.dao.spring;
+
+import java.util.List;
+
+import org.nanotek.Base;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+public abstract class BaseDAO extends HibernateDaoSupport  {
+
+	protected Class<Base<?>> clazz;  
+	
+	public BaseDAO() {
+	}
+
+	public BaseDAO(Class<Base<?>> clazz) {
+		this.clazz = clazz;
+	}
+	
+	public List<Base<?>> loadAll() {
+		return getHibernateTemplate().loadAll(clazz);
+	}
+
+//	@Transactional (readOnly = false, propagation = Propagation.REQUIRES_NEW,isolation=Isolation.DEFAULT)
+	public void persist(Base<?> object) {
+		getHibernateTemplate().save(object);
+	}
+
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void update(Base<?> object) {
+		getHibernateTemplate().update(object);
+	}
+
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
+	public void delete(Base<?> object) {
+		getHibernateTemplate().delete(object);
+	}
+
+	public Class<Base<?>> getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Class<Base<?>> clazz) {
+		this.clazz = clazz;
+	}
+	
+	public abstract List<Base<?>> listRecords(Integer firstResult, Integer maxResults);
+
+}

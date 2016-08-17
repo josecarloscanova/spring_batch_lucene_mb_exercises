@@ -1,0 +1,11 @@
+package org.nanotek.http;
+/**
+ * 
+ * Dummy Class.
+ * 
+ * @author josecanova
+ *
+ */
+public class HttpRequest {
+
+}

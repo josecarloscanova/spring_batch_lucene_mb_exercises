@@ -1,0 +1,42 @@
+package org.nanotek.musicbrainz.beans.template;
+
+import static org.apache.lucene.document.LongField.TYPE_STORED;
+
+import java.util.Date;
+
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.LongField;
+//import org.apache.lucene.document.NumericField;
+import org.apache.lucene.document.StringField;
+import org.nanotek.lucene.LuceneTemplateBuilder;
+import org.nanotek.lucene.TemplateBuilderException;
+import org.nanotek.lucene.template.base.BaseTemplate;
+import org.nanotek.musicbrainz.beans.ReleaseName;
+
+public class ReleaseNameTemplate extends BaseTemplate<ReleaseName> implements LuceneTemplateBuilder<ReleaseName> {
+
+	@Override
+	public Document createTemplate(ReleaseName origin) throws TemplateBuilderException {
+		
+		Document doc = new Document();
+
+		LongField idField = new LongField("id", origin.getId() ,  TYPE_STORED ); 
+//		wordField.setLongValue(origin.getId()); 
+//		wordField.setOmitTermFreqAndPositions(true);
+//		wordField.setOmitNorms(true);
+		doc.add(idField);
+
+		StringField nameField = new StringField("name", origin.getName(), Store.YES); 
+//		wordField.setOmitTermFreqAndPositions(true);
+//		wordField.setOmitNorms(true);
+		doc.add(nameField);
+
+		LongField modifiedField = new LongField("modified" , new Date().getTime() ,TYPE_STORED ); 
+//		modifiedField.setLongValue(new Date().getTime());
+		doc.add(modifiedField);
+
+		return doc;
+	}
+	
+}

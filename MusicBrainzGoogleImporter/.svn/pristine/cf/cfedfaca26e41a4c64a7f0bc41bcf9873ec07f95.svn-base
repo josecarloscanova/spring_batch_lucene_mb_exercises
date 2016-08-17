@@ -1,0 +1,22 @@
+package org.nanotek.mq;
+
+import org.nanotek.BuilderBase;
+
+/**
+ * Interface that defines the base contract for message construction. 
+ *
+ * @author josecanova
+ *
+ * @param <M> Result of the Build method call, usually a message. 
+ * @param <I> Base Object for the message Construction. 
+ * @param <T> Type object for object construction.
+ */
+public interface MessageBuilder<M ,I> extends BuilderBase<M,I>{
+
+	@Override
+	public M build();
+
+	@Override
+	public M build(I info); 
+	
+}

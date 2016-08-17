@@ -1,0 +1,13 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.ArtistKey;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+
+public class ArtistKeyCsvToBean extends CsvToBean<ArtistKey> {
+
+	public ArtistKeyCsvToBean() {
+		super();
+	}
+
+}

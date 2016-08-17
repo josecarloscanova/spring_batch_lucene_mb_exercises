@@ -1,0 +1,11 @@
+package org.nanotek.dao.spring;
+
+
+import org.nanotek.Base;
+import org.nanotek.beans.Track;
+import org.nanotek.dao.DAO;
+
+public interface TrackDAO<T extends Track> extends DAO<Base<?>> {
+
+	public T findById (String id);
+}

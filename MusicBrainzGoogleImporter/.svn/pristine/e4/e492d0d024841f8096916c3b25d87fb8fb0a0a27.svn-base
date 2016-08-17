@@ -1,0 +1,104 @@
+package org.nanotek.web;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.nanotek.base.OfficeUrl;
+import org.nanotek.hibernate.dao.GeneralPurposeDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class SimpleController {
+
+	@Autowired
+	private GeneralPurposeDAO<OfficeUrl> officeUrlDAO;
+	
+	private static final Logger log = Logger.getLogger(SimpleController.class);
+	
+    public SimpleController() {
+    }
+	
+    @RequestMapping("/listCompanies")
+    public String listCompanies(Model model) {
+    	log.debug("List Office Resolved.");
+//    	List<OfficeUrl> officesUrl = officeUrlDAO.loadAll();
+    	List<OfficeUrl> officesUrl =  loadAllRecords();
+    	model.addAttribute("offices", officesUrl);
+        model.addAttribute("message", "Hello World!");
+        return "companyList";
+    }
+
+    @RequestMapping(value = "/getOffice/{officeid}",method = RequestMethod.GET,produces="application/json")
+    public  @ResponseBody Model getCompany(@PathVariable("officeid") String officeId,Model model) {
+    	log.debug("Get Company Resolved");
+    	OfficeUrl office = officeUrlDAO.findById(Long.parseLong(officeId));
+        model.addAttribute("office", office);
+        return model;
+    }
+    
+
+    @RequestMapping(value = "/update/{officeid}",method = RequestMethod.POST,produces="application/json",consumes="application/json")
+    public  @ResponseBody Model updateCompany(@PathVariable("officeid") String officeId, @RequestBody OfficeUrl officeUpdate, Model model) {
+    	log.debug("Post Company Resolved");
+    	log.debug("Message Received " + officeUpdate );
+    	OfficeUrl office = officeUrlDAO.findById(Long.parseLong(officeId));
+    	office.setContactInfo(officeUpdate.getContactInfo());
+        officeUrlDAO.update(office);
+        model.addAttribute("office", office);
+        return model;
+    }
+    
+    
+    @SuppressWarnings({ "unused", "null" })
+	private List<OfficeUrl> loadAllRecords() 
+    { 
+    	List<String> namesUpdates = new ArrayList<String>();
+    	Long recordCount = officeUrlDAO.countRecords(); 
+    	
+    	List<OfficeUrl> officesWithContact = null; 
+    	DetachedCriteria criteriaNotNull = DetachedCriteria.forClass(OfficeUrl.class);
+    	criteriaNotNull.add(Restrictions.isNotNull("contactInfo")); 
+    	criteriaNotNull.addOrder(Order.asc("id"));
+    	officesWithContact = officeUrlDAO.listRecords(0 ,  recordCount.intValue(), criteriaNotNull); 
+    	if (officesWithContact !=null)
+	    	for (OfficeUrl of : officesWithContact) 
+	    	{ 
+	    		namesUpdates.add(of.getName());
+	    	}
+    	
+    	List<OfficeUrl> officeUrlList = null; 
+    	DetachedCriteria criteria = DetachedCriteria.forClass(OfficeUrl.class);
+    	criteria.add(Restrictions.isNull("contactInfo")); 
+    	criteria.addOrder(Order.asc("name"));
+    	
+    	officeUrlList = officeUrlDAO.listRecords(0 ,  recordCount.intValue(), criteria); 
+    	
+    	officesWithContact.clear();
+    	if (officeUrlList!=null)
+	    	for (OfficeUrl onc : officeUrlList) 
+	    	{ 
+	    		if (!namesUpdates.contains(onc.getName()))
+	    		{ 
+	    			officesWithContact.add(onc);
+	    		}
+	    	}
+    	return officesWithContact;//officeUrlDAO.listRecords(0 ,  recordCount.intValue(), criteria); 
+    }
+    
+	public GeneralPurposeDAO<OfficeUrl> getOfficeUrlDAO() {
+		return officeUrlDAO;
+	}
+    
+}

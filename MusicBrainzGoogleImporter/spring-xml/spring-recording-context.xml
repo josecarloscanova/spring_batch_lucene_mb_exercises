@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 		
+
+	<bean id="recordingIndexVersion" class="org.apache.lucene.util.Version" factory-method="valueOf">
+		<constructor-arg value="LUCENE_31"/>
+	</bean>
+	
+	<bean id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+	<bean id="recordingStandardAnalyser" class="org.apache.lucene.analysis.standard.StandardAnalyzer">
+		<constructor-arg type="org.apache.lucene.util.Version" ref="recordingIndexVersion"/>
+	</bean>
+	
+	<bean id="recordingCsvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="recordingFileReader"></constructor-arg>
+	</bean>
+	
+	<bean id="recordingFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.recording.file}"></constructor-arg>
+	</bean>
+		
+	<bean id="recordingIndexFilePath" class="java.io.File">
+		<constructor-arg value="F:/IndexPath/Recording_Index"></constructor-arg>
+	</bean>
+	
+	<bean id="recordingIndexFsDirectory" class="org.apache.lucene.store.SimpleFSDirectory">
+		<constructor-arg ref="recordingIndexFilePath"></constructor-arg>
+	</bean>
+		
+	<bean id="recordingMapping" class="org.nanotek.beans.mapping.RecordingMapping">
+		<property name="type" value="org.nanotek.beans.Recording"></property>
+	</bean>
+	
+	<bean id="recordingIndexWriterConfig" class="org.apache.lucene.index.IndexWriterConfig">
+		<constructor-arg ref="recordingIndexVersion"></constructor-arg>
+		<constructor-arg ref="recordingStandardAnalyser"></constructor-arg>
+	</bean>
+	
+	<bean id="recordingIndexWriter" class="org.apache.lucene.index.IndexWriter"> 
+		<constructor-arg ref="recordingIndexFsDirectory"></constructor-arg>
+		<constructor-arg ref="recordingIndexWriterConfig"></constructor-arg>
+	</bean>
+	
+	<bean id="recordingToBean" class="org.nanotek.beans.mapping.RecordingCsvToBean"></bean>
+	
+	<bean id="recordingReader" class="org.nanotek.musicbrainz.job.readers.BaseReader">
+		<property name="itemMapping" ref="recordingMapping"></property>
+		<property name="fileStr" value="${music.brainz.recording.file}"></property>
+		<property name="csvMap" ref="recordingToBean"></property>
+		<property name="reader" ref="recordingCsvReader"></property>
+	</bean>
+	
+	<!-- <bean id="recordingIndexWriter" class="org.nanotek.lucene.job.writers.RecordingIndexWriter">
+		<property name="indexWriter" ref="recordingIndexWriter"></property>
+	</bean> -->
+	
+	<bean id="recordingWriter" class="org.nanotek.musicbrainz.job.writers.BaseWriter">
+		<property name="dao" ref="recordingDAO"></property>
+	</bean>
+	
+	<bean id="recordingIndexStepListener" class="org.nanotek.lucene.job.listeners.IndexWriterStepListener"> 
+		<property name="indexWriter" ref="recordingIndexWriter"></property>
+	</bean>
+	
+	<bean id="recordingIndexChunkLister" class="org.nanotek.lucene.job.listeners.IndexWriterChunkListener">
+		<property name="indexWriter" ref="recordingIndexWriter"></property>
+	</bean>
+	
+	<!-- <bean id="recordingIndexProcessor" class="org.nanotek.musicbrainz.job.processor.RecordingIndexProcessor">
+		<property name="indexWriter" ref="recordingIndexWriter"></property>
+	</bean> -->
+	
+	<b:job id="recordingJob" job-repository="jobRepository" restartable="true">
+	    <b:step id="recordingIndexLoad">
+	    	<b:tasklet>
+	    		<b:chunk reader="recordingReader"  commit-interval="30000" writer="recordingWriter"></b:chunk>
+	    		<!-- <b:listeners>
+	    			<b:listener ref="recordingIndexChunkLister"/>
+	    		</b:listeners> -->
+	    	</b:tasklet>
+	    	<!-- <b:listeners>
+            		<b:listener ref="recordingIndexStepListener"/>
+       		</b:listeners> -->
+	    </b:step>
+	</b:job>
+	
+</beans>

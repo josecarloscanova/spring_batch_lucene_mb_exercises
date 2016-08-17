@@ -1,0 +1,80 @@
+package org.nanotek.poi.reader;
+
+import java.util.List;
+import java.util.Set;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.nanotek.base.Office;
+import org.nanotek.base.OfficeUrl;
+import org.nanotek.base.Url;
+import org.nanotek.hibernate.dao.DAO;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class OfficeUrlBase {
+
+	private static ClassPathXmlApplicationContext ctx; 
+	public OfficeUrlBase() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void main (String[] args) 
+	{ 
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+		"database-loaders/spring-dao-context.xml"});
+		
+		//DAO<OfficeUrl> officeUrlDao = (DAO<OfficeUrl>) ctx.getBean("officeUrlDAO");
+		
+		//List<?> urlsDenormalized = officeUrlDao.loadAll();
+		//transferOfficeUrls((List<OfficeUrl>) urlsDenormalized);
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	private static void transferOfficeUrls(List<OfficeUrl> officeUrlList) {
+		
+		DAO<Office> officeDao = (DAO<Office>) ctx.getBean("officeDAO");
+		for (OfficeUrl ou : officeUrlList) { 
+			Office office = new Office(); 
+			office.setName(ou.getName());
+			DetachedCriteria criteria = DetachedCriteria.forClass(Office.class);
+			criteria.add(Restrictions.like("name", office.getName()));
+		    List<?> result= officeDao.listRecords(0, 10,criteria );
+		    if (result ==null || result.size()==0)
+		    { 
+		    	office.setDiscriminator(1);
+		    	officeDao.persist(office);
+		    }
+		    else 
+		    { 
+		    	office = (Office) result.get(0);
+		    }
+		    
+		    Set<Url> urls = office.getUrls();
+		    for (Url url : urls)
+		    { 
+		    	System.out.println(url.toString());
+		    }
+//		    upateOfficeUrl(office,ou);
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	private static void upateOfficeUrl(Office office, OfficeUrl ou) {
+		Url url = new Url(); 
+		DAO<Url> urlDao = (DAO<Url>) ctx.getBean("urlDAO");
+		DAO<Office> officeDao = (DAO<Office>) ctx.getBean("officeDAO");
+		DetachedCriteria criteria = DetachedCriteria.forClass(Url.class);
+		criteria.add(Restrictions.like("url", ou.getUrl()));
+		 List<?> result= urlDao.listRecords(0, 10,criteria );
+		    if (result ==null || result.size()==0)
+		    {
+		    	url.setUrl(ou.getUrl());
+		    	url.setOffice(office);
+		    	urlDao.update(url);
+		    	office.getUrls().add(url);
+		    	officeDao.update(office);
+		    	
+		    }
+	}
+}

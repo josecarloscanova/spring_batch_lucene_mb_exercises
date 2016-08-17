@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.nanotek.base">
+
+    <class name="ATContactBase" table="AT_CONTACT_BASE">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="sequence" >  
+                <param name="sequence">normalized_contact_id_seq</param>  
+             </generator>
+        </id>
+		<property name="code" type="string"  unique="true" not-null="false" column="code" />
+		<property name="category" type="string" not-null="false" column="category" />
+		<property name="updated" type="string"  not-null="false" column="updated" />
+		<property name="mailingPending" type="string"  not-null="false" column="mailingPending" />
+		<property name="companyName" type="string"  not-null="false" column="companyName" />
+		<property name="companyContact" type="string"  not-null="false" column="companyContact"/>
+		<property name="bussinessStreet" type="string"  not-null="false" column="bussinessStreet"/>
+		<property name="businessCity" type="string"  not-null="false" column="businessCity"/>
+ 		<property name="businessState" type="string" not-null="false" column="businessState"/>
+ 		<property name="businessPostalCode" type="string" not-null="false" column="businessPostalCode"/>
+ 		<property name="countryCode" type="string" not-null="false" column="countryCode"/>
+		<property name="areaCode" type="string" not-null="false" column="areaCode"/>
+		<property name="businessPhone" type="string" not-null="false" column="businessPhone"/>
+		<property name="businessPhone2" type="string" not-null="false" column="businessPhone2"/>
+		<property name="otherPhone" type="string" not-null="false" column="otherPhone"/>
+		<property name="businessFax" type="string" not-null="false"   column="businessFax"/>
+		<property name="businessFax2" type="string" not-null="false"   column="businessFax2"/>
+		<property name="extension" type="string" not-null="false"   column="extension"/>
+		<property name="home" type="string" not-null="false"   column="home"/>
+		<property name="phone" type="string" not-null="false"   column="phone"/>
+		<property name="email" type="string" not-null="false"   column="email"/>
+		<property name="address" type="string" not-null="false" column="address"/>
+		<property name="url" type="string" not-null="false" column="url"/>
+		<property name="skype" type="string" not-null="false"  column="skype"/>
+		<property name="contactId" type="long" not-null="false"  column="contactId"/>
+		<property name="discriminator" type="string" not-null="false" column="discriminator"/>
+    </class>
+    
+    
+    <!-- private String code; 
+	private String Category; 
+	private String updated; 
+	private String mailingPending; 
+	private String companyName; 
+	private String companyContact; 
+	private String bussinessStreet; 
+	private String businessCity; 
+	private String businessState; 
+	private String businessPostalCode; 
+	private String countryCode; 
+	private String areaCode; 
+	private String businessPhone; 
+	private String businessPhone2; 
+	private String otherPhone; 
+	private String businessFax; 
+	private String businessFax2; 
+	private String extension; 
+	private String home; 
+	private String phone; 
+	private String email; 
+	private String address; 
+	private String url; 
+	private String skype; 
+	
+	private Number contactId; 
+	private Long id; 
+	private String discriminator; -->
+	
+</hibernate-mapping>

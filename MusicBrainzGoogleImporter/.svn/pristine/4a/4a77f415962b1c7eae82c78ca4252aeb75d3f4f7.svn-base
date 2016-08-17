@@ -1,0 +1,22 @@
+package org.nanotek.mq.converters;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+import org.nanotek.Kong;
+
+/**
+ * A ConverterBase Interface defines a contract that the implementer shall 
+ * define which constraints will rule a conversion from a 
+ * "non-persistent Class that extends a Base class to a persistent Base class". 
+ * 
+ * @author josecanovamauger
+ *
+ * @param <T>
+ * 
+ */
+public interface ConverterBase<T extends Kong<$I> , $I extends Serializable> extends Base<T> {
+	
+	public Base<$I> convert (T convertee);
+	
+}

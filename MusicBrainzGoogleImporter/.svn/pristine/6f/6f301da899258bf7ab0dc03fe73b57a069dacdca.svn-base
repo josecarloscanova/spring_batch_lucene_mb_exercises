@@ -1,0 +1,40 @@
+package org.nanotek.lucene.query;
+
+import org.nanotek.Base;
+import org.nanotek.base.QueryParserConfiguration;
+import org.nanotek.query.ContextKeys;
+import org.nanotek.query.QueryContext;
+import org.nanotek.query.QueryObject;
+import org.nanotek.query.QueryResult;
+
+
+public class LuceneQueryProcessor<T extends QueryContext>  extends BaseQueryProcessor<T> {
+
+	QueryObject<?> queryObject;
+	protected QueryParserConfiguration queryParserConfiguration = null; 
+	
+	@Override
+	public void processQuery(String searchPhrase, T queryContext) {
+		queryObject = new BaseQueryObject<Base<?>>(searchPhrase);
+		if (queryParserConfiguration !=null)
+			queryContext.put(ContextKeys.QUERY_PARSER, queryParserConfiguration);
+		getQueryDispatcher().dispatch(queryObject, queryContext);
+	}
+	
+	
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <S extends QueryObject<?>> S getQueryObject() {
+		return (S) queryObject;
+	}
+
+	public QueryParserConfiguration getQueryParserConfiguration() {
+		return queryParserConfiguration;
+	}
+
+	public void setQueryParserConfiguration(
+			QueryParserConfiguration queryParserConfiguration) {
+		this.queryParserConfiguration = queryParserConfiguration;
+	}
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="Language" table="LANGUAGE">
+    	<id name="id" type="long"  column="ID">
+			 <generator class="assigned" />
+        </id>
+    	 <property name="isoCode3t" type="string" column="ISO3T" />
+         <property name="isoCode3d" type="string" column="ISO3D" />
+         <property name="isCode2" type="string" column="ISOCODE2" />
+         <property name="name" type="string" column="NAME" />
+         <property name="frequency" type="string" column="FREQUENCY" />
+    </class>
+    
+</hibernate-mapping>

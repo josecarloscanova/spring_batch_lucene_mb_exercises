@@ -1,0 +1,17 @@
+package org.nanotek.base.region;
+
+import org.nanotek.Region;
+
+/*
+ * A region map that defines an structure to describes a large file like a PDF file on Regions for 
+ * future tokenizing - indexing(re).
+ */
+//TODO: finish the class definition with FileChannel implementation.
+@SuppressWarnings({"serial" })
+public class ChannelRegionMap< T extends Number , R extends Region<?>> extends RegionMap<T>{
+
+	
+	public ChannelRegionMap() {
+	}
+
+}

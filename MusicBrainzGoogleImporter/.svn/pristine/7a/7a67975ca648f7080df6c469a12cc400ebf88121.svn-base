@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:task="http://www.springframework.org/schema/task">
+
+
+	<bean id="messageSender" class="br.gov.sp.prodesp.saog.integracao.ws.SaogIntegrationSolicitacaoTest"> 
+		<!-- <property name="trigger" ref="dynamicTrigger"></property> -->
+	</bean>
+	
+	<bean id="pollerMetaData" class="org.springframework.integration.scheduling.PollerMetadata" >
+		<property name="trigger" ref="dynamicTrigger"></property>
+	</bean>
+	
+	<int:inbound-channel-adapter channel="logger" ref="messageSender" method="requestMessage">
+		<int:poller ref="pollerMetaData"></int:poller>
+	</int:inbound-channel-adapter>
+	
+	<bean id="dynamicTrigger"
+		class="br.gov.sp.prodesp.saog.integracao.ws.DynamicPeriodicTrigger">
+		<constructor-arg name="period" value="5000" />
+	</bean> 
+
+	<int:logging-channel-adapter id="logger"/>
+
+	<task:executor id="executor" queue-capacity="20"
+		pool-size="5-20" />
+</beans>

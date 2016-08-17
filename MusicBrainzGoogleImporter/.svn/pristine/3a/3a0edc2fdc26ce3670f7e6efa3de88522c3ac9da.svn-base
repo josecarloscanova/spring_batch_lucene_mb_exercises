@@ -1,0 +1,90 @@
+package org.nanotek.musicbrainz.beans;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class CdToc implements Base<Long> {
+
+	private Long id; 
+	private String discId; 
+	private String freedbId; 
+	private String trackCount; 
+	private String leadOutOffSet; 
+	private String trackOffSet; 
+	private String degraded; 
+	private String created;
+	
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public String getDiscId() {
+		return discId;
+	}
+	
+	public void setDiscId(String discId) {
+		this.discId = discId;
+	}
+	
+	public String getFreedbId() {
+		return freedbId;
+	}
+	
+	public void setFreedbId(String freedbId) {
+		this.freedbId = freedbId;
+	}
+	
+	public String getTrackCount() {
+		return trackCount;
+	}
+	
+	public void setTrackCount(String trackCount) {
+		this.trackCount = trackCount;
+	}
+	
+	public String getLeadOutOffSet() {
+		return leadOutOffSet;
+	}
+	
+	public void setLeadOutOffSet(String leadOutOffSet) {
+		this.leadOutOffSet = leadOutOffSet;
+	}
+	
+	public String getTrackOffSet() {
+		return trackOffSet;
+	}
+	
+	public void setTrackOffSet(String trackOffSet) {
+		this.trackOffSet = trackOffSet;
+	}
+	
+	public String getDegraded() {
+		return degraded;
+	}
+	
+	public void setDegraded(String degraded) {
+		this.degraded = degraded;
+	}
+	
+	public String getCreated() {
+		return created;
+	}
+	
+	public void setCreated(String created) {
+		this.created = created;
+	}
+
+	@Override
+	public String toString() {
+		return "CdToc [id=" + id + ", discId=" + discId + ", freedbId="
+				+ freedbId + ", trackCount=" + trackCount + ", leadOutOffSet="
+				+ leadOutOffSet + ", trackOffSet=" + trackOffSet
+				+ ", degraded=" + degraded + ", created=" + created + "]";
+	} 
+
+}

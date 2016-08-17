@@ -1,0 +1,12 @@
+package org.nanotek;
+/**
+ *
+ *
+ * refer to:http://www.eaipatterns.com/PipesAndFilters.html
+ * @josecanovamauger
+ *
+ */
+
+public interface Filter<T>{
+
+}

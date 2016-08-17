@@ -1,0 +1,59 @@
+package org.nanotek.tika;
+
+import org.nanotek.Kong;
+import org.nanotek.tika.document.TikaBaseDocumentBuilder;
+
+import java.nio.file.Path;
+import java.io.IOException;
+import java.nio.file.FileVisitor;
+import java.nio.file.FileVisitResult;
+
+import org.apache.tika.io.TikaInputStream;
+
+import java.nio.file.attribute.BasicFileAttributes;
+
+public class TikaPersistentContainer implements  FileVisitor<Path> {
+	private  FileVisitor<Path> visitor;
+	private  TikaBaseDocumentBuilder<TikaInputStream, Kong<String>> documentBuilder;
+
+	@Override
+	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+			throws IOException {
+		return visitor.preVisitDirectory(dir, attrs);
+	}
+
+	@Override
+	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+			throws IOException {
+		return visitor.visitFile(file, attrs);
+	}
+
+	@Override
+	public FileVisitResult visitFileFailed(Path file, IOException exc)
+			throws IOException {
+		return visitor.visitFileFailed(file, exc);
+	}
+
+	@Override
+	public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+			throws IOException {
+		return visitor.postVisitDirectory(dir, exc);
+	}
+
+	public FileVisitor<Path> getVisitor() {
+		return visitor;
+	}
+
+	public void setVisitor(FileVisitor<Path> visitor) {
+		this.visitor = visitor;
+	}
+
+	public TikaBaseDocumentBuilder<TikaInputStream, Kong<String>> getDocumentBuilder() {
+		return documentBuilder;
+	}
+
+	public void setDocumentBuilder(TikaBaseDocumentBuilder<TikaInputStream, Kong<String>> documentBuilder) {
+		this.documentBuilder = documentBuilder;
+	}
+
+}

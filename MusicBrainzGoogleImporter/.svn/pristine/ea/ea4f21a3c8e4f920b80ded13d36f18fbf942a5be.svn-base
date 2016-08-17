@@ -1,0 +1,54 @@
+package org.nanotek.lucene.config;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.util.Version;
+import org.nanotek.Base;
+import org.nanotek.StringKong;
+import org.nanotek.base.Configuration;
+
+@SuppressWarnings("serial")
+public class FieldAnalyzer implements Base<Number> {
+
+	protected Number id; 
+	
+	protected Version version;
+
+	protected StringKong targetField; 
+
+	protected Analyzer analyzer; 
+
+	public FieldAnalyzer(Version version,
+			StringKong targetField, Analyzer analyzer) {
+		super();
+		this.version = version;
+		this.targetField = targetField;
+		this.analyzer = analyzer;
+	}
+
+	@Override
+	public Number getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Number id) {
+		this.id = id;
+	}
+
+	public FieldAnalyzer get() {
+		return this;
+	}
+
+	public Version getVersion() {
+		return version;
+	}
+
+	public StringKong getTargetField() {
+		return targetField;
+	}
+
+	public Analyzer getAnalyzer() {
+		return analyzer;
+	}
+
+}

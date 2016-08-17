@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<import resource="classpath:database-loaders/hibernate-context.xml" />
+	
+	<bean id="artistCreditDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistCredit"></property>
+	</bean>
+	
+	<bean id="artistCreditNameDAO" class="org.nanotek.dao.spring.impl.ArtistCreditNameDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistCreditName"></property>
+	</bean>
+	
+	<bean id="artistAliasDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistAlias"></property>
+	</bean>
+	
+	<bean id="artistKeyDAO" class="org.nanotek.dao.spring.impl.ArtistDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistKey"></property>
+	</bean>
+	
+	<bean id="artistNameDAO" class="org.nanotek.dao.spring.impl.ArtistNameDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistName"></property>
+	</bean>
+	
+	<bean id="cdTocDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.CdToc"></property>
+	</bean>
+	
+	<bean id="labelDAO" class="org.nanotek.dao.spring.impl.LabelDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Label"></property>
+	</bean>
+
+	<bean id="labelAliasDAO" class="org.nanotek.dao.spring.impl.LabelDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.LabelAlias"></property>
+	</bean>
+		
+	<bean id="labelNameDAO" class="org.nanotek.dao.spring.impl.LabelNameDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.LabelName"></property>
+	</bean>
+	
+	<bean id="languageDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Language"></property>
+	</bean>
+
+	<bean id="mediumDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Medium"></property>
+	</bean>
+	
+	<bean id="mediumCdTocDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.MediumCdToc"></property>
+	</bean>
+	
+	<bean id="releaseNameDAO" class="org.nanotek.dao.spring.impl.ReleaseNameDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ReleaseName"></property>
+	</bean>
+	
+	<bean id="trackNameDAO" class="org.nanotek.dao.spring.impl.TrackNameDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.TrackName"></property>
+	</bean>
+
+	<bean id="workNameDAO" class="org.nanotek.dao.spring.impl.WorkNameDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.WorkName"></property>
+	</bean>
+	
+	<bean id="workDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Work"></property>
+	</bean>
+	
+	<bean id="workAliasDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.WorkAlias"></property>
+	</bean>
+	
+	<bean id="trackDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Track"></property>
+	</bean>
+	
+	<bean id="trackListDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.TrackList"></property>
+	</bean>
+	
+	<bean id="recordingDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Recording"></property>
+	</bean>
+	
+	<bean id="isrcDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Isrc"></property>
+	</bean>
+		
+	<bean id="releaseDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Release"></property>
+	</bean>	
+		
+	<bean id="releaseLabelDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ReleaseLabel"></property>
+	</bean>	
+	
+	<bean id="releaseGroupDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ReleaseGroup"></property>
+	</bean>	
+	
+	<bean id="urlDAO" class="org.nanotek.dao.spring.impl.GeneralPurposeDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.Url"></property>
+	</bean>	
+	
+</beans>

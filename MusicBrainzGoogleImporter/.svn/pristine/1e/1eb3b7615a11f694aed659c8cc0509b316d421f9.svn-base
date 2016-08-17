@@ -1,0 +1,40 @@
+package org.nanotek.tika.io;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.nanotek.tika.ContentExtractionException;
+import org.nanotek.tika.ContentExtractor;
+import org.nanotek.tika.MediaDetail;
+
+public class TikaContentExtractor implements ContentExtractor<TikaInputStream> {
+
+	private MediaDetail mediaDetail;
+	private ParseContext context; 
+	private Metadata metaData; 
+	
+	public TikaContentExtractor (MediaDetail mediaDetail ,  ParseContext context , Metadata metaData)
+	{ 
+		this.mediaDetail = mediaDetail;
+		this.context = context; 
+		this.metaData = metaData;
+	}
+
+	public void extractContent(TikaInputStream input) throws ContentExtractionException
+	{ 
+		TikaInputter inputer = new TikaInputter(input,context,metaData); 
+		FutureTask<StringBuilder> ft = new FutureTask<StringBuilder>(inputer);
+		StringBuilder sb = new StringBuilder();
+		ft.run();
+		try {
+				sb = ft.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+			
+		}
+		mediaDetail.setTikaStringContent(sb.toString());
+	}
+}

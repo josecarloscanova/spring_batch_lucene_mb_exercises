@@ -1,0 +1,12 @@
+package org.nanotek.http.client;
+
+import org.nanotek.Base;
+import org.nanotek.base.Configuration;
+import org.nanotek.http.HttpClientException;
+
+public interface HttpClientService extends Configuration<Base<?>>{
+	
+	public <T extends ClientRequestHandler> T getRequestHandler();
+	public void doRequest(Base<?> requestParameters) throws HttpClientException;
+	
+}

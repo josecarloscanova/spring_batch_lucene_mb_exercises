@@ -1,0 +1,42 @@
+package tests.base;
+
+import static org.junit.Assert.*;
+
+import java.util.HashMap;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.nanotek.base.MappableBase;
+import org.nanotek.base.MappableReferenceBase;
+import org.nanotek.musicbrainz.beans.Artist;
+import org.nanotek.musicbrainz.beans.mapping.ArtistMapping;
+
+public class MappableReferenceTest {
+
+	MappableReferenceBase<Artist,ArtistMapping> base;
+	Artist artist; 
+	@Before
+	public void setUp() throws Exception {
+		base = new MappableReferenceBase<Artist,ArtistMapping>();
+		artist = new Artist(); 
+		artist.setName("ArtistName");
+		artist.setId(2356L);
+		artist.setGid("GID - GID");
+	}
+
+	@Test
+	public void test() {
+		try { 
+		HashMap <String,?> mapped = base.getMap(artist,new ArtistMapping());
+		for (String key : mapped.keySet()) 
+		{ 
+			System.out.println(mapped.get(key));
+		}
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+			fail("Exception thrown"); 
+		}
+		
+	}
+}

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 		
+
+	<bean lazy-init="true" id="releaseIndexVersion" class="org.apache.lucene.util.Version" factory-method="valueOf">
+		<constructor-arg value="LUCENE_31"/>
+	</bean>
+	
+	<bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+	<bean lazy-init="true" id="releaseStandardAnalyser" class="org.apache.lucene.analysis.standard.StandardAnalyzer">
+		<constructor-arg type="org.apache.lucene.util.Version" ref="releaseIndexVersion"/>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseNameCsvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="releaseNameFileReader"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseNameFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.release.name.file}"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="releaseIndexFilePath" class="java.io.File">
+		<constructor-arg value="F:/IndexPath/ReleaseName_Index"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseIndexFsDirectory" class="org.apache.lucene.store.SimpleFSDirectory">
+		<constructor-arg ref="releaseIndexFilePath"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="releaseNameMapping" class="org.nanotek.beans.mapping.ReleaseNameMapping">
+		<property name="type" value="org.nanotek.beans.ReleaseName"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseIndexWriterConfig" class="org.apache.lucene.index.IndexWriterConfig">
+		<constructor-arg ref="releaseIndexVersion"></constructor-arg>
+		<constructor-arg ref="releaseStandardAnalyser"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseIndexWriter" class="org.apache.lucene.index.IndexWriter"> 
+		<constructor-arg ref="releaseIndexFsDirectory"></constructor-arg>
+		<constructor-arg ref="releaseIndexWriterConfig"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseNameToBean" class="org.nanotek.beans.mapping.ReleaseNameCsvToBean"></bean>
+	
+	<bean lazy-init="true" id="releaseNameReader" class="org.nanotek.musicbrainz.job.readers.ReleaseNameReader">
+		<property name="itemMapping" ref="releaseNameMapping"></property>
+		<property name="fileStr" value="${music.brainz.release.name.file}"></property>
+		<property name="csvMap" ref="releaseNameToBean"></property>
+		<property name="reader" ref="releaseNameCsvReader"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseNameIndexWriter" class="org.nanotek.lucene.job.writers.ReleaseNameIndexWriter">
+		<property name="indexWriter" ref="releaseIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseIndexStepListener" class="org.nanotek.lucene.job.listeners.IndexWriterStepListener"> 
+		<property name="indexWriter" ref="releaseIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseNameIndexChunkLister" class="org.nanotek.lucene.job.listeners.IndexWriterChunkListener">
+		<property name="indexWriter" ref="releaseIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="releaseNameIndexProcessor" class="org.nanotek.musicbrainz.job.processor.ReleaseNameIndexProcessor">
+		<property name="indexWriter" ref="releaseIndexWriter"></property>
+	</bean>
+	
+	<b:job id="releaseNameIndexJob" job-repository="jobRepository" restartable="false">
+	    <b:step id="releaseNameIndexLoad">
+	    	<b:tasklet>
+	    		<b:chunk reader="releaseNameReader" processor="releaseNameIndexProcessor" commit-interval="10000" writer="releaseNameIndexWriter"></b:chunk>
+	    		<b:listeners>
+	    			<b:listener ref="releaseNameIndexChunkLister"/>
+	    		</b:listeners>
+	    	</b:tasklet>
+	    	<b:listeners>
+            		<b:listener ref="releaseIndexStepListener"/>
+       		</b:listeners>
+	    </b:step>
+	</b:job>
+	
+</beans>

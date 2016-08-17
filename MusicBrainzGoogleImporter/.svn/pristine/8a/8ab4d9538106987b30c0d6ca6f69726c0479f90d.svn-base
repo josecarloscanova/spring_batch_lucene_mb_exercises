@@ -1,0 +1,73 @@
+package org.nanotek.task.callable.pipe;
+
+import static org.nanotek.task.callable.pipe.PipeConstants.PIPE_RECEIVER_BASE_SIZE;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.Pipe;
+import java.nio.channels.Pipe.SourceChannel;
+
+import org.apache.commons.lang3.SerializationUtils;
+import org.apache.log4j.Logger;
+import org.nanotek.Base;
+//import org.nanotek.BaseTask;
+import org.nanotek.Origin;
+import org.nanotek.task.base.BaseTask;
+import org.nanotek.task.callable.CallableTaskReceiverBase;
+
+
+public class PipeTaskReceiverBase <T extends BaseTask<T,V>,V extends Base<?>, S extends Pipe.SourceChannel> extends CallableTaskReceiverBase<T,V> implements Origin<S> {
+
+	private static Logger logger = Logger.getLogger(PipeTaskReceiverBase.class);
+	
+	private Pipe pipe;
+	
+	public PipeTaskReceiverBase() {
+		super();
+		try {
+			this.pipe = Pipe.open();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public PipeTaskReceiverBase(Pipe pipe) {
+		super();
+		this.pipe = pipe;
+	}
+	
+	public PipeTaskReceiverBase(Pipe pipe , T task) {
+		this.pipe = pipe;
+		this.task = task;
+	}
+	
+	@Override
+	public V receive() {
+		V eventMessage = null;
+		logger.debug("PIPE EXECUTED RECEIVER THREAD");
+		SourceChannel sourceChannel = pipe.source();
+		ByteBuffer byteBuffer = ByteBuffer.allocate(PIPE_RECEIVER_BASE_SIZE);
+			try {
+				 logger.debug("SOURCE CHANNEL");
+				  int i = sourceChannel.read(byteBuffer);
+				  if (i > 0) { 
+					  byte [] serialized = new byte[i]; 
+					  byteBuffer.position(0);
+					  byteBuffer.get(serialized);
+					  Object obj = SerializationUtils.deserialize(serialized);
+					  eventMessage = (V) obj;
+					  logger.debug("TASK RECEIVED " + i + "ObjectClass " + eventMessage.getClass());
+				  }
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		return eventMessage;
+	}
+
+	@Override
+	public S getSource() {
+		return (S) pipe.source();
+	}
+
+}

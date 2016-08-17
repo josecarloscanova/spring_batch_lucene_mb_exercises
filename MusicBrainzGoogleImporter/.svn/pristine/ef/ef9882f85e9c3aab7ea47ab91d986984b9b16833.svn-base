@@ -1,0 +1,19 @@
+package org.nanotek.tika.document;
+
+import org.apache.commons.collections4.Transformer;
+
+/**
+ * Interface that defines a basic contract transformation from
+ * source and target formats.
+ * @author JoseCanovaMauger
+ *  normalize after.
+ * @param <S> the source object format.
+ *
+ * @param <T> the target object format.
+ */
+public interface DocumentTransformer <S,T> extends Transformer<S,T>{
+
+	@Override
+	public T transform (S source) throws TransformerException;
+
+}

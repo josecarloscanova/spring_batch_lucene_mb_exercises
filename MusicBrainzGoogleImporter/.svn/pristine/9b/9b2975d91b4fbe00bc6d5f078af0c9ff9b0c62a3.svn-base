@@ -1,0 +1,56 @@
+package org.nanotek.base;
+
+import java.io.Serializable;
+import java.util.Set;
+
+import org.nanotek.Base;
+
+/**
+ * 
+ * 
+ * @author josecanovamauger
+ *
+ */
+@SuppressWarnings("serial")
+public class Copyright <T extends Serializable> implements Base<T>{
+
+	private T id; 
+	private Set<Base<?>> authors; 
+	private Base<?> origin; 
+
+	public Copyright() 
+	{}
+	
+	
+	@Override
+	public T getId() {
+		return id;
+	}
+
+
+	public void setId(T id) {
+		this.id = id;
+	}
+
+
+	public Set<Base<?>> getAuthors() {
+		return authors;
+	}
+
+
+	public void setAuthors(Set<Base<?>> authors) {
+		this.authors = authors;
+	}
+
+
+	public Base<?> getOrigin() {
+		return origin;
+	}
+
+
+	public void setOrigin(Base<?> origin) {
+		this.origin = origin;
+	}
+	
+	
+}

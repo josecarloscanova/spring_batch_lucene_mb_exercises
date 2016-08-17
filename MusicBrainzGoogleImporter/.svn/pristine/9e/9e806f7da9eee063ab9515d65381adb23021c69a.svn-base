@@ -1,0 +1,14 @@
+package org.nanotek.dao.spring.impl;
+
+import org.nanotek.beans.Recording;
+import org.nanotek.dao.spring.RecordingDAO;
+
+public class RecordingDAOImpl extends GeneralPurposeDAO implements RecordingDAO<Recording>{
+
+	@Override
+	public Recording findById (Long id)
+	{ 
+		return (Recording) super.findById(id);
+	}
+	
+}

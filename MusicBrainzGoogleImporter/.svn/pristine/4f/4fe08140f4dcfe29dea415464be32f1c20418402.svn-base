@@ -1,0 +1,69 @@
+package org.nanotek.musicbrainz.beans;
+
+import javax.validation.constraints.NotNull;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class ArtistCreditName implements Base<String> {
+
+	/**
+	 * TODO: Why was defined the ID of the Credit Name as String? 
+	 * 
+	 */
+	private String id;
+	
+	@NotNull
+	private Long artistCredit; 
+	
+	private Long position;
+	@NotNull
+	private Long artist;
+	@NotNull
+	private String name;
+	private String joinPhrase;
+	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public Long getArtistCredit() {
+		return artistCredit;
+	}
+	public void setArtistCredit(Long artistCredit) {
+		this.artistCredit = artistCredit;
+	}
+	
+	public Long getPosition() {
+		return position;
+	}
+	public void setPosition(Long position) {
+		this.position = position;
+	}
+	
+	public Long getArtist() {
+		return artist;
+	}
+	public void setArtist(Long artist) {
+		this.artist = artist;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getJoinPhrase() {
+		return joinPhrase;
+	}
+	public void setJoinPhrase(String joinPhrase) {
+		this.joinPhrase = joinPhrase;
+	}
+	
+}

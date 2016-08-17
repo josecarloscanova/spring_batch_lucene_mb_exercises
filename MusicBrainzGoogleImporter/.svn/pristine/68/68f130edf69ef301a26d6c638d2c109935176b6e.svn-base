@@ -1,0 +1,6 @@
+package org.nanotek;
+
+//Interface that defines the basic constract to execute a sign (usual a MD5 or other hash algorithm). 
+public interface Signer<T,S> {
+	public S sign(T toSign);
+}

@@ -1,0 +1,47 @@
+package org.nanotek.base.music.company;
+
+import org.nanotek.Base;
+
+/**
+ * 
+ * Defined as an entrepreneurship to aggregate, artists, bands and crew related to 
+ * music industry.
+ * 
+ * @author josecanovamauger
+ *
+ */
+@SuppressWarnings("serial")
+public class RecordCompany implements Base<Long>{
+	
+	private Long id;
+	private Base<?> companyRecord;  
+	private Base<?> recordCompanyDate;
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id; 
+	}
+
+	public Base<?> getCompanyRecord() {
+		return companyRecord;
+	}
+
+	public void setCompanyRecord(Base<?> companyRecord) {
+		this.companyRecord = companyRecord;
+	}
+
+	public Base<?> getRecordCompanyDate() {
+		return recordCompanyDate;
+	}
+
+	public void setRecordCompanyDate(Base<?> recordCompanyDate) {
+		this.recordCompanyDate = recordCompanyDate;
+	} 
+	
+	
+}

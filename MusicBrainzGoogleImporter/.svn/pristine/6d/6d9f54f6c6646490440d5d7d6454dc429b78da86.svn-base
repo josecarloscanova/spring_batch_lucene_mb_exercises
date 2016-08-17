@@ -1,0 +1,7 @@
+jdbc.driverClassName=org.postgresql.Driver
+jdbc.musicbrainz.url=jdbc:postgresql://localhost/postgres
+jdbc.batch.url=jdbc:postgresql://localhost/postgres
+jdbc.username=postgres
+jdbc.password=postgres123
+index.location=C:/IndexPath
+index.global.file.name=C:/IndexPath/GlobalTrack_Index

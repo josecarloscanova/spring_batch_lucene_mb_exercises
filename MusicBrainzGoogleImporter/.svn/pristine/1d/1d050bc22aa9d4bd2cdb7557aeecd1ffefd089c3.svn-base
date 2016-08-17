@@ -1,0 +1,19 @@
+jdbc.driverClassName=org.postgresql.Driver
+jdbc.musicbrainz.url=jdbc:postgresql://localhost/postgres
+jdbc.batch.url=jdbc:postgresql://localhost/postgres
+jdbc.username=postgres
+jdbc.password=postgres123
+index.location=C:/IndexPath
+index.global.file.name=C:/IndexPath/GlobalTrack_Index
+#Data Nucleus configuration.
+#schema creation
+datanucleus.autoCreateSchema=true
+datanucleus.autoCreateTables=true
+datanucleus.autoCreateColumns=true
+datanucleus.autoCreateConstraints=true
+#schema validation
+datanucleus.validateTables=true
+datanucleus.validateConstraints=true
+datanucleus.validateColumns=true
+datanucleus.rdbms.CheckExistTablesOrViews=true
+datanucleus.rdbms.initializeColumnInfo=None

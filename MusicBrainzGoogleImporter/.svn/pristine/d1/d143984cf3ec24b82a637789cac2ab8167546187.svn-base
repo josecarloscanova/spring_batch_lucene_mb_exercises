@@ -1,0 +1,79 @@
+package org.nanotek.lucene.document.configuration;
+
+/**
+ * An Entity Class which is responsible to store a specific configuration for a Lucene Document.
+
+ * @author josecanovamauger
+ *
+ */
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.nanotek.Base;
+import org.nanotek.base.Configuration;
+
+
+@SuppressWarnings({"serial"})
+public class DocumentConfiguration implements Base<String>,Configuration<DocumentConfiguration> {
+	
+	private String id;
+	private String name; 
+	private Date creationDate;
+//	private URI documentConfigurerURI; 
+	private Map<?,FieldConfiguration> fieldConfigMap;
+	
+	public DocumentConfiguration() {
+	}
+
+	public DocumentConfiguration(HashMap<String, FieldConfiguration> theFieldConfigMap) {
+		fieldConfigMap = theFieldConfigMap;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setFieldConfigMap(Map<?,FieldConfiguration> fieldConfigMap) {
+		this.fieldConfigMap = fieldConfigMap;
+	}
+	
+	public Map<?,FieldConfiguration>  getFieldConfigMap() {
+		return fieldConfigMap;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+	
+/*	public IndexWriter configureIndexWriter() {
+		return null;
+	}*/
+
+	public Collection<?> getFields() { 
+		return  fieldConfigMap.values();
+	}
+
+	@Override
+	public DocumentConfiguration get() {
+		return this;
+	}
+}

@@ -1,0 +1,7 @@
+package org.nanotek.mq;
+
+public interface MessageAddressable<T> {
+
+	public T getDestination(); 
+	
+}

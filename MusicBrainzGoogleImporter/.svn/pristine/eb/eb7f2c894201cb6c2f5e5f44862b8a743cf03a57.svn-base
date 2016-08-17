@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="MediumFormat" table="MEDIUM_FORMAT">
+
+    	<id name="id" type="string"  column="ID">
+			 <generator class="assigned" />
+        </id>
+        
+        <property name="name" type="string"  column="NAME"/>
+        <property name="year" type="string"  column="YEAR"/>
+        
+    </class>
+    
+</hibernate-mapping>

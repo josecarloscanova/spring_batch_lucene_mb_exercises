@@ -1,0 +1,90 @@
+var ajaps = {
+          ps:new Array(),
+          set:new Array(),
+          send:function (u,sp,s)
+          {
+           if (u && s)
+            {
+               $.ajax (
+                {
+	                type:(ajaps.set["type"])?ajaps.set["type"]:"",
+	                url:u,
+	                data:(ajaps.ps["data"])?ajaps.ps["data"]:"",
+	                accepts:(ajaps.set["accepts"])?ajaps.set["accepts"]:"",
+	                dataType:(ajaps.set["dataType"])?ajaps.set["dataType"]:"",
+	                contentType:ajaps.contentType?ajaps.contentType:'application/x-www-form-urlencoded; charset=UTF-8',	
+	                error:ajaps.callbackerror?ajaps.callbackerror:function(xhr,sts,error){console.log("" + sts + " " + error);},
+	                success:ajaps.callbacksuccess?ajaps.callbacksuccess:function(data,sts,xhr){console.log ("" + sts + " " + data);callHandler(data);}
+               });
+            	return true;
+               }
+          },
+          buildRequest:function(v,ideo,type){
+        	  		ajaps.ps["data"]=ideo;
+        	  		ajaps.set["type"]=type?type:"GET";
+        	  		ajaps.set["accepts"]={
+        	  	        xml: 'application/xml',
+        	  	        text: 'text/plain',
+        	  	        json: 'application/json',
+        	  	        html: 'text/html'
+        	  	    };
+        	  		ajaps.set["dataType"]="json";
+					return dest.ref(v);
+          }
+          ,callbacksuccess : null
+          ,callbackerror:null
+          ,contentType:null
+          };
+
+         var dest  = {
+		    ref:function(query)
+		    {
+		    	 var lok =  "http://localhost:8080/";
+				//http://localhost:8888 http://1.wolfpacksitemap.appspot.com/ from w3schools
+				  var d=new Date();
+				  var t=d.toLocaleTimeString();
+				  //from w3schools
+		    	 return lok + "nanotek/" + query;
+		    }
+        };
+         
+         var fu = {
+         		getQueryString:function (queryString){
+         			return queryString.substring( queryString.indexOf('?') + 1 );
+         		},
+         		parseQueryString:function( queryString ) {
+         		    var params = {}, queries, temp, i, l;
+         		    // Split into key/value pairs
+         		    queries = queryString.split("&");
+         		    // Convert the array of strings into an object
+         		    for ( i = 0, l = queries.length; i < l; i++ ) {
+         		        temp = queries[i].split('=');
+         		        params[temp[0]] = temp[1];
+         		    }
+         		    return params;
+         		},
+     		handler:function(valve){callHandler(valve);}
+         };
+         
+         function sampleSend() 
+         { 
+        	 ret = ajaps.send(ajaps.buildRequest(v["v"]),null,ajaps.set);
+         }
+         
+		function callHandler (data){
+			  	console.log (" " + data);
+			  	//alert (data.office.id + " " + data.office.name + " " + data.office.url);
+			  	office = data.office;
+			  	$("#officeid")[0].value = office.id;
+			  	$("#officename")[0].value   = office.name;
+			  	$("#officeurl")[0].value = office.url;
+			  	$("#officeContactInfo")[0].value = office.description?office.description:"";
+		}
+		
+		var office = { 
+				id : null,
+				name: null, 
+				url : null, 
+				contactInfo :null
+		};
+         

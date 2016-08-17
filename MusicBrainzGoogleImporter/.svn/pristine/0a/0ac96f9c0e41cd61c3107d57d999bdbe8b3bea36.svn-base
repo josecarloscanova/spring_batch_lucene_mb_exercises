@@ -1,0 +1,142 @@
+package org.nanotek.beans.batch;
+
+import java.util.Date;
+
+import org.nanotek.Base;
+/*
+ * 
+CREATE TABLE batch_job_execution
+(
+  job_execution_id bigint NOT NULL,
+  version bigint,
+  job_instance_id bigint NOT NULL,
+  create_time timestamp without time zone NOT NULL,
+  start_time timestamp without time zone,
+  end_time timestamp without time zone,
+  status character varying(10),
+  exit_code character varying(20),
+  exit_message character varying(2500),
+  last_updated timestamp without time zone,
+  CONSTRAINT batch_job_execution_pkey PRIMARY KEY (job_execution_id ),
+  CONSTRAINT job_inst_exec_fk FOREIGN KEY (job_instance_id)
+      REFERENCES batch_job_instance (job_instance_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+ */
+@SuppressWarnings("serial")
+public class JobExecution implements Base<Long> {
+
+	private Long id; 
+	private Long version; 
+
+	private Date createTime; 
+	private Date startTime; 
+	private Date endTime; 
+	private String status; 
+	private String exitCode; 
+	private String exitMessage; 
+	private Date lastUpdated;
+	
+	private JobInstance jobInstance; 
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+
+	public Long getVersion() {
+		return version;
+	}
+
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+	public String getExitCode() {
+		return exitCode;
+	}
+
+
+	public void setExitCode(String exitCode) {
+		this.exitCode = exitCode;
+	}
+
+
+	public String getExitMessage() {
+		return exitMessage;
+	}
+
+
+	public void setExitMessage(String exitMessage) {
+		this.exitMessage = exitMessage;
+	}
+
+
+	public Date getLastUpdated() {
+		return lastUpdated;
+	}
+
+
+	public void setLastUpdated(Date lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public JobInstance getJobInstance() {
+		return jobInstance;
+	}
+
+
+	public void setJobInstance(JobInstance jobInstance) {
+		this.jobInstance = jobInstance;
+	} 
+	
+}

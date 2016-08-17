@@ -1,0 +1,26 @@
+package org.nanotek.tika.io;
+
+@SuppressWarnings("serial")
+public class StreamException extends Exception {
+
+	public StreamException() {
+	}
+
+	public StreamException(String arg0) {
+		super(arg0);
+	}
+
+	public StreamException(Throwable arg0) {
+		super(arg0);
+	}
+
+	public StreamException(String arg0, Throwable arg1) {
+		super(arg0, arg1);
+	}
+
+	public StreamException(String arg0, Throwable arg1, boolean arg2,
+			boolean arg3) {
+		super(arg0, arg1, arg2, arg3);
+	}
+
+}

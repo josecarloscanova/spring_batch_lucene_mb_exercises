@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.nanotek.base">
+
+    <class name="Contact" table="CONTACTS_GUIA_MAIS">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="sequence">  
+                <param name="sequence">contact_id_seq</param>  
+             </generator>
+        </id>
+        
+		<property name="name" type="string"  unique="true" not-null="false" column="name" />
+		<property name="address" type="string"  not-null="false" column="address" />
+		<property name="city" type="string"  not-null="false" column="city"/>
+		<property name="state" type="string"  not-null="false" column="state"/>
+ 		<property name="zip" type="string" not-null="false" column="zip"/>
+ 		<property name="phone" type="string" not-null="false" column="phone"/>
+		<property name="mail" type="string" not-null="false" column="mail"/>
+		<property name="description" type="string" not-null="false" length="5000" column="description"/>
+ 		<property name="webSite" type="string"  not-null="false" length="1000" column="website"/>
+  		<property name="country" type="string"  not-null="false" length="50" column="country"/>   
+   
+    </class>
+    
+</hibernate-mapping>

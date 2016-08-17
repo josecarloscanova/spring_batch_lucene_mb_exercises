@@ -1,0 +1,24 @@
+package org.nanotek.tika.fs;
+
+import java.io.File;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class RootDirectories {
+
+	private Set<String> rootDirectorySet = new TreeSet<String>(); 
+	
+	public RootDirectories() {
+		for (File file : File.listRoots())
+			rootDirectorySet.add(file.toString());
+	}
+
+	public Set<String> getRootDirectorySet() {
+		return rootDirectorySet;
+	}
+
+	public void setRootDirectorySet(Set<String> rootDirectory) {
+		this.rootDirectorySet = rootDirectory;
+	}
+
+}

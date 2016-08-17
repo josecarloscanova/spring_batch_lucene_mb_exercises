@@ -1,0 +1,10 @@
+package org.nanotek.jobs;
+
+import org.nanotek.Base;
+import org.springframework.batch.item.ItemReader;
+
+public abstract class GenericReader implements ItemReader<Base<?>> {
+	
+	public GenericReader() {}
+
+}

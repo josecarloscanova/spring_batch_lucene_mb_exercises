@@ -1,0 +1,5 @@
+package org.nanotek.mq.receive;
+
+public class MetaReceiverService {
+
+}

@@ -1,0 +1,9 @@
+package org.nanotek.base.jpa;
+
+import org.nanotek.Base;
+
+public interface EntityPersistenceEventListener <K extends Base<?>> extends PrePersistEventListener<K>{
+
+	public void postPersist(K pertistentEntity);
+	
+}

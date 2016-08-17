@@ -1,0 +1,12 @@
+package org.nanotek.hibernate.dao;
+
+import java.util.List;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.nanotek.base.Office;
+
+public interface ListableDAO<T> {
+
+	public List<T> listRecords(Integer firstResult, Integer maxResults, DetachedCriteria criteria);
+	
+}

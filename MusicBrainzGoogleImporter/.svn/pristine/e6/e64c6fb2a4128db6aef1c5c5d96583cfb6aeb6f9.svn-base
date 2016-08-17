@@ -1,0 +1,51 @@
+package test.org.nanotek.base.jpa.artist;
+
+import java.util.Date;
+
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.transaction.Transaction;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.nanotek.StringBase;
+import org.nanotek.base.BirthDateBase;
+import org.nanotek.base.Name;
+import org.nanotek.base.artist.Artist;
+
+import test.org.nanotek.base.jpa.PersistentClassBaseTest;
+
+public class ArtistJPATest extends PersistentClassBaseTest{
+
+	@Before
+	public void start()
+	{ 
+		emf = Persistence.createEntityManagerFactory("MusicBrainzImport");
+		em = emf.createEntityManager();
+	}
+	
+	@Override
+	@Test
+	public void test() {
+		Name name = new Name();
+		StringBase first = new StringBase("First");
+		name.setFirstName(first);
+		StringBase last = new StringBase("Last"); 
+		name.setLastName(last);
+		Artist artist = new Artist(); 
+		artist.setName(name);
+		artist.setRealName(name);
+		BirthDateBase date = new BirthDateBase(); 
+		date.setDateBirth(new Date());
+		date.setId(10L);
+		artist.setBirthDate(date);
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		if (em.find(StringBase.class, first.getId()) != null)
+			em.persist(first);
+		if (em.find(StringBase.class,last.getId()) != null)
+			em.persist(last);
+			em.persist(name);
+		trans.commit();
+	}
+}

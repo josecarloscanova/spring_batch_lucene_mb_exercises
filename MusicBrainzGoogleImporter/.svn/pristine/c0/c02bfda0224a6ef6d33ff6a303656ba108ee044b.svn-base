@@ -1,0 +1,85 @@
+package org.nanotek.tika.io.parser;
+
+/**
+ * Delegate Class to encapsulate a given 
+ * TikaParser(instantiated) class into a Spring-Configuration. 
+ */
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Set;
+
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.nanotek.Base;
+import org.nanotek.dao.DAO;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+
+@SuppressWarnings("serial")
+public class TikaParser implements Parser, ApplicationContextAware{
+
+	private Parser parser; 
+	private DAO<Base<?>> dao;
+	private ApplicationContext applicationContext; 
+	
+	public TikaParser() {
+		super();
+	}
+
+	public TikaParser(Parser parser) {
+		super();
+		this.parser = parser;
+	}
+	
+	@Override
+	public Set<MediaType> getSupportedTypes(ParseContext context) {
+		return parser.getSupportedTypes(context);
+	}
+
+	@Override
+	public void parse(InputStream stream, ContentHandler handler,
+			Metadata metadata, ParseContext context) throws IOException,
+			SAXException, TikaException {
+//		 	ParsingReader reader = new ParsingReader(parser, stream, metadata, context);
+			parser.parse(stream, handler, metadata, context);
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+	}
+
+	public Parser getParser() {
+		return parser;
+	}
+
+	public void setParser(Parser parser) {
+		this.parser = parser;
+	}
+
+	public DAO<Base<?>> getDao() {
+		return dao;
+	}
+
+	public void setDao(DAO<Base<?>> dao) {
+		this.dao = dao;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext arg0)
+			throws BeansException {
+		this.applicationContext = arg0;
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+	
+}

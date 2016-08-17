@@ -1,0 +1,16 @@
+package org.nanotek;
+
+@SuppressWarnings({ "serial", })
+public class StringKong extends StringBase implements Kong<String>  {
+
+
+	public StringKong(String innerKong)
+	{
+		super(innerKong); 
+	}
+
+	@Override
+	public String get() {
+		return value;
+	}
+}

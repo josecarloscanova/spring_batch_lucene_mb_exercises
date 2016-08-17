@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <import resource="classpath:properties_config.xml"/>
+	
+    <bean id="musicBrainzDataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.musicbrainz.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    
+    <!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+  		<property name="configLocation" value="classpath:/org/nanotek/conf/hibernate.cfg.xml" />
+	</bean> -->
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="musicBrainzDataSource" />
+		<property name="mappingLocations" value="classpath*:/org/nanotek/conf/**/*.hbm.xml" />
+		<property name="hibernateProperties">
+			<value>
+				<![CDATA[
+			hibernate.show_sql=false
+			hibernate.format_sql=false
+			hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+			hibernate.connection.url=jdbc:postgresql://localhost/postgres
+			hibernate.connection.username=postgres
+			hibernate.connection.password=postgres123
+			hibernate.current_session_context_class=thread
+			hibernate.hbm2ddl.auto=update
+			]]>
+			</value>
+		</property>
+	</bean>
+
+	<bean id="txManager" 
+	    		class="org.springframework.orm.hibernate3.HibernateTransactionManager" lazy-init="true">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+    <bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="musicBrainzDataSource" />
+	</bean>
+	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate" >
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+</beans>

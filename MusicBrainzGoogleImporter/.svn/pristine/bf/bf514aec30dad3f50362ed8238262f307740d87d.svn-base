@@ -1,0 +1,36 @@
+package org.nanotek.beans.batch;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class StepExecutionContext implements Base<Long>{
+
+	private Long id; 
+	private String executionContext; 
+	private String serializedContext;
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public String getExecutionContext() {
+		return executionContext;
+	}
+	
+	public void setExecutionContext(String executionContext) {
+		this.executionContext = executionContext;
+	}
+	
+	public String getSerializedContext() {
+		return serializedContext;
+	}
+	
+	public void setSerializedContext(String serializedContext) {
+		this.serializedContext = serializedContext;
+	} 
+	
+}

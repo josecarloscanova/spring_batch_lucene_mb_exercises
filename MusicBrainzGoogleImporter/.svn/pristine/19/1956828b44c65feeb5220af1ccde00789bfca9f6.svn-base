@@ -1,0 +1,36 @@
+package org.nanotek.poi;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.nanotek.Base;
+import org.nanotek.Report;
+
+@SuppressWarnings("serial")
+public class ExcelReport<I extends Base<?>> implements Report<Workbook,I>{
+
+	private I id; 
+	
+	private Workbook report;
+	
+	public ExcelReport() {
+	}
+
+	public ExcelReport(I id) {
+		this.id = id; 
+	}
+	
+	@Override
+	public void setId(I id) {
+		this.id = id; 
+	}
+
+	@Override
+	public I getId() {
+		return id;
+	}
+
+	@Override
+	public Workbook getReport() {
+		return report;
+	}
+
+}

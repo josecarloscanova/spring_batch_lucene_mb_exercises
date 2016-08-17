@@ -1,0 +1,24 @@
+package texts.org.nanotek;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.apache.log4j.Logger;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class HibernateDAOLoader  {
+
+	private static final Logger log = Logger.getLogger(HibernateDAOLoader.class);
+	private static ClassPathXmlApplicationContext ctx;
+
+
+	public static void main (String []args) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{ 
+		ctx = new  ClassPathXmlApplicationContext();
+		ctx.setConfigLocations(new String[] {"database-loaders/spring-dao-context.xml"});
+		Method method = ClassPathXmlApplicationContext.class.getMethod("refresh", null); 
+		method.invoke(ctx,null);
+		ctx.start();
+	}
+	
+}

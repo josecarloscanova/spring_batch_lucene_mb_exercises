@@ -1,0 +1,48 @@
+package org.nanotek.mq.converters;
+
+import org.nanotek.Base;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+
+@SuppressWarnings("serial")
+public class MediaDetailMessageConverter<M extends Message> implements MessageConverter <M>{
+
+	@Override
+	public M toMessage(Base<?> arg, MessageProperties properties) {
+
+		buildAmpqMessage(arg , properties);
+		return null;
+	}
+
+	private void buildAmpqMessage(Base<?> arg, MessageProperties properties) {
+
+		switch (properties.getContentType()){
+
+			case MessageProperties.CONTENT_TYPE_TEXT_PLAIN:{
+
+			}
+			case MessageProperties.CONTENT_TYPE_BYTES:{
+
+			}
+			case MessageProperties.CONTENT_TYPE_JSON:{
+
+			}
+			case MessageProperties.CONTENT_TYPE_SERIALIZED_OBJECT:{
+
+			}
+			case MessageProperties.CONTENT_TYPE_XML:{
+
+			}
+			default:
+
+		}
+	}
+
+	@Override
+	public Base<?> fromMessage(Message arg0) {
+		return null;
+	}
+
+
+
+}

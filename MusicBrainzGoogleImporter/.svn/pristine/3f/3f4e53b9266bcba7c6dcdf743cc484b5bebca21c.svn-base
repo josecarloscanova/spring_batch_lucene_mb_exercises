@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:b="http://www.springframework.org/schema/batch" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:p="http://www.springframework.org/schema/p"  
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+  		http://www.springframework.org/schema/aop/spring-aop.xsd
+  		http://www.springframework.org/schema/task 
+        http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+ 		
+	<!-- <import resource="classpath:spring-dao-context.xml" /> -->
+	
+	<!--<import resource="classpath:spring-label-name-context.xml" />
+	<import resource="classpath:spring-batch-datasource.xml" />
+	<import resource="classpath:spring-job-repo.xml" />
+	<import resource="classpath:spring-key-service-factory.xml" />
+	<import resource="classpath:spring-release-name-context.xml" />
+	<import resource="classpath:spring-track-name-context.xml" />
+	<import resource="classpath:spring-work-name-context.xml" /> -->
+	
+	<import resource="classpath:spring-batch-jobs/artist_alias/lucene/lucene_context_configuration.xml" />
+	<import resource="classpath:spring-batch-jobs/musicbrainz-csv-mapping.xml" />
+	
+	<bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:spring-batch-jobs/artist_alias/configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+	<!-- FLAT FILE SECTION_BEGIN -->
+	<bean id="mapping" class="org.nanotek.opencsv.MapColumnStrategy">
+		<constructor-arg><ref bean="artistAliasBaseMap"/></constructor-arg>
+		<property name="type" value="org.nanotek.musicbrainz.beans.ArtistAlias"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="csvToBean" class="org.nanotek.opencsv.BaseCsvToBean"></bean>
+	
+
+	<bean lazy-init="true" id="aliasFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.artist.alias.file}"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="csvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="aliasFileReader"></constructor-arg>
+	</bean>
+
+<!-- Keep this section referring to base class since no ideal generic id -->
+	<bean lazy-init="true" id="artistAliasReader" class="org.nanotek.musicbrainz.job.readers.BaseReader">
+		<property name="itemMapping" ref="mapping"></property>
+		<property name="fileStr" value="${music.brainz.artist.alias.file}"></property>
+		<property name="csvMap" ref="csvToBean"></property>
+		<property name="reader" ref="csvReader"></property>
+	</bean>
+<!-- Keep this section referring to base class since no ideal generic id -->	
+	
+	<bean id="artistAliasTemplate" class="org.nanotek.musicbrainz.beans.template.BrainzBaseTemplate">
+		<property name="clazz" value="org.nanotek.musicbrainz.beans.ArtistAlias"></property>
+		<property name="baseDocumentConfiguration" value="documentConfiguration"></property>
+		<property name="validator" ref="validator"></property>
+	</bean>
+
+<!-- Keep this section referring to base class since no ideal generic id -->	
+	<bean lazy-init="true" id="artistAliasWriter" class="org.nanotek.musicbrainz.job.writers.lucene.ArtistAliasIndexWriter">
+		<property name="indexWriter" ref="indexWriter"></property>
+		<property name="baseTemplate" ref="artistAliasTemplate"></property>
+	</bean>
+<!-- Keep this section referring to base class since no ideal generic id -->
+	
+	<bean lazy-init="true" id="indexStepListener" class="org.nanotek.lucene.job.listeners.IndexWriterStepListener"> 
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean>
+	
+	 <bean lazy-init="true" id="indexChunkListener" class="org.nanotek.lucene.job.listeners.IndexChunkListener">
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean>
+	
+	<!--<bean lazy-init="true" id="artistIndexProcessor" class="org.nanotek.musicbrainz.job.processor.ArtistNameIndexProcessor">
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean> -->
+	  
+ 	<task:executor id="taskExecutor"
+	               pool-size="1500-2000"
+	               queue-capacity="1000000"/>
+	<b:job id="artistAliasIndexJob"   job-repository="jobRepository" restartable="true" incrementer="sampleIncrementer">
+	    <b:step  id="artistAliasIndexLoad">
+	    	<b:tasklet task-executor="taskExecutor" throttle-limit="1000">
+	    		<b:chunk reader="artistAliasReader" commit-interval="10000" writer="artistAliasWriter">
+	    		</b:chunk>
+	    		<b:listeners>
+	    			<b:listener ref="indexChunkListener"/>
+	    		</b:listeners>
+	    	</b:tasklet>
+	    	<b:listeners>
+            		<b:listener ref="indexStepListener"/>
+       		</b:listeners>
+	    </b:step>
+	</b:job>
+
+	    
+	<bean id="jobLauncher"
+	      class="org.springframework.batch.core.launch.support.SimpleJobLauncher" >
+	    <property name="jobRepository" ref="jobRepository" />
+	    <property name="taskExecutor" ref="taskExecutor">
+	    </property>
+	</bean>
+
+	<bean id="sampleIncrementer"
+	      class="org.nanotek.jobs.SampleIncrementer">
+	</bean>
+
+</beans>

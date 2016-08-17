@@ -1,0 +1,32 @@
+package org.nanotek.base;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class Link<T extends Serializable> implements Base<T>{
+
+	protected T id;
+	protected String location;
+	
+	public Link(){
+	}
+	
+	public T getId() {
+		return id;
+	}
+
+	public void setId(T id) {
+		this.id = id;
+	} 
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+}

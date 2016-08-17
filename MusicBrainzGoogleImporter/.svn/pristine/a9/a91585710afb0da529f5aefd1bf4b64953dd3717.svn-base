@@ -1,0 +1,7 @@
+package org.nanotek;
+
+public interface Teller<K extends Base<?>> extends Base<K> {
+
+	public <T extends Base<?>> T tell(K ref);
+	
+}

@@ -1,0 +1,37 @@
+package org.nanotek.lucene.index.info.terms;
+
+import org.nanotek.base.LongBase;
+import org.nanotek.lucene.document.configuration.FieldConfiguration;
+
+/**
+ * A translation from "Lucene @ TermStat class", 
+ * The "Term referenced here is a lazy-load" term from lucene index documents. 
+ * Since the size of terms on a "Index Cluster" may grow on log scale. 
+ * 
+ * @author java-eclipse
+ *
+ */
+@SuppressWarnings("serial")
+public class Term extends LongBase{
+
+	/*
+	 * refer to a FieldConfiguration on a Document Configuration.
+	 */
+	private final FieldConfiguration field; 
+	private final String term;
+	
+	public Term(FieldConfiguration field, String term) {
+		super();
+		this.field = field;
+		this.term = term;
+	}
+
+	public FieldConfiguration getField() {
+		return field;
+	}
+
+	public String getTerm() {
+		return term;
+	} 
+	
+}

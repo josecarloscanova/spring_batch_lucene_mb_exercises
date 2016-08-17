@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="ArtistCreditName" table="ARTIST_CREDIT_NAME">
+
+    	<id name="id" type="string"  column="ID">
+			 <generator class="assigned" />
+        </id>
+        
+		<property name="artistCredit" type="long"  column="ARTIST_CREDIT"/>
+		<property name="name" type="long" column="ARTIST_NAME" />
+        <property name="position" type="long" column="ARTIST_CREDIT_NAME_POSITION" />
+        <property name="artist" type="long" column="ARTIST_CREDIT_ARTIST_NAME" />
+        <property name="joinPhrase" type="string" column="ARTIST_CREDIT_NAME_JOIN_PRASE" length="2000"/>
+        
+    </class>
+    
+</hibernate-mapping>

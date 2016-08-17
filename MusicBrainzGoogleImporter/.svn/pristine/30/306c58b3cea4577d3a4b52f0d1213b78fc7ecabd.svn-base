@@ -1,0 +1,27 @@
+package org.nanotek.base.music.artist;
+
+import java.util.Set;
+
+import org.nanotek.Base;
+import org.nanotek.base.artist.Artist;
+
+/**
+ * @see http://musicbrainz.org/doc/Artist
+ * 
+ * @author josecanovamauger
+ *
+ */
+@SuppressWarnings("serial")
+public class MusicalArtist extends Artist{
+
+	private Set<Base<?>> artistRecords; 
+
+	public Set<Base<?>> getArtistRecords() {
+		return artistRecords;
+	}
+
+	public void setArtistRecords(Set<Base<?>> artistRecords) {
+		this.artistRecords = artistRecords;
+	}
+	
+}

@@ -1,0 +1,16 @@
+package org.nanotek;
+
+import java.nio.file.Path;
+
+/**
+ * An interface that defines the method that shall be implemented upon a routine that 
+ * executes a "find on path" routine. 
+ * Does not define the contract neither parameters on how such method shall be implemented. 
+ * 
+ * @author josecanovamauger.
+ *
+ */
+public interface PathFinder {
+
+	public void find(Path path);
+}

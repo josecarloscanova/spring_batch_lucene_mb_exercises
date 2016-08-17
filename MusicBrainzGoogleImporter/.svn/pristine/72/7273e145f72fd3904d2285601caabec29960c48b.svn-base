@@ -1,0 +1,65 @@
+package org.nanotek.task;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.concurrent.Callable;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Base;
+import org.nanotek.BaseTask;
+import org.nanotek.Task;
+import org.nanotek.lucene.preference.PreferenceSet;
+
+@SuppressWarnings("serial")
+public abstract class ConcreteTaskBase<K extends Serializable> extends BaseTask<K> implements Callable<ConcreteTaskBase<K>>{
+
+	private static Logger log = Logger.getLogger(ConcreteTaskBase.class);
+	
+	protected K id; 
+	protected PreferenceSet preferenceSet;
+	protected Date taskDate; 
+	protected String taskName; 
+	
+	
+	public ConcreteTaskBase() {
+		preferenceSet = new PreferenceSet();
+		taskDate = new Date();
+		taskName = "";
+	}
+
+	@Override
+	public void setId(K id) {
+		this.id = id; 
+	}
+
+	@Override
+	public K getId() {
+		return id;
+	}
+
+	@Override
+	public K getTaskId() {
+		return id;
+	}
+
+	@Override
+	public String getTaskName() {
+		return taskName;
+	}
+
+	@Override
+	public Date getTaskDate() {
+		return taskDate;
+	}
+
+	@Override
+	public PreferenceSet getTaskPreferenceSet() {
+		return preferenceSet;
+	}
+	
+	public ConcreteTaskBase<K> call() throws Exception {
+		log.debug("returning a self pointer");
+		return this;
+	}
+	
+}

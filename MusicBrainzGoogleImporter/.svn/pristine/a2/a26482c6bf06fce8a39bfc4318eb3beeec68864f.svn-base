@@ -1,0 +1,75 @@
+package org.nanotek.base;
+
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.util.Version;
+import org.nanotek.Base;
+import org.nanotek.Kong;
+import org.nanotek.PostConstructor;
+
+@SuppressWarnings("serial")
+public class QueryParserConfiguration implements Base<Long>, Kong<QueryParser>,PostConstructor<QueryParser> {
+
+	private Long id; 
+	private QueryParser parser;
+	private String defaultField = "content";
+	
+	public QueryParserConfiguration() {
+		parser =  new QueryParser(Version.LUCENE_47, defaultField , new StandardAnalyzer(Version.LUCENE_47));
+	}
+	
+	public QueryParserConfiguration(QueryParser parser, Long id) {
+		this.parser = parser;
+		this.id = id;
+	}
+	
+	public QueryParserConfiguration(Class<? extends QueryParser> parserClass, String field) {
+		this.parser = postContruct(parserClass , field);
+		this.id = System.nanoTime();
+	}
+	
+	public QueryParserConfiguration(Class<? extends QueryParser> parserClass, String field,Analyzer analyzer) {
+		this.parser = postContruct(parserClass,field,analyzer);
+		this.id = System.nanoTime();
+	}
+	
+	private QueryParser postContruct(Class<? extends QueryParser> parserClass,
+			String field) {
+		
+		return postContruct (parserClass , field, new StandardAnalyzer(Version.LUCENE_47));
+		
+	}
+
+	private QueryParser postContruct(Class<? extends QueryParser> parserClass,
+			String field,Analyzer analyzer) {
+		try {
+			Constructor <?> contructor = parserClass.getConstructor(new Class[]{Version.class,String.class,Analyzer.class});
+				return (QueryParser) contructor.newInstance(new Object[]{Version.LUCENE_47,field,analyzer});
+		} catch (InstantiationException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+			throw new BaseException("Could Not instantiate Bean", e);
+		}
+		
+	}
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id; 
+	}
+
+	@Override
+	public QueryParser get() {
+		return parser;
+	}
+}

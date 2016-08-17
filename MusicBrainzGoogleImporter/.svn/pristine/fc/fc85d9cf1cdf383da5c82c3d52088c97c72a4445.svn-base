@@ -1,0 +1,201 @@
+package org.nanotek.hibernate.dao.impl;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.nanotek.base.ATContactBase;
+import org.nanotek.base.OfficeDetail;
+import org.nanotek.base.OfficeUrl;
+import org.nanotek.base.PageItemBase;
+import org.nanotek.hibernate.dao.GeneralPurposeDAO;
+import org.nanotek.hibernate.dao.OfficeUrlDAO;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+public class OfficeUrlDAOImpl extends GeneralPurposeDAO<OfficeUrl> implements
+OfficeUrlDAO {
+
+	private static final Logger log = Logger.getLogger(OfficeUrlDAOImpl.class);
+	private static ClassPathXmlApplicationContext ctx;
+	private OfficeDetailDAOImpl officeDetailDAO; 
+
+
+	public static void main (String []args)
+	{ 
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+		"database-loaders/spring-dao-context.xml"});
+		OfficeUrlDAOImpl dao = (OfficeUrlDAOImpl) ctx.getBean("officeUrlDAO");
+		Long recordCount = dao.countRecords();
+		DetachedCriteria criteria = DetachedCriteria.forClass(OfficeUrl.class);
+		criteria.addOrder(Order.asc("name"));
+		PageItemBase<Long> itemBase = new PageItemBase<Long>(); 
+		itemBase.setStartRecord(0);
+		itemBase.setMaxRecords(recordCount.intValue());
+		List<OfficeUrl> officeUrl = dao.listRecords(itemBase, criteria);
+		int i = 0;
+
+		Workbook wb = dao.prepareReport();
+		Sheet sheet = wb.createSheet();
+		dao.prepareSheet(sheet); 
+
+		for (OfficeUrl office: officeUrl) 
+		{ 
+			office.getName(); 
+			Set<OfficeDetail> officeDetails = office.getOfficeDetails();
+			if (officeDetails.size() > 0){  
+				System.out.println(++i);
+				Row row = sheet.createRow(i);
+				dao.processOffice(office,row );
+			}
+		}
+		File file = new File("/home/java-eclipse/export-at-contactbase-audio.xls");
+		if (file.exists()) 
+			file.delete(); 
+		try {
+			file.createNewFile();
+			FileOutputStream out = new FileOutputStream(file);
+			wb.write(out);
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private Workbook prepareReport() {
+
+		Workbook wb = new HSSFWorkbook();
+		// create a new sheet
+		return wb;
+	}
+
+	private void prepareSheet(Sheet sheet) {
+
+		Row row = sheet.createRow(0);
+		Field[] fields = ATContactBase.class.getDeclaredFields();
+		int increment = 0;
+		for (Field field : fields)
+		{ 
+			Cell cell = row.createCell(increment);
+			cell.setCellValue(field.getName().toUpperCase());
+			increment++;
+		}
+
+	}
+
+
+	private void processOffice(OfficeUrl office,Row row) {
+
+		Map<String,String> values = mountValues(office.getOfficeDetails());
+		Field [] atFields = ATContactBase.class.getDeclaredFields();
+		ATContactBase base = new ATContactBase(); 
+		BeanUtilsBean bub = BeanUtilsBean.getInstance();
+		int i = 0;
+		log.debug(office.getName());
+		base.setCompanyName(office.getName());
+		base.setUrl(office.getUrl());
+		for (Field field : atFields)
+		{ 
+			try {
+				bub.setProperty(base, field.getName(), values.get(field.getName()));
+				Cell cell = row.createCell(i);
+				Object val = bub.getProperty(base, field.getName());
+				if (!"companyName".equals(field.getName()) && !"url".equals(field.getName()) &&  val !=null){ 
+					cell.setCellValue(val.toString());
+					log.debug(val);
+				}else if ("companyName".equals(field.getName())){ 
+					cell.setCellValue(office.getName());
+					log.debug("match companyName");
+				}else if ("url".equals(field.getName())){ 
+					cell.setCellValue(office.getUrl());
+					log.debug("match company url");
+				}
+				i++;
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
+		log.debug(base.toString());
+	}
+
+
+	private Map<String, String> mountValues(Set<OfficeDetail> officeDetails) {
+		Map<String,String> entries = new HashMap<String,String>(); 
+		for (OfficeDetail detail : officeDetails) { 
+			if (!entries.containsKey(detail.getName())){ 
+				entries.put(detail.getName().trim(), detail.getValue().trim());
+			} else { 
+				String value = entries.get(detail.getName());
+				entries.remove(detail.getName());
+				entries.put(detail.getName().trim(), value + " " + detail.getValue().trim());
+			}
+		}
+		return entries;
+	}
+
+	@Override
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
+	public List<OfficeUrl> getOfficesWithoutDetail()
+	{ 
+
+		//		normalizeOfficeName();
+		DetachedCriteria  criteria = DetachedCriteria.forClass(OfficeUrl.class);
+		criteria.add(Restrictions.ne("contactInfo", "bing_search")); 
+		criteria.addOrder(Order.asc("name"));
+		Long numOffices = countRecords();
+		PageItemBase<Long> pageItemBase = new PageItemBase<Long>();
+		pageItemBase.setStartRecord(0);
+		pageItemBase.setMaxRecords(numOffices.intValue());
+		List<OfficeUrl> offices = listRecords(pageItemBase, criteria);
+		List<OfficeUrl> officesToEdit = new ArrayList<OfficeUrl>();
+		for (OfficeUrl officeUrl : offices) 
+		{ 
+			if (!(officeUrl.getOfficeDetails().size()>0)) { 
+
+				criteria = DetachedCriteria.forClass(OfficeUrl.class); 
+				criteria.add(Restrictions.like("name", officeUrl.getName()));
+				criteria.add(Restrictions.not(Restrictions.eq("id", officeUrl.getId())));
+				List<OfficeUrl> sameOffice = listRecords(pageItemBase, criteria);
+				if (sameOffice.size() > 0){ 
+					criteria = DetachedCriteria.forClass(OfficeDetail.class); 
+					criteria.add(Restrictions.in("officeUrl", sameOffice));
+					List<?> notWithDetail = officeDetailDAO.listRecords(pageItemBase, criteria);
+					if (notWithDetail.size() ==0) 
+						officesToEdit.add(officeUrl);
+				}
+			}
+		}
+
+		return officesToEdit;
+	}
+
+	public OfficeDetailDAOImpl getOfficeDetailDAO() {
+		return officeDetailDAO;
+	}
+
+	public void setOfficeDetailDAO(OfficeDetailDAOImpl officeDetailDAO) {
+		this.officeDetailDAO = officeDetailDAO;
+	}
+
+}

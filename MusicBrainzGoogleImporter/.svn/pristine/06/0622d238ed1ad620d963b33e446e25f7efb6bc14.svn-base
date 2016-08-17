@@ -1,0 +1,13 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.Isrc;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+
+public class IsrcCsvToBean extends CsvToBean<Isrc> {
+
+	public IsrcCsvToBean() {
+		super();
+	}
+
+}

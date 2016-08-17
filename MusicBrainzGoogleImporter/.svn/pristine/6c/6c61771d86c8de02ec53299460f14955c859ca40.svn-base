@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:b="http://www.springframework.org/schema/batch"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd" >
+ 		
+	<import resource="classpath:index-writers/work_name_writer_context.xml" /> 
+
+	<bean id="workNameTemplate" class="org.nanotek.lucene.template.base.WorkNameTemplate"> 
+	    <property name="clazz" value="org.nanotek.beans.WorkName"></property>
+	</bean>
+	
+    <bean
+        id="workNameWriter"
+        class="org.nanotek.musicbrainz.job.writers.lucene.WorkNameIndexWriter"
+        lazy-init="true" >
+        <property
+            name="indexWriter"
+            ref="indexWriter" >
+        </property>
+        <property name="workNameTemplate" ref="workNameTemplate"></property>
+    </bean>
+
+</beans>

@@ -1,0 +1,30 @@
+package org.nanotek.base.music.artist;
+
+/**
+ * Domain description of which kind of attribute is related for, used in future 
+ * to discriminate "a specific attribute in the domain", everything else is described as 
+ * generic, the relevance is determined on a specific business logic implementation.
+ * 
+ * @author josecanovamauger
+ *
+ */
+public enum MusicalArtistAttributeEnum {
+	
+	GENERAL("general"),
+	INSTRUMENT("instrument"), 
+	VOCALIST("vocalist"), 
+	PARTICIPATION("participation"),
+	PERFORMANCE("performance");
+
+	private String value_; 
+	
+	private MusicalArtistAttributeEnum(String value) 
+	{ 
+		this.value_ = value;
+	}
+	
+	public String value () 
+	{ 
+		return value_;
+	}
+}

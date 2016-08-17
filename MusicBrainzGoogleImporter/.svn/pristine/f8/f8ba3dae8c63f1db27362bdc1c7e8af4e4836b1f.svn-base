@@ -1,0 +1,108 @@
+package org.nanotek.tika.fs;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Date;
+
+import org.nanotek.tika.io.ExecutorTikaFileVisitor;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+public class DirectoryScanner implements ApplicationContextAware{
+	
+	private String [] rootDirs; 
+    /** The patterns for the files to be included. */
+    protected String[] includes;
+	private ApplicationContext applicationContext;
+    
+	public DirectoryScanner() {
+	}
+
+	public String[] getRootDirs() {
+		return rootDirs;
+	}
+
+	public void setRootDirs(String[] rootDirs) {
+		this.rootDirs = rootDirs;
+	}
+	
+	public String[] getIncludes() {
+		return includes;
+	}
+
+	public void setIncludes(String[] includes) {
+		this.includes = includes;
+	}
+	
+	public void scan () throws IOException 
+	{ 
+		assert (applicationContext !=null);
+		String pattern = null;
+//		LuceneIndexWriteService<TikaInputStream> indexWriterService = (LuceneIndexWriteService<TikaInputStream>) applicationContext.getBean("luceneIndexService");
+//		indexWriterService.initService(indexLocation);
+///////
+//		TikaFileVisitor finder = (TikaFileVisitor) applicationContext.getBean("tikaFileVisitor"); 
+
+		ExecutorTikaFileVisitor finder = (ExecutorTikaFileVisitor) applicationContext.getBean("runnableFileVisitor");
+//		finder.setIndexWriterService(indexWriterService);
+//		IndexWriter indexWriter = finder.getIndexWriterService().getIndexWriter();
+//		Directory directory = indexWriter.getDirectory(); 
+		for (String include : includes)
+		{ 
+			for (String rootDir : rootDirs) { 
+				Path inputPath = new File(rootDir).toPath();
+				pattern = include;
+				finder.setMatcher(FileSystems.getDefault().getPathMatcher("glob:" + pattern));
+//				TikaPersistentFileVisitor finder = new TikaPersistentFileVisitor(pattern);
+		        Files.walkFileTree(inputPath, finder);
+		        finder.done();
+			}
+		}
+//		if (indexWriterService !=null){ 
+//			indexWriterService.shutDownService();
+//		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
+											 new String[] {"base-local-tika-config/tika-base-context.xml"});
+
+			Long startTime = new Date().getTime();
+			DirectoryScanner dirsCan = (DirectoryScanner) ctx.getBean("baseDirectoryScanner");
+//			dirsCan.setRootDirs(new String[]{"C:\\"});
+//			dirsCan.setIncludes(new String[]{"*{.java,class}"});
+	        dirsCan.scan();
+	        checkTaskExecutor(ctx);
+	        Long duration = (new Date().getTime() - startTime)/1000; 
+	        System.err.println("Time in seconds to scan: " + duration);
+	        ExecutorTikaFileVisitor fileVisitor = (ExecutorTikaFileVisitor) ctx.getBean("runnableFileVisitor");
+	        System.err.println("Tasks rejected" + fileVisitor.getStack().size() );
+	        System.err.println("Tasks Processed " + fileVisitor.tasksAccepted );
+	    }
+
+	private static void checkTaskExecutor(ClassPathXmlApplicationContext ctx) {
+		ThreadPoolTaskExecutor executor = (ThreadPoolTaskExecutor) ctx.getBean("taskExecutor");
+		while (executor.getActiveCount() > 0) 
+		{ 
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		executor.shutdown();
+	}
+
+
+	@Override
+	public void setApplicationContext(ApplicationContext arg0)
+			throws BeansException {
+		this.applicationContext = arg0;
+	}
+}

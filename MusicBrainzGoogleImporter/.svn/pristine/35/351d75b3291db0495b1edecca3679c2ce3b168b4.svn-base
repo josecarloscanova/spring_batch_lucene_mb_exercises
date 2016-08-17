@@ -1,0 +1,47 @@
+package org.nanotek.spring.batch;
+
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemStream;
+import org.springframework.batch.item.ItemStreamException;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
+
+public class TypeReader<T> implements ItemReader<T> , ItemStream {
+
+	private static final Logger log = Logger.getLogger(TypeReader.class);
+	protected ExecutionContext executionContext;
+	
+	public TypeReader() {
+	}
+
+	@Override
+	public T read() throws Exception, UnexpectedInputException, ParseException,
+			NonTransientResourceException {
+		Map<?,?> pathMap = (Map<?,?>) executionContext.get("pathMap");
+		log.debug("Here is doing nothing for now any idea?" + pathMap);
+		return null;
+	}
+
+	@Override
+	public void open(ExecutionContext executionContext)
+			throws ItemStreamException {
+		this.executionContext = executionContext; 
+	}
+
+	@Override
+	public void update(ExecutionContext executionContext)
+			throws ItemStreamException {
+		
+	}
+
+	@Override
+	public void close() throws ItemStreamException {
+		this.executionContext = null;
+	}
+
+}

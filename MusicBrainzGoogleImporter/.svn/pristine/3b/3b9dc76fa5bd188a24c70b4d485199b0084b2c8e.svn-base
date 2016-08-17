@@ -1,0 +1,33 @@
+package tests.queue;
+
+import javax.jms.Destination;
+
+import org.nanotek.lucene.index.Index;
+import org.nanotek.mq.send.BaseSender;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class QueueSenderTest {
+
+	public QueueSenderTest() {
+	}
+
+	private static ClassPathXmlApplicationContext ctx;
+
+
+	/**
+	 * @param args
+	 * @throws InterruptedException
+	 */
+	public static void main(String[] args) throws InterruptedException {
+		ctx = new ClassPathXmlApplicationContext(new String[] {"activemq-config/base-activemq-sender-context.xml"});
+		BaseSender<?,Index> sender =  (BaseSender<Destination,Index>) ctx.getBean("baseSender");
+		for (int i = 0 ; i < 10 ; i++){
+			Index index = new Index();
+			index.setId((long) i);
+			index.setPath("This is a test message " + i + " ABA ");
+			sender.send(index);
+		}
+		System.exit(0);
+	}
+
+}

@@ -1,0 +1,106 @@
+package org.nanotek.musicbrainz.beans.template;
+
+import java.io.Serializable;
+import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.document.Document;
+import org.nanotek.Base;
+import org.nanotek.base.Configurable;
+import org.nanotek.base.Configurator;
+import org.nanotek.base.MappableReferenceBase;
+import org.nanotek.lucene.document.DocumentBuilder;
+import org.nanotek.lucene.document.configuration.DocumentConfiguration;
+import org.nanotek.lucene.template.base.BaseTemplate;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+@SuppressWarnings("serial")
+public class BrainzBaseTemplate extends BaseTemplate<Base<?>> implements Configurator<DocumentConfiguration, Base<?>, Serializable>{
+
+	private Log log = LogFactory.getLog(BrainzBaseTemplate.class);
+	private String baseDocumentConfiguration;
+	
+	public BrainzBaseTemplate() {
+	}
+
+	@Override
+	public void setId(Serializable id) {
+	}
+
+	@Override
+	public Serializable getId() {
+		throw new RuntimeException ("not yet implemented.");
+	}
+
+
+	public String getBaseDocumentConfiguration() {
+		return baseDocumentConfiguration;
+	}
+
+	public void setBaseDocumentConfiguration(String baseDocumentConfiguration) {
+		this.baseDocumentConfiguration = baseDocumentConfiguration;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Document createTemplate(Base<?> info) {
+		
+		Set<?> constraintViolations = null;
+		if (validator !=null)
+			 constraintViolations =  validator.validate(info);
+		Document document = null;
+		log.debug(" VALIDATOR TEST: ConstraintViolations " + constraintViolations.size());
+		if (constraintViolations == null || constraintViolations.size() <= 0) { 
+			DocumentConfiguration	artistDocumentConfiguration = (DocumentConfiguration) applicationContext.getBean(baseDocumentConfiguration); 
+			assert (artistDocumentConfiguration!=null);
+			ConfigurableReferenceBase<?> configurable = new ConfigurableReferenceBase<MappableReferenceBase<Base<?>,ColumnPositionMappingStrategy<Base<?>>>>(info);
+			DocumentBuilder builder = new DocumentBuilder();
+			builder.setDataMap(configurable.getTarget().getMap(configurable.getOriginBase()));
+			document = builder.build(artistDocumentConfiguration);
+		}else { 
+			document = new Document();
+//			checkError(constraintViolations);
+		}
+
+		return document;
+	}
+
+	@Override
+	public Configurable<Base<?>, Serializable> configure(Base<?> info) {
+		return null;
+	}
+
+	class ConfigurableReferenceBase<T extends MappableReferenceBase<Base<?>,ColumnPositionMappingStrategy<Base<?>>>> implements Configurable<Base<?>,Serializable>{
+
+		private Base<?> base; 
+
+		ConfigurableReferenceBase (Base<?>  base){ 
+			this.base = base;
+		}
+
+		@Override
+		public void setId(Serializable id) {
+			throw new RuntimeException ("not yet implemented.");
+		}
+
+		@Override
+		public Serializable getId() {
+			return base.getId();
+		}
+
+		@Override
+		public Base<?> getOriginBase() {
+			return base;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public T getTarget() {
+			return (T) new MappableReferenceBase<Base<?>,ColumnPositionMappingStrategy<Base<?>>>();
+		}
+
+	}
+	
+}

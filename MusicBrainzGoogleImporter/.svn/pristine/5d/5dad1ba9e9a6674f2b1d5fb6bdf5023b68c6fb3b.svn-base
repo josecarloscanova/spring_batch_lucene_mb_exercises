@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.nanotek.beans.batch">
+
+    <class name="JobExecutionContext" table="batch_job_execution_context">
+
+    	<id name="id" type="long"  column="job_execution_id">
+			 <generator class="assigned" />
+        </id>
+        
+    	 <property name="shortContext" type="long"  column="short_context"/>
+    	 <property name="serializedContext" type="long"  column="serialized_context" not-null="false"/>
+        
+    </class>
+    
+</hibernate-mapping>

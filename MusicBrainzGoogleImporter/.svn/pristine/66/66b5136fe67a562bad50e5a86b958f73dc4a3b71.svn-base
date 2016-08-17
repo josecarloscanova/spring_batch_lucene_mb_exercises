@@ -1,0 +1,31 @@
+package org.nanotek.poi;
+
+import java.io.FileOutputStream;
+
+import org.nanotek.StringBase;
+
+@SuppressWarnings("serial")
+public class Outputter extends StringBase {
+
+	private String outputFormat; 
+	
+	FileOutputStream fileDestination; 
+	
+	public Outputter(String fileName) {
+		super(fileName); 
+	}
+	
+	public Outputter(String fileName , String outputFormat) {
+		super(fileName); 
+		this.outputFormat = outputFormat; 
+	}
+
+	public String getOutputFormat() {
+		return outputFormat;
+	}
+
+	public FileOutputStream getFileDestination() {
+		return fileDestination;
+	}
+	
+}

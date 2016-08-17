@@ -1,0 +1,9 @@
+package org.nanotek.tika.io;
+
+import java.io.InputStream;
+
+public interface StreamHandler <T extends InputStream>{
+
+	public  void handleStream(T t) throws StreamException;
+	
+}

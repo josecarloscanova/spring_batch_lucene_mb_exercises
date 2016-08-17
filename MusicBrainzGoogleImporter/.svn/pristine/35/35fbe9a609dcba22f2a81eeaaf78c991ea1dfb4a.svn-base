@@ -1,0 +1,57 @@
+package org.nanotek.task;
+
+import java.nio.channels.Pipe;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Base;
+import org.nanotek.task.callable.pipe.PipeTaskDispatcherBase;
+import org.nanotek.task.callable.pipe.PipeTaskReceiverBase;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+public class BaseTaskTest {
+
+	private final static Logger logger = Logger.getLogger(BaseTaskTest.class);
+	private static ClassPathXmlApplicationContext ctx;
+	
+	public BaseTaskTest() {
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static void main(String[] args) {
+		logger.debug("STARTING APPLICATION WINDOW");
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+		"thread-pool/spring.xml"});
+		logger.debug("CONTEXT LOADED");
+		
+		PipeTaskDispatcherBase senderTask = new PipeTaskDispatcherBase((Pipe) ctx.getBean("pipe"));
+		FutureTask <Base<?>> futureSend = new FutureTask <Base<?>>(senderTask);
+		
+		PipeTaskReceiverBase receiverTask = new PipeTaskReceiverBase((Pipe) ctx.getBean("pipe"));
+		FutureTask <Base<?>> futureReceiver = new FutureTask <Base<?>>(receiverTask);
+		
+		ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) ctx.getBean("taskExecutor");
+		
+		taskExecutor.initialize();
+		
+		taskExecutor.submit(futureSend);
+		taskExecutor.submit(futureReceiver);
+		Base<?> baseReceived  = null; 
+		Base<?> baseSend  = null; 
+		try {
+			baseSend = futureSend.get();
+			logger.debug("TASK SUBMITTED");
+			baseReceived = futureReceiver.get();
+			logger.debug("RECEIVER SUBMITTED");
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		while (taskExecutor.getActiveCount() != 0)
+		{logger.debug("WAITING SUBMITTED");}
+		taskExecutor.destroy();
+	}
+
+}

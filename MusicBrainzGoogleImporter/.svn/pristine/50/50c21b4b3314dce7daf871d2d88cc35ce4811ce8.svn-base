@@ -1,0 +1,29 @@
+package org.nanotek.jobs;
+
+import java.util.List;
+
+import org.nanotek.Base;
+import org.nanotek.dao.DAO;
+import org.springframework.batch.item.ItemWriter;
+
+public class GenericWriter implements ItemWriter<Base<?>> {
+
+	private DAO<Base<?>> dao; 
+	
+	public GenericWriter() {}
+
+	public DAO<Base<?>> getDao() {
+		return dao;
+	}
+
+	public void setDao(DAO<Base<?>> dao) {
+		this.dao = dao;
+	}
+
+	@Override
+	public void write(List<? extends Base<?>> items) throws Exception {
+		for (Base<?> item : items)
+			dao.persist(item);
+	}
+
+}

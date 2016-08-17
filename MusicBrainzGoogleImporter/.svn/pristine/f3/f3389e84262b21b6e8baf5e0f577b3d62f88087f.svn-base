@@ -1,0 +1,21 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.LabelAlias;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class IsrcMapping extends ColumnPositionMappingStrategy<LabelAlias> {
+
+	
+	public IsrcMapping() 
+	{ 
+		String [] columns = new String [4]; 
+		columns[0] = "id";
+		columns[1] = "recording";
+		columns[2] = "source";
+		columns[3] = "isrc";
+		this.setColumnMapping(columns);
+		
+	}
+	
+}

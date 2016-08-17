@@ -1,0 +1,12 @@
+package org.nanotek.dao.spring;
+
+
+import org.nanotek.Base;
+import org.nanotek.beans.LabelName;
+import org.nanotek.dao.DAO;
+
+public interface LabelNameDAO<T extends LabelName> extends DAO<Base<?>> {
+
+	public T findById (String id);
+	
+}

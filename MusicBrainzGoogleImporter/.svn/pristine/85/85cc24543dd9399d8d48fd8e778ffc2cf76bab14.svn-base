@@ -1,0 +1,26 @@
+package org.nanotek.base.date.jpa;
+
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+
+import org.nanotek.base.date.DateBase;
+import org.nanotek.base.jpa.PrePersistEventListener;
+
+/**
+ * Provisory Id generation. 
+ * 
+ * @author josecanova
+ *
+ */
+public class DateBaseEventListener implements PrePersistEventListener<DateBase>{
+
+	@Override
+	@PrePersist
+	public void prePersist(DateBase e) {
+		Integer yd = e.getYear() << 16 ; 
+		Integer md = + e.getMonth() << 8;
+		e.setId(new Long (yd | md | e.getDay()));
+		System.out.println("VALUE DIE: " + e.getId());
+	}
+
+}

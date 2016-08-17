@@ -1,0 +1,27 @@
+package org.nanotek.base;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class Person implements Base<Long>{
+
+	public Long id;
+
+	public Base<?> name; 
+	
+	public Base<?> mailBox; 
+	
+	public Person () 
+	{ 
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	} 
+	
+	
+}

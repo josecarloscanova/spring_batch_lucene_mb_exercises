@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 		
+
+	<bean lazy-init="true" id="urlIndexVersion" class="org.apache.lucene.util.Version" factory-method="valueOf">
+		<constructor-arg value="LUCENE_31"/>
+	</bean>
+	
+	<bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+	<bean lazy-init="true" id="urlStandardAnalyser" class="org.apache.lucene.analysis.standard.StandardAnalyzer">
+		<constructor-arg type="org.apache.lucene.util.Version" ref="urlIndexVersion"/>
+	</bean>
+	
+	<bean lazy-init="true" id="urlCsvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="urlFileReader"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="urlFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.url.file}"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="urlIndexFilePath" class="java.io.File">
+		<constructor-arg value="F:/IndexPath/Url_Index"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="urlIndexFsDirectory" class="org.apache.lucene.store.SimpleFSDirectory">
+		<constructor-arg ref="urlIndexFilePath"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="urlMapping" class="org.nanotek.beans.mapping.UrlMapping">
+		<property name="type" value="org.nanotek.beans.Url"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="urlIndexWriterConfig" class="org.apache.lucene.index.IndexWriterConfig">
+		<constructor-arg ref="urlIndexVersion"></constructor-arg>
+		<constructor-arg ref="urlStandardAnalyser"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="urlIndexWriter" class="org.apache.lucene.index.IndexWriter"> 
+		<constructor-arg ref="urlIndexFsDirectory"></constructor-arg>
+		<constructor-arg ref="trackIndexWriterConfig"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="urlNameToBean" class="au.com.bytecode.opencsv.bean.CsvToBean"></bean>
+	
+	<bean lazy-init="true" id="trackNameReader" class="org.nanotek.musicbrainz.job.readers.TrackNameReader">
+		<property name="itemMapping" ref="trackNameMapping"></property>
+		<property name="fileStr" value="${music.brainz.track.name.file}"></property>
+		<property name="csvMap" ref="urlNameToBean"></property>
+		<property name="reader" ref="urlCsvReader"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="trackNameIndexWriter" class="org.nanotek.lucene.job.writers.TrackNameIndexWriter">
+		<property name="indexWriter" ref="urlWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="urlWriter" class="org.nanotek.musicbrainz.job.writers.UrlWriter">
+		<property name="dao" ref="UrlDAO"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="trackIndexStepListener" class="org.nanotek.lucene.job.listeners.IndexWriterStepListener"> 
+		<property name="indexWriter" ref="trackIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="trackNameIndexChunkLister" class="org.nanotek.lucene.job.listeners.IndexWriterChunkListener">
+		<property name="indexWriter" ref="trackIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="trackNameIndexProcessor" class="org.nanotek.musicbrainz.job.processor.TrackNameIndexProcessor">
+		<property name="indexWriter" ref="trackIndexWriter"></property>
+	</bean>
+	
+	<b:job id="trackNameIndexJob" job-repository="jobRepository" restartable="false">
+	    <b:step id="trackNameIndexLoad">
+	    	<b:tasklet>
+	    		<b:chunk reader="trackNameReader" processor="trackNameIndexProcessor" commit-interval="10000" writer="trackNameIndexWriter"></b:chunk>
+	    		<b:listeners>
+	    			<b:listener ref="trackNameIndexChunkLister"/>
+	    		</b:listeners>
+	    	</b:tasklet>
+	    	<b:listeners>
+            		<b:listener ref="trackIndexStepListener"/>
+       		</b:listeners>
+	    </b:step>
+	</b:job>
+	
+</beans>

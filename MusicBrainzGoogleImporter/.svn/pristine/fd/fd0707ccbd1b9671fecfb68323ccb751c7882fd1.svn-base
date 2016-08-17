@@ -1,0 +1,71 @@
+package org.nanotek.base;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import org.nanotek.Base;
+import org.nanotek.StringBase;
+
+/**
+ * 
+ * @see http://en.wikipedia.org/wiki/ISO_3166-1
+ * 
+ * @author josecanovamauger
+ *
+ */
+@Entity
+@SuppressWarnings("serial")
+public class Country implements Base<Long>{
+
+	@Id
+	private Long id; 
+	
+	private StringBase countryName; 
+	
+	private StringBase countryCodeAlpha2; 
+	
+	private StringBase countryCodeAlpha3;
+	
+	private Integer  countryCodeNumeric;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public StringBase getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(StringBase countryName) {
+		this.countryName = countryName;
+	}
+
+	public StringBase getCountryCodeAlpha2() {
+		return countryCodeAlpha2;
+	}
+
+	public void setCountryCodeAlpha2(StringBase countryCodeAlpha2) {
+		this.countryCodeAlpha2 = countryCodeAlpha2;
+	}
+
+	public StringBase getCountryCodeAlpha3() {
+		return countryCodeAlpha3;
+	}
+
+	public void setCountryCodeAlpha3(StringBase countryCodeAlpha3) {
+		this.countryCodeAlpha3 = countryCodeAlpha3;
+	}
+
+	public Integer getCountryCodeNumeric() {
+		return countryCodeNumeric;
+	}
+
+	public void setCountryCodeNumeric(Integer countryCodeNumeric) {
+		this.countryCodeNumeric = countryCodeNumeric;
+	}
+	
+}

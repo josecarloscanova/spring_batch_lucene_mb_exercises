@@ -1,0 +1,53 @@
+package tests.org.nanotek.poi;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.util.regex.Pattern;
+
+import org.apache.lucene.analysis.pattern.PatternTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+
+public class JMeterDatabaseVariable {
+
+
+
+	public JMeterDatabaseVariable() {
+	}
+
+	@SuppressWarnings({ "rawtypes", "unused" })
+	public static void main (String[] args) throws Exception 
+	{ 
+		FileInputStream finput = new FileInputStream (new File("/home/java-eclipse/workspace/JSON/src/org/nanotek/test/database_variable_jmeter.txt"));
+		InputStreamReader sreader = new InputStreamReader (finput);
+		String ret = readFile (sreader);
+		StringReader reader = new StringReader (ret);
+//		System.out.println(ret);
+		Pattern pat = Pattern.compile("[[{][}]]+");
+		PatternTokenizer tokenizer = new PatternTokenizer(reader , pat, -1);
+		tokenizer.reset();
+		while (tokenizer.incrementToken()) 
+		{ 
+			CharTermAttribute charTermAttribute =
+					tokenizer.addAttribute(CharTermAttribute.class);
+			String val = charTermAttribute.toString(); 
+			if (val.length() > 3)
+				System.out.println(val);
+		}
+	}
+
+	private static String readFile(InputStreamReader sreader) throws Exception {
+		
+		int i = 0; 
+
+		StringBuilder builder = new StringBuilder(); 
+
+		while ((i = sreader.read()) > 0)
+		{ 
+			builder.append((char)i);
+		}
+		return builder.toString();
+	}
+
+}

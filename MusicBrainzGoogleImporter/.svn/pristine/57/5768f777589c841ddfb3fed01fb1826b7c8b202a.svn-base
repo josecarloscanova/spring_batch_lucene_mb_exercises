@@ -1,0 +1,22 @@
+package tests.org.nanotek.musicbrainz.data.load.csv.spring.musicbrainz;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public abstract class CsvContextLoader {
+
+	protected ClassPathXmlApplicationContext csvContext;
+	protected ClassPathXmlApplicationContext dataBaseContext;
+
+	public CsvContextLoader initialize() {
+		String [] csvContextLocation = new String[] {
+				"/file-loaders/mbz_files_context.xml"};
+		csvContext = new ClassPathXmlApplicationContext(csvContextLocation);
+
+		String [] dataBaseContextLocation = new String[] {
+		"/database-loaders/spring-dao-context.xml"};
+		dataBaseContext = new ClassPathXmlApplicationContext(dataBaseContextLocation);
+		return this;
+	}
+
+	public abstract void run();
+}

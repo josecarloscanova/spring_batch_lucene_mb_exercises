@@ -1,0 +1,54 @@
+package org.nanotek.mq.receive.events;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
+
+import org.nanotek.mq.ReceiverService;
+import org.nanotek.Base;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+public class BaseMessageListener<T extends Base<?>> implements MessageListener {
+
+	private ReceiverService<T,T,T> receiverService;
+
+	public BaseMessageListener() {
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+	}
+
+	@Override
+	public void onMessage(Message arg0) {
+		ObjectMessage message = (ObjectMessage) arg0;
+		Base<?> messageContainer = null;
+		try {
+			messageContainer = (Base<?>) message.getObject();
+			if (receiverService !=null)
+				throw new RuntimeException("Not yet implemented receving message " + messageContainer.getId());
+			else {
+				Base<?> base = (Base<?>) messageContainer.getId();
+				System.out.println("MESSAGE TYPE " + messageContainer.getId().getClass());
+				if (base !=null) {
+					System.out.println("BASE ID " + base.getId());
+				}
+			}
+		} catch (JMSException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public ReceiverService getReceiverService() {
+		return receiverService;
+	}
+
+	public void setReceiverService(ReceiverService receiverService) {
+		this.receiverService = receiverService;
+	}
+
+}

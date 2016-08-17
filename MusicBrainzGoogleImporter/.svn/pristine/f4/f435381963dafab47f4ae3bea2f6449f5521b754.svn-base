@@ -1,0 +1,168 @@
+package tests.org.nanotek.poi;
+
+import java.io.FileOutputStream;
+import java.net.URLDecoder;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.nanotek.Workable;
+import org.nanotek.base.Contact;
+import org.nanotek.base.PageItemBase;
+import org.nanotek.hibernate.dao.DAO;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobExecutionNotRunningException;
+import org.springframework.batch.core.launch.NoSuchJobException;
+import org.springframework.batch.core.launch.NoSuchJobExecutionException;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+
+public class ContactJapanChamberReportExcel implements Workable<String[]>{
+
+	Logger log = Logger.getLogger(ContactJapanChamberReportExcel.class);
+	
+	private ClassPathXmlApplicationContext ctx;
+
+	/**
+	 * @param args 
+	 * @throws JobParametersInvalidException 
+	 * @throws JobInstanceAlreadyCompleteException 
+	 * @throws JobRestartException 
+	 * @throws JobExecutionAlreadyRunningException 
+	 * @throws NoSuchJobException 
+	 * @throws JobExecutionNotRunningException 
+	 * @throws NoSuchJobExecutionException 
+	 */
+	public static void main(String[] args)  {
+		ContactJapanChamberReportExcel load = new ContactJapanChamberReportExcel();
+		load.doWork(args);
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public void doWork(String[] args) {
+		try { 
+			ContactJapanChamberReportExcel report = new ContactJapanChamberReportExcel();
+			FileOutputStream out = new FileOutputStream("/tmp/school_workbook6511.xls");
+			ctx = new ClassPathXmlApplicationContext(new String[] {
+			"database-loaders/spring-dao-context.xml"});
+			DAO<Contact> dao = (DAO<Contact>) ctx.getBean("contactDAO");
+			Long numRecords = dao.countRecords();
+			DetachedCriteria criteria =DetachedCriteria.forClass(Contact.class);
+			criteria.addOrder(Order.asc("name"));
+			PageItemBase<Number> itemBase = new PageItemBase<Number>(); 
+			itemBase.setStartRecord(0);
+			itemBase.setMaxRecords(numRecords.intValue());
+			List<Contact> contactList = dao.listRecords(itemBase, criteria);
+			Workbook workBook = report.prepareReport(); 
+			Sheet sheet = workBook.getSheet("commerce");
+			report.prepareSheet (sheet);
+			int lineNum = 1; 
+			for (Contact contact : contactList) 
+			{ 
+				log.debug(URLDecoder.decode(contact.toString()));
+				report.createContactRecord (sheet , contact , lineNum);
+				lineNum++;
+			}
+			workBook.write(out);
+			out.close();
+			
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+	}
+
+	private void createContactRecord(Sheet sheet, Contact contact, int lineNum) {
+		Row row = sheet.createRow(lineNum);
+		createCell (row, adjustValue (contact.getName()) , 0);
+		createCell(row,adjustValue (contact.getAddress()),1);
+		String [] cityStateArray = splitCityState(contact.getCity());
+		if (cityStateArray.length == 2){ 
+		createCell(row,adjustValue (cityStateArray[0]),2);
+		createCell(row,adjustValue (cityStateArray[1]),3);
+		} else { 
+			createCell(row,adjustValue (contact.getCity()),2);
+			createCell(row,adjustValue ("SP"),3);
+		}
+		createCell(row,adjustValue (contact.getZip()),4);
+		String specialTreatMent = adjustValue (contact.getDescription().replace("Telefone", "").replace("Telefone:", "").replace("Telefone :", "")); 
+		createCell(row,specialTreatMent,5);
+		createCell(row , adjustValue (contact.getPhone().replace("Fax", "").replace("Fax:", "").replace("Fax :", "")),6);
+	}
+
+	private String[] splitCityState(String city) {
+		String [] cityState = city.split("-");
+		return cityState;
+	}
+
+	private String adjustValue(String name) {
+		if (name ==null) return "";
+		String oldValue = name;
+		oldValue = decode(oldValue);
+//		oldValue = removeQuotes (oldValue);
+//		reaplaceChar (oldValue , "'"); 
+		return oldValue;
+	}
+
+	private String  removeQuotes(String oldValue) {
+		String val = oldValue.trim();
+		return val.substring(1, val.length()-1);
+	}
+
+	private String  removeQuotes(String oldValue , Integer decrement) {
+		String val = oldValue.trim();
+		return val.substring(0, val.length()-decrement);
+	}
+
+	@SuppressWarnings("deprecation")
+	private String decode(String oldValue) {
+		return URLDecoder.decode(oldValue);
+	}
+
+	private String replaceChar(String oldValue, String string) {
+		return oldValue.replaceFirst("'", string);
+		
+	}
+
+	private void createCell(Row row, String value, int i) {
+		row.createCell(i).setCellValue(value);
+	}
+
+	private void prepareSheet(Sheet sheet) {
+		Row row = sheet.createRow(0);
+		Cell cell = row.createCell(0);
+		cell.setCellValue("name".toUpperCase());
+		cell = row.createCell(1);
+		cell.setCellValue("address".toUpperCase());
+		cell = row.createCell(2);
+		cell.setCellValue("city".toUpperCase());
+		cell = row.createCell(3);
+		cell.setCellValue("state".toUpperCase());
+		cell = row.createCell(4);
+		cell.setCellValue("zip".toUpperCase());
+		cell = row.createCell(5);
+		cell.setCellValue("phone".toUpperCase());
+		cell = row.createCell(6);
+		cell.setCellValue("mail".toUpperCase());
+	}
+
+	private Workbook prepareReport() {
+
+		Workbook wb = new HSSFWorkbook();
+		// create a new sheet
+		Sheet s = wb.createSheet("commerce");
+
+		return wb;
+	}
+
+}

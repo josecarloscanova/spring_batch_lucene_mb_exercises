@@ -1,0 +1,129 @@
+package org.nanotek.nekohtml;
+
+/* 
+ * Copyright 2007-2008 Andy Clark
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.apache.xerces.xni.Augmentations;
+import org.apache.xerces.xni.QName;
+import org.apache.xerces.xni.XMLAttributes;
+import org.apache.xerces.xni.parser.XMLInputSource;
+import org.apache.xerces.xni.parser.XMLParserConfiguration;
+import org.cyberneko.html.HTMLConfiguration;
+import org.dom4j.DocumentFactory;
+//import org.cyberneko.html.filters.DefaultFilter;
+//import org.cyberneko.html.parsers.DOMParser;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+
+/**
+ * This class demonstrates that the NekoHTML parser can be used with
+ * a minimal set of Xerces2 classes if you program directory the the
+ * Xerces Native Interface (XNI).
+ *
+ * @author Andy Clark
+ */
+public class MinimalParser {
+
+	//
+	// MAIN
+	//
+
+	public static void main(String[] argv) throws Exception {
+		XMLParserConfiguration parser = new HTMLConfiguration();
+//		parser.setDocumentHandler(new MinimalParser());
+
+		//		for (int i = 0; i < argv.length; i++) {
+		XMLInputSource source = new XMLInputSource(null, "/home/java-eclipse/guia_escolas/sao_paulo/files_escolas_20140403-1933_4.unknown", null);
+		//			parser.parse(source);
+//		DOMParser domParser = new DOMParser();
+//		domParser.parse(source);
+//		Document doc = domParser.getDocument();
+		DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+		documentFactory.setValidating(false);
+		Document doc = documentFactory.newDocumentBuilder().parse("/home/java-eclipse/guia_escolas/sao_paulo/files_escolas_20140403-1933_4.unknown");
+		String exp = "//P[text()]";
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xPath =  xpathFactory.newXPath();
+		XPathExpression  expression = xPath.compile(exp); 
+		String str = expression.evaluate(doc);
+		NodeList nodeList = doc.getElementsByTagName("TR");
+		System.out.println(str);
+		MinimalParser mp = new MinimalParser();
+		for (int i = 0 ; i < nodeList.getLength();i++) 
+		{ 
+			Node node = nodeList.item(i);
+			mp.getSchoolData(nodeList.item(i));
+			System.out.println(node.getNodeName() +":" + node.getNodeValue());
+		}
+		//	            String str = XPathAPI.selectSingleNode(doc, exp).getTextContent();
+
+		//		}
+	} // main(String[])
+
+	//
+	// XMLDocumentHandler methods
+	//
+
+	private void getSchoolData(Node node) throws XPathExpressionException {
+		String expe = "//TR";
+		String exp = "//TH";
+		String exp1 = "//TD";
+		
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xPath =  xpathFactory.newXPath();
+		XPathExpression  expression1 = xPath.compile(exp); 
+		XPathExpression  expression2 = xPath.compile(exp1); 
+		XPathExpression  expression3 = xPath.compile(expe); 
+		
+
+		String stre = expression3.evaluate(node);
+		System.out.println(stre);
+		String str = expression1.evaluate(node);
+		String str1 = expression2.evaluate(node);
+		System.out.println(str +":" + str1);
+
+	}
+
+	public void startElement(QName element, XMLAttributes attrs, Augmentations augs) {
+		System.out.println("("+element.rawname);
+	}
+	public void endElement(QName element, Augmentations augs) {
+		System.out.println(")"+element.rawname);
+	}
+
+
+
+} // class Minimal
+
+class SchoolData { 
+
+	String name; 
+	String address; 
+	String cityState; 
+	String Zip; 
+	String phone; 
+	String webPage; 
+
+}

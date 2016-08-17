@@ -1,0 +1,14 @@
+package org.nanotek.poi;
+
+import org.nanotek.Base;
+import org.nanotek.Report;
+import org.nanotek.ReferenceResolver;
+import org.nanotek.report.ReportGenerator;
+
+public abstract class ReportGeneratorBase<D extends Base<?>, G extends Report<?,?> , R extends ReportReference> extends  ReportGenerator<G ,R> implements ReferenceResolver <G,R>{
+
+	public ReportGeneratorBase() {
+	}
+	
+	
+}

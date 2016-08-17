@@ -1,0 +1,32 @@
+package org.nanotek.base.artist;
+
+import org.nanotek.base.Groupable;
+
+/**
+ * Some domain definitions for "artist related groups". 
+ * 
+ * @author josecanovamauger.
+ *
+ */
+public enum GroupType implements Groupable<GroupType>{
+
+	Musical, 
+	Band, 
+	Performance, 
+	Stunt, 
+	Cinema, 
+	Theater, 
+	Television;
+
+	/**
+	 * Returns the Current Instance of the Enumerated Type. 
+	 * Usefull (maybe) on identifying "types of groups"  on 
+	 * large sets.
+	 * 
+	 */
+	@Override
+	public GroupType getGroup() {
+		return this;
+	}
+
+}

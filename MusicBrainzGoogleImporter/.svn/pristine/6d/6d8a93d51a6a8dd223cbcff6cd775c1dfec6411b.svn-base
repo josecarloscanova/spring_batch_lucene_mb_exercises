@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.nanotek.lucene.index">
+
+    <class name="Index" table="LUCENE_INDEX">
+
+    	<id name="id" type="long"  column="ID">
+			 <generator class="assigned" />
+        </id>
+        
+		<property name="indexDesignation" type="string" column="INDEX_DESIGNATION" />
+		<property name="path" type="string" column="PATH" />
+		<property name="defaultField" type="string" column="DEFAULT_SEARCH_FIELD"/>
+
+    </class>
+    
+</hibernate-mapping>

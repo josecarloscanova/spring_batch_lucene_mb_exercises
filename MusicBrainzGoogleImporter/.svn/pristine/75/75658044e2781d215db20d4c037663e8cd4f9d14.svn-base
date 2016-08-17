@@ -1,0 +1,64 @@
+package org.nanotek.message.data;
+
+import org.nanotek.Kong;
+
+@SuppressWarnings("serial")
+public class BodyMessageContainer implements Kong<Long> {
+
+	private Long id;
+	private String containerAlias;
+	private MessageType messageType;
+	private Kong<?> bodyMessage;
+	private Long length;
+
+	public BodyMessageContainer() {
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getContainerAlias() {
+		return containerAlias;
+	}
+
+	public void setContainerAlias(String containerAlias) {
+		this.containerAlias = containerAlias;
+	}
+
+	public Kong<?> getBodyMessage() {
+		return bodyMessage;
+	}
+
+	public void setBodyMessage(Kong<?> bodyMessage) {
+		this.bodyMessage = bodyMessage;
+	}
+
+	public MessageType getMessageType() {
+		return messageType;
+	}
+
+	public void setMessageType(MessageType messageType) {
+		this.messageType = messageType;
+	}
+
+	public Long getLength() {
+		return length;
+	}
+
+	public void setLength(Long length) {
+		this.length = length;
+	}
+
+
+	@Override
+	public Long get() {
+		return id;
+	}
+
+}

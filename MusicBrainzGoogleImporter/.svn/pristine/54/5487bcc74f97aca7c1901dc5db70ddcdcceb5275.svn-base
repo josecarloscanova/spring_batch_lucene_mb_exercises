@@ -1,0 +1,11 @@
+package org.nanotek;
+
+import java.io.Serializable;
+
+import org.nanotek.Position;
+
+public interface Limit extends Serializable{
+
+	public Position getPostion();
+	
+}

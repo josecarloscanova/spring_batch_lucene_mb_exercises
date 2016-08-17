@@ -1,0 +1,75 @@
+package org.nanotek.musicbrainz.beans;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class Medium implements Base<Long>{
+
+	private Long id; 
+	private Long trackList; 
+	private Long release; 
+	private Long position;
+	private String format; 
+	private Long name; 
+	
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getTrackList() {
+		return trackList;
+	}
+
+
+	public void setTrackList(Long trackList) {
+		this.trackList = trackList;
+	}
+
+
+	public Long getRelease() {
+		return release;
+	}
+
+
+	public void setRelease(Long release) {
+		this.release = release;
+	}
+
+
+	public Long getPosition() {
+		return position;
+	}
+
+
+	public void setPosition(Long position) {
+		this.position = position;
+	}
+
+
+	public String getFormat() {
+		return format;
+	}
+
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+
+	public Long getName() {
+		return name;
+	}
+
+
+	public void setName(Long name) {
+		this.name = name;
+	}
+
+}

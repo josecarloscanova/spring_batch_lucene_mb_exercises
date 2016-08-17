@@ -1,0 +1,21 @@
+package tests.org.nanotek.kong;
+
+import org.apache.log4j.Logger;
+import org.nanotek.base.Contact;
+
+public class TestInst {
+
+	private static final Logger log = Logger.getLogger(TestInst.class);
+	
+	
+	public TestInst() {
+	}
+
+	public static void main(String[] args) {
+		Instantiator<Contact> inst = new Instantiator<Contact> ();
+		log.debug(inst.getInstance());
+		log.debug(inst.getClazz());
+		log.debug(inst.get());
+	}
+
+}

@@ -1,0 +1,104 @@
+package org.nanotek.base.artist;
+
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
+import org.nanotek.StringBase;
+import org.nanotek.base.BirthDateBase;
+import org.nanotek.base.LongBase;
+import org.nanotek.base.Name;
+
+@Entity
+@SuppressWarnings("serial")
+public class Artist extends LongBase {
+
+	private Name name; 
+	
+	private Name realName;
+	
+	private Set<StringBase> nickNames; 
+	
+	@OneToOne
+	private BirthDateBase birthDate; 
+
+	public Name getName() {
+		return name;
+	}
+
+	public void setName(Name name) {
+		this.name = name;
+	}
+
+	public Name getRealName() {
+		return realName;
+	}
+
+	public void setRealName(Name realName) {
+		this.realName = realName;
+	}
+
+	public Set<StringBase> getNickNames() {
+		return nickNames;
+	}
+
+	public void setNickNames(Set<StringBase> nickNames) {
+		this.nickNames = nickNames;
+	}
+
+	public BirthDateBase getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(BirthDateBase birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((birthDate == null) ? 0 : birthDate.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((nickNames == null) ? 0 : nickNames.hashCode());
+		result = prime * result
+				+ ((realName == null) ? 0 : realName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Artist other = (Artist) obj;
+		if (birthDate == null) {
+			if (other.birthDate != null)
+				return false;
+		} else if (!birthDate.equals(other.birthDate))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (nickNames == null) {
+			if (other.nickNames != null)
+				return false;
+		} else if (!nickNames.equals(other.nickNames))
+			return false;
+		if (realName == null) {
+			if (other.realName != null)
+				return false;
+		} else if (!realName.equals(other.realName))
+			return false;
+		return true;
+	}
+
+}

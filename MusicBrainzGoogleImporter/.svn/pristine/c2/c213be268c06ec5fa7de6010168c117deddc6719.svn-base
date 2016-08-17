@@ -1,0 +1,29 @@
+package org.nanotek.lucene.manage;
+
+import org.nanotek.lucene.index.config.IndexConfiguration;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+/**
+ * A Manager class to perform basic operations to IndexConfiguration, mainly synchronize the 
+ * IndexConfiguration  
+ * @author josecanovamauger
+ *
+ */
+public class IndexConfigurationManager  implements ApplicationContextAware{
+
+	private ApplicationContext context;
+
+	public IndexConfiguration getIndexConfiguration()
+	{
+			return (IndexConfiguration) context.getBean("indexConfiguration");
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext arg0)
+			throws BeansException {
+			this.context = arg0;
+	}
+
+}

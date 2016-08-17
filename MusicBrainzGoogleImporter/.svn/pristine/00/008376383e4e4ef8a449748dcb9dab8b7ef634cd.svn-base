@@ -1,0 +1,11 @@
+package tests.org.nanotek.kong;
+
+import org.nanotek.Base;
+import org.nanotek.Kong;
+
+@SuppressWarnings("serial")
+public abstract class ImaginaryBase <T extends Base<?>, I extends Kong<?>> implements TemporalImaginary<T,I>{
+
+	public ImaginaryBase() {
+	}
+}

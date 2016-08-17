@@ -1,0 +1,38 @@
+package org.nanotek.poi;
+
+import org.nanotek.AbstractBase;
+
+/**
+ * Used to define which is the source of the report. 
+ * Holds the "Reference Location", it can acts as a direct protocol reference (using the mime-type)
+ * of as an Adapter to retrieve data from an Abstract DataSource. (Defining an appropriate handler mechanism to retrieve the data). 
+ * 
+ * @author josecanovamauger.
+ *
+ */
+@SuppressWarnings("serial")
+public class ReportReference extends AbstractBase<String>{
+
+	private String location; 
+	private String mimeType;
+	
+	public ReportReference() {
+	}
+	
+	public String getLocation() {
+		return location;
+	}
+	
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	public String getMimeType() {
+		return mimeType;
+	}
+	
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
+	} 
+
+}

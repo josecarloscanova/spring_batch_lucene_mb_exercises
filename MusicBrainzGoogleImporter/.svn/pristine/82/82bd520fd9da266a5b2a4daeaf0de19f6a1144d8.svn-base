@@ -1,0 +1,48 @@
+package org.nanotek.tika.job.reader.fs;
+
+import java.nio.file.Path;
+
+import org.nanotek.Dispatcher;
+import org.nanotek.hibernate.dao.DAO;
+import org.nanotek.tika.file.FileIdentity;
+
+public class PersistentFileFinder extends FileFinder implements Dispatcher<FileIdentity> {
+
+	protected DAO<FileIdentity> dao; 
+
+	public PersistentFileFinder(String pattern) {
+		super(pattern);
+	}
+
+	public PersistentFileFinder(String pattern, DAO<FileIdentity> dao) {
+		super(pattern);
+		this.dao = dao;
+	}
+
+	public DAO<FileIdentity> getDao() {
+		return dao;
+	}
+
+	public void setDao(DAO<FileIdentity> dao) {
+		this.dao = dao;
+	}
+
+	@Override
+	public void find(Path file) {
+		super.find(file);
+	}
+
+	@Override
+	public void storeMatchPath(Path path)
+	{ 
+		FileIdentity fileIdentity = FileIdentityBuilder.setPath(path).build(); 
+		dispatch(fileIdentity);
+	}
+
+	@Override
+	public void dispatch(FileIdentity data) {
+		assert dao !=null;
+		dao.persist(data);
+	}
+
+}

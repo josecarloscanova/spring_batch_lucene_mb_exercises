@@ -1,0 +1,107 @@
+package org.nanotek.base;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class Office implements Base<Number> {
+
+	private Number id; 
+	private String name; 
+	private Integer discriminator = 0; 
+	private Set<Url> urls; 
+	
+	
+	public Office() {
+		 urls = new HashSet<Url>();
+	}
+
+	@Override
+	public Number getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Number id) {
+		this.id = id; 
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public Integer getDiscriminator() {
+		return discriminator;
+	}
+
+	public void setDiscriminator(Integer discriminator) {
+		this.discriminator = discriminator;
+	}
+	public Set<Url> getUrls() {
+		return urls;
+	}
+
+	public void setUrls(Set<Url> urls) {
+		this.urls = urls;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((discriminator == null) ? 0 : discriminator.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Office other = (Office) obj;
+		if (discriminator == null) {
+			if (other.discriminator != null) {
+				return false;
+			}
+		} else if (!discriminator.equals(other.discriminator)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Office [id=" + id + ", name=" + name + ", discriminator="
+				+ discriminator + "]";
+	}
+
+}

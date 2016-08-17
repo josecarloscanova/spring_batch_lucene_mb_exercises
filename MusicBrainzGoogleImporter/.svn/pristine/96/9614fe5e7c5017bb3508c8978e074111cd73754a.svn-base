@@ -1,0 +1,31 @@
+package org.nanotek.lucene.index;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class IndexDescription implements Base<Long> {
+
+	private Long id;
+	private String description; // as the name say you store the description of the index on DB, index with no store on lucene.
+
+	public IndexDescription() {
+	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+}

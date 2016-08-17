@@ -1,0 +1,79 @@
+package org.nanotek.lucene.template.base;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import org.nanotek.Base;
+import org.nanotek.lucene.LuceneTemplateBuilder;
+import org.nanotek.lucene.document.configuration.DocumentConfiguration;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+/**
+ * 
+ * Abstract class that holds the common objects used on the construction of a Lucene Document. 
+ * Generally speaking holds the Validator, a reference to the Base class, and a reference to the 
+ * application context. 
+ * It implements the "TemplateBuilder" interface. 
+ * 
+ * TODO: Change the name of the class to conform the suffix TemplateBuilder.
+ * @author josecanovamauger
+ *
+ * @param <I> the Base class which will provide the data used during the construction of
+ * a "Lucene Document". 
+ * 
+ */
+public abstract class BaseTemplate<I extends Base<?>> implements LuceneTemplateBuilder<I> , ApplicationContextAware{
+
+	protected Validator validator; 
+	
+	private Class<I> clazz;
+
+	protected ApplicationContext applicationContext;
+	
+	protected DocumentConfiguration documentConfiguration;
+
+
+	public Class<I> getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Class<I> clazz) {
+		this.clazz = clazz;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext; 
+	}
+	
+	public Validator getValidator() {
+		return validator;
+	}
+
+
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
+	/**
+	 * Not yet implemented check which errors were the cause of the 
+	 * "violation" on a given Base Vector.
+	 * 
+	 * @param constraintViolations
+	 */
+	public void checkError(Set<ConstraintViolation<I>> constraintViolations) {
+	}
+	
+	public DocumentConfiguration getDocumentConfiguration() {
+		return documentConfiguration;
+	}
+
+	public void setDocumentConfiguration(DocumentConfiguration documentConfiguration) {
+		this.documentConfiguration = documentConfiguration;
+	}
+}

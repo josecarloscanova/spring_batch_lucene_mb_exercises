@@ -1,0 +1,79 @@
+package org.nanotek.base;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
+import org.nanotek.StringBase;
+/**
+ * 
+ * refer -> http://www.ietf.org/rfc/rfc4287.txt
+ * 
+ * @author josecanovamauger
+ *
+ */
+@Entity
+@SuppressWarnings("serial")
+public class Name extends LongBase{
+
+	@OneToOne
+	@Column(nullable=false)
+	private StringBase firstName; 
+	
+	@OneToOne
+	@Column(nullable=false)
+	private StringBase LastName; 
+	
+	
+	public Name() {}
+
+	public StringBase getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(StringBase firstName) {
+		this.firstName = firstName;
+	}
+
+	public StringBase getLastName() {
+		return LastName;
+	}
+
+	public void setLastName(StringBase lastName) {
+		LastName = lastName;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((LastName == null) ? 0 : LastName.hashCode());
+		result = prime * result
+				+ ((firstName == null) ? 0 : firstName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Name other = (Name) obj;
+		if (LastName == null) {
+			if (other.LastName != null)
+				return false;
+		} else if (!LastName.equals(other.LastName))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		return true;
+	}
+	
+}

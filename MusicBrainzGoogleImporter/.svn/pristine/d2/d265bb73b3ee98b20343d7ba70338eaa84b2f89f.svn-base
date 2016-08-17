@@ -1,0 +1,13 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.ReleaseName;
+
+import au.com.bytecode.opencsv.bean.CsvToBean;
+
+public class ReleaseNameCsvToBean extends CsvToBean<ReleaseName> {
+
+	public ReleaseNameCsvToBean() {
+		super();
+	}
+
+}

@@ -1,0 +1,78 @@
+package org.nanotek.tika.io;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.CharBuffer;
+import java.util.concurrent.Callable;
+
+import org.apache.log4j.Logger;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.ParsingReader;
+import org.apache.tika.parser.Parser;
+import org.nanotek.tika.MediaDetectionException;
+
+public class TikaInputter implements Callable<StringBuilder> {
+
+		//increase size of buffer to avoi memory errors if occurs. 
+		private static final int MAX_CHAR_BUFFER_SIZE = 100000;
+		
+		private Metadata metaData; 
+		private TikaInputStream input;
+		private ParseContext context;
+		
+		private final Logger loginput = Logger.getLogger(TikaInputter.class);
+
+		public TikaInputter (TikaInputStream input , ParseContext context , Metadata metaData)
+		{ 
+			this.input = input; 
+			this.context = context;
+			this.metaData = metaData;
+//			ParsingReader(
+//		            Parser parser, InputStream stream, Metadata metadata,
+//		            ParseContext context, Executor executor)
+		}
+		
+		public  void processTikaInput(StringBuilder outString) throws IOException, MediaDetectionException 
+		{ 
+			
+			String fileName = input.getFile().getName(); 
+			Parser parser = context.get(Parser.class);
+			if (parser == null) throw new MediaDetectionException ("Parser not defined");
+//			ParsingReader parsingReader = new ParsingReader(parser, input, metaData,context);
+//			tika.detect(input);
+//			Reader reader = tika.parse(input); 
+			ParsingReader parsingReader = new ParsingReader(input);
+			try { 
+					processTikaInput (outString,parsingReader);
+			}catch (Exception e) 
+			{ 
+				loginput.debug("ERROR PROCESSING FILE >>>>>" + fileName  + " <<<<< ERROR PROCESSING FILE ");
+				throw (e);
+			}
+//			parsingReader.close();
+		}
+
+		public  void processTikaInput(StringBuilder outString , Reader reader) throws IOException, MediaDetectionException 
+		{ 
+			CharBuffer charBuffer = CharBuffer.allocate(MAX_CHAR_BUFFER_SIZE); 
+			int ret = reader.read(charBuffer);
+			if (ret > 0){ 
+				charBuffer.flip(); 
+				outString.append(charBuffer);
+				processTikaInput (outString,reader);
+			}
+		}
+		@Override
+		public StringBuilder call() throws Exception {
+			StringBuilder outString = new StringBuilder();
+			try {
+				processTikaInput(outString);
+			} catch (IOException | MediaDetectionException e) {
+				e.printStackTrace();
+				throw new IOException ("Error processing file" , e);
+			}
+			return outString;
+		}
+}

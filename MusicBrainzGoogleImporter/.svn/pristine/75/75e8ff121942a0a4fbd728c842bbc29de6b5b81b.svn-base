@@ -1,0 +1,86 @@
+package org.nanotek.musicbrainz.beans;
+
+import javax.validation.constraints.NotNull;
+
+import org.nanotek.Base;
+import org.nanotek.Stampable;
+
+@SuppressWarnings("serial")
+public class ArtistAlias implements Base<Long> , Stampable<Long>{
+
+	@NotNull
+	private Long id;
+	@NotNull
+	private Long artistId;
+	@NotNull
+	private String name; 
+//	private Long nameId; 
+	
+	private String locale;
+	
+	private String sortName;
+	
+	@NotNull
+	private Long stamp;
+	
+
+	public ArtistAlias() {
+		super();
+		stamp = System.currentTimeMillis();
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+	
+	public Long getArtistId() {
+		return artistId;
+	}
+
+	public void setArtistId(Long artistId) {
+		this.artistId = artistId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+//	public Long getNameId() {
+//		return nameId;
+//	}
+//
+//	public void setNameId(Long nameId) {
+//		this.nameId = nameId;
+//	}
+
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+
+	public String getSortName() {
+		return sortName;
+	}
+
+	public void setSortName(String sortName) {
+		this.sortName = sortName;
+	}
+
+	@Override
+	public Long getStamp() {
+		return stamp;
+	}
+}

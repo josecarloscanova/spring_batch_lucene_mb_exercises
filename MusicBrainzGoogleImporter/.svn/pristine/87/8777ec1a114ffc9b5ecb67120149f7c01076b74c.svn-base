@@ -1,0 +1,331 @@
+package org.nanotek.poi.reader;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.lucene.analysis.core.WhitespaceTokenizer;
+import org.apache.lucene.analysis.pattern.PatternTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.util.Version;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.nanotek.base.NormalizedContact;
+import org.nanotek.hibernate.dao.DAO;
+import org.nanotek.util.text.NameNormalizer;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class WorkBookReader {
+
+	private static ClassPathXmlApplicationContext ctx;
+
+	public WorkBookReader() {
+	}
+
+	public Workbook readWorkBook(InputStream inp) throws Exception 
+	{ 
+		Workbook wb = WorkbookFactory.create(inp);
+		return wb; 
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void main (String[] args) throws Exception 
+	{ 
+
+		ctx = new ClassPathXmlApplicationContext(new String[] {
+		"database-loaders/spring-dao-context.xml"});
+
+		InputStream inp = 
+				new FileInputStream
+				("/home/java-eclipse/workspace/MusicBrainzGoogleImporter/src/test/resources/excel/planilha_camara_comercio_japon (1).xlsx");
+		WorkBookReader wr = new WorkBookReader(); 
+		Workbook wb =  wr.readWorkBook(inp); 
+		Sheet addressSheet = getSheet(wb,0);
+		String[] titles = wr.readTitles(addressSheet); 
+		inp.close();
+		for (String title : titles) 
+			System.out.println(title);
+		List <NormalizedContact> contacts  = wr.readAddresses (addressSheet);
+		for (NormalizedContact contact : contacts)
+		{ 
+			List<String> nameTokenized = wr.tokenizeByWhiteSpace(contact.getName());
+			List<String> normalizedName = wr.normalizeNameByLength(nameTokenized); 
+			StringBuilder nameBuilder = new StringBuilder(); 
+			for (String part : normalizedName) 
+			{ 
+				nameBuilder = (nameBuilder.length()>0)?nameBuilder.append(" "):nameBuilder;
+				nameBuilder = nameBuilder.append(part); 
+			}
+				String name = nameBuilder.toString();
+				name = name.replaceAll("[(]+.*[)]+", "");
+				contact.setNormalizedName(name);
+				System.out.println(contact.getName());
+				String newValue = wr.normalizeAddress (contact.getAddress());
+				System.out.println(newValue);
+				contact.setNormalizedAddress(newValue);
+				String renormalizedAddress = wr.simplifyAddress(contact.getNormalizedAddress());
+				contact.setNormalizedAddress(renormalizedAddress);
+				//			System.out.print("|");
+				contact.setNormalizedCity(contact.getCity().trim());
+				System.out.print(contact.getNormalizedCity());
+				System.out.print("|");
+				contact.setNormalizedState(contact.getState().trim());
+				System.out.print(contact.getState());
+				System.out.print("|");
+				contact.setNormalizedZip(contact.getZip());
+				System.out.print(contact.getZip());
+				String phoneNormalizedStr = wr.normalizePhone(contact.getPhone());
+				contact.setNormalizedPhone(wr.getFirstPhone(phoneNormalizedStr.trim()));
+				String areaCode = wr.normalizeAreaCode(contact.getPhone());
+				contact.setPhoneAreaCode(areaCode.trim());
+				System.out.print(" => " + contact.getPhoneAreaCode() + " | " );
+				System.out.print(contact.getNormalizedPhone());
+				System.out.println();
+				DAO<NormalizedContact> dao = (DAO<NormalizedContact>) ctx.getBean("normalizedContactDAO");
+				
+			try{ 
+				dao.update(contact);
+			}catch (Throwable ex) 
+			{ 
+				ex.printStackTrace();
+			}
+		}
+//		String address = new String(); 
+//		teste.replaceAll("[?]", "-");
+//		URLEncoder encoder ; 
+//		ctx.close();
+//		address = URLEncoder.encode(address,"UTF-8"); 
+//		address = URLDecoder.decode(address,"UTF-8"); 
+//		address = address.replaceAll("[\\?]","-"); 
+		//		List <Contact> contacts = wr.readAddresses (addressSheet);
+	}
+
+	private String getFirstPhone(String phoneNumber) throws IOException
+	{ 
+		List<String> nameTokenized = tokenizeByPattern(phoneNumber , "[/]");
+		String phoneNumberNew; 
+		if (nameTokenized !=null && nameTokenized.size()>0) 
+			phoneNumberNew = nameTokenized.get(0);
+		else 
+			phoneNumberNew = phoneNumber;
+		return phoneNumberNew;
+	}
+	
+	private String simplifyAddress(String address) throws IOException 
+	{ 
+		Pattern pat = Pattern.compile("[0-9]");
+		Matcher mat = pat.matcher(address);
+		mat.find();
+		int index = mat.start();
+		String oldValue = address; 
+		if (index > 0) 
+			oldValue = address.substring(0, index);
+		String newValue = address.substring(index);
+		
+		List<String> nameTokenized = tokenizeByWhiteSpace(oldValue);
+		List<String> copyList = new ArrayList<String>(nameTokenized);
+		int increment = 0;
+		for (String name : nameTokenized) 
+		{ 
+			if (increment > 1 && name.length() > 4 && nameTokenized.size() > 3 && !(increment == nameTokenized.size()-1)) 
+			{ 	
+					name = name.toUpperCase().substring(0, 1).concat(".");
+					copyList.remove(increment);
+					copyList.add(increment, name);
+			}
+			increment ++;
+		}
+		
+		StringBuilder builder = new StringBuilder(); 
+		for (String name:copyList) 
+		{ 
+			builder.append(name).append(" ");
+		}
+		return builder.toString().trim() + newValue;
+	}
+	
+	private String normalizeAreaCode(String phone) {
+		String newValue = phone; 
+		Pattern pat = Pattern.compile("[(+.*)]{1}");
+		Matcher mat = pat.matcher(newValue);
+		if (mat.find())  {
+			newValue = mat.replaceAll("");
+			pat = Pattern.compile("([0-9]+)");
+			Matcher mat1 = pat.matcher(newValue);
+			if (mat1.find()) 
+				newValue = mat1.group(0);
+		}else {
+			newValue = "";
+		}
+		return newValue;
+	}
+
+	private String normalizePhone(String phone) {
+		NameNormalizer nameNormalizer = new NameNormalizer("[(]+.*[)]+", "");
+		String phoneNormalized = nameNormalizer.normalize(phone);
+		return phoneNormalized;
+	}
+
+	private List<String> normalizeNameByLength(List<String> nameTokenized) {
+		List<String> normalizedName = new ArrayList<String>();
+		normalizedName.addAll(nameTokenized);
+		if (nameTokenized.size() > 3) 
+		{ 
+			for (int index = 3 ; index <nameTokenized.size() ; index++){ 
+				if (!nameTokenized.get(index).contains("LTDA")) { 
+					if (nameTokenized.get(index).length() > 3) { 
+						if (!(nameTokenized.get(index).contains("(") ||nameTokenized.get(index).contains(")"))){
+							String newValue = nameTokenized.get(index);
+							newValue = nameTokenized.get(index).substring(0, 3);
+							newValue = newValue + ".";
+							newValue = newValue.replaceAll("[á,Á,é,É,ê,Ê,í,Í,ó,Ó,ú,Ú]+", "");
+							normalizedName.remove(index);
+							normalizedName.add(index, newValue);
+						}
+					}
+				}
+			}
+		}
+		return normalizedName;
+	}
+
+
+	private List<String> tokenizeByPattern(String value,String pattern) throws IOException {
+		Pattern pat = Pattern.compile(pattern);
+		StringReader reader = new StringReader(value);
+		PatternTokenizer tokenizer = new PatternTokenizer(reader , pat, -1);
+		tokenizer.reset();
+		List<String> tokenString = new ArrayList<String>();
+
+		while (tokenizer.incrementToken())
+		{ 
+			CharTermAttribute charTermAttribute =
+					tokenizer.addAttribute(CharTermAttribute.class);
+			tokenString.add(charTermAttribute.toString());
+			//			System.out.println(charTermAttribute.toString());
+		}
+		tokenizer.close();
+		return tokenString;
+	}
+	
+	
+	
+	
+	private List<String> tokenizeByWhiteSpace(String value) throws IOException {
+		StringReader reader = new StringReader(value);
+		WhitespaceTokenizer tokenizer = new WhitespaceTokenizer(Version.LUCENE_47, reader);
+		tokenizer.reset();
+		List<String> tokenString = new ArrayList<String>();
+
+		while (tokenizer.incrementToken())
+		{ 
+			CharTermAttribute charTermAttribute =
+					tokenizer.addAttribute(CharTermAttribute.class);
+			tokenString.add(charTermAttribute.toString());
+			//			System.out.println(charTermAttribute.toString());
+		}
+		tokenizer.close();
+		return tokenString;
+	}
+
+	private String normalizeAddress(String value) {
+		NameNormalizer normalizer = new NameNormalizer("(Rua)+" , "R.");
+		String newvalue = normalizer.normalize(value);
+		if (newvalue.equals(value)){ 
+			normalizer.setFormula("(Alameda)+");
+			normalizer.setReplaceMent("Al.");
+			newvalue = normalizer.normalize(newvalue);
+		}
+		if (newvalue.equals(value)){ 
+			normalizer.setFormula("(Avenida)+");
+			normalizer.setReplaceMent("Av.");
+			newvalue = normalizer.normalize(newvalue);
+		} 
+		if (newvalue.equals(value)){ 
+			normalizer.setFormula("(Rodovia)+");
+			normalizer.setReplaceMent("Rod.");
+			newvalue = normalizer.normalize(newvalue);
+		} 
+		return newvalue;
+	}
+
+	private void readContact(Row row, NormalizedContact contact) {
+		for (int index = 0 ; index<=6;index++){ 
+			String value = row.getCell(index).getStringCellValue();
+			switch (index) 
+			{ 
+			case 0: 
+				contact.setName(value);
+				break;
+			case 1: 
+				contact.setAddress(value);
+				break;
+			case 2: 
+				contact.setCity(value);
+				break;
+			case 3: 
+				contact.setState(value);
+				break;
+			case 4: 
+				contact.setZip(value);
+				break;
+			case 5:
+				contact.setPhone(value);
+				break;
+			case 6:
+				contact.setMail(value);
+				break;
+			default : 
+				break;
+			}
+		}
+	}
+
+	private  List<NormalizedContact> readAddresses(Sheet sheet) {
+		Row row = null;
+		int increment = 0; 
+		List<NormalizedContact> contacts = new ArrayList<NormalizedContact>();
+		do
+		{ 
+			increment ++; 
+			row = sheet.getRow(increment);
+			if (row !=null) { 
+				NormalizedContact contact = new NormalizedContact(); 
+				readContact(row,contact);
+				contacts.add(contact);
+				//				row.getFirstCellNum();
+			}
+		}while (row !=null);
+
+		return contacts;
+	}
+
+	private static Sheet getSheet(Workbook wb, Integer i) {
+		return wb.getSheetAt(i);
+	}
+
+	private String[] readTitles(Sheet sheet) {
+		Row titleRow = sheet.getRow(0);
+		List<String> titles = new ArrayList<String>();
+		for (int i = 0 ; ; i++)
+		{ 
+			Cell cell = titleRow.getCell(i); 
+			if (cell == null)
+				break;
+			String title = cell.getStringCellValue(); 
+			titles.add(title);
+		}
+		return titles.toArray(new String[titles.size()]);
+	}
+
+}

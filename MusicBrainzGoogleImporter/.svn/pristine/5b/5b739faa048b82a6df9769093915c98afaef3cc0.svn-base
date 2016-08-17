@@ -1,0 +1,20 @@
+package org.nanotek.beans.mapping;
+
+import org.nanotek.beans.MediumCdToc;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class MediumCdTocMapping extends ColumnPositionMappingStrategy<MediumCdToc>{
+
+	public MediumCdTocMapping() 
+	{ 
+		String [] columns = new String [5]; 
+		columns[0] = "id";
+		columns[1] = "medium";
+		columns[2] = "cdToc";
+		columns[3] = null;
+		columns[4] = null;
+		this.setColumnMapping(columns);
+		
+	}
+}

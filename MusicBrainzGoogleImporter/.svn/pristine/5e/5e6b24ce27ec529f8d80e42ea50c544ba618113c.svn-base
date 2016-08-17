@@ -1,0 +1,42 @@
+	    var interval = {
+	     play:function(i,f)
+	     {
+	         iid = 0;
+	         try {
+	         if (i && f) {
+	           iid = window.setInterval(f, i);
+	           interval.set.push(iid);
+	          }
+	         }catch(eee){
+	          console.log(eee);
+	         }
+	         return iid;
+	        },
+	        pause : function (iid) {
+	          try {
+	            window.clearInterval(iid);
+	            //here is wrong.
+	            interval.set.pop(iid);
+	          }catch(eee){
+	           console.log(eee);
+	          }
+	         },
+	        set : null
+	   };
+
+
+    function randomizeArray(sample){
+        var  ar = new Array();
+        var jIndex = null;
+         if(sample){
+          for (jIndex in sample){
+        	  ar.push(randomizeByVal(sample[jIndex]));//ar.push(Math.round(Math.random() * sample[jIndex]));
+          }
+         }
+         return ar;
+        }
+
+        function randomizeByVal(n)
+        {
+     		return Math.round(Math.random() * n);
+        }

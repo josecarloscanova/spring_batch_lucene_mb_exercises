@@ -1,0 +1,8 @@
+package org.nanotek.query;
+
+import org.nanotek.Base;
+
+public interface QueryObject<O extends Base<?>>
+{
+      public <Q extends Base<?>> Q getQuery();
+}

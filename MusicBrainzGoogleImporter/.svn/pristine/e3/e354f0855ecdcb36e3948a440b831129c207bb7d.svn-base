@@ -1,0 +1,30 @@
+package org.nanotek.tika;
+
+public class ContentExtractionException extends RuntimeException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ContentExtractionException() {
+	}
+
+	public ContentExtractionException(String message) {
+		super(message);
+	}
+
+	public ContentExtractionException(Throwable cause) {
+		super(cause);
+	}
+
+	public ContentExtractionException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public ContentExtractionException(String message, Throwable cause,
+			boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
+
+}

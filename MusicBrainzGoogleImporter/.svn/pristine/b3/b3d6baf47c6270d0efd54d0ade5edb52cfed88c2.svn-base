@@ -1,0 +1,125 @@
+package org.nanotek.poi.generator;
+
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.nanotek.Base;
+import org.nanotek.GeneratorException;
+import org.nanotek.poi.configuration.excel.SheetConfiguration;
+import org.nanotek.poi.configuration.excel.WorkbookConfiguration;
+import org.nanotek.poi.configuration.excel.info.WorkbookInfo;
+
+@SuppressWarnings("serial")
+/**
+ * 
+ * @author java-eclipse
+ *
+ */
+public class WorkBookGenerator<T extends WorkbookInfo<I> , I extends Base<?>> extends BaseGenerator<Workbook> {
+
+	private WorkbookConfiguration options = null; 
+
+	public WorkBookGenerator() {
+	}
+
+	public WorkBookGenerator (WorkbookConfiguration options)
+	{ 
+		this.options = options; 
+	}
+	
+	/**
+	 * 
+	 * @param info a VO that provides the information that Populates the Sheet. 
+	 * Will depends on a "strategy" to mount correctly the Information on the sheet(s) cell(s). 
+	 * 
+	 * @param options how the Workbook is configured. 
+	 * 
+	 */
+	public WorkBookGenerator (T info , WorkbookConfiguration options)
+	{ 
+		this.options = options; 
+	}
+
+	// If has no options, Header is present. 
+	@Override
+	public Workbook generate(Base<?> info) {
+		Workbook book = createWorkBook(); 
+		Sheet sheet  = createReportSection (book);
+		if (options !=null) { 
+			configureSheet(sheet);
+		}
+		populateSheet(sheet, info);
+		return book;
+	}
+
+	private void configureSheet(Sheet sheet) {
+		
+		SheetConfiguration sheetConfiguration = options.getSheetConfigurations().iterator().next();
+		sheet.setDefaultColumnWidth(sheetConfiguration.getDefaultColumnWidth());
+		sheet.setDefaultRowHeight(sheetConfiguration.getDefaultColumnHeight());
+		
+		//Configure extra parameters for Sheet that is not yet specified on configuration class.
+	}
+
+	private void populateSheet(Sheet sheet,Base<?> info) {
+		//generate sheet. 
+		//check the need to values conversion.
+		createSheetHeader(sheet , info );
+		populateSheet (sheet , info);
+	}
+
+	private void createSheetHeader(Sheet sheet, Base<?> info) {
+
+		Map<String,String> properties = null;
+		
+		try {
+			properties = BeanUtilsBean.getInstance().describe(info);
+			//TODO: check how to sort the keys given a comparator.
+			Iterator<String> keys = properties.keySet().iterator();
+			int counter = 0;
+			Row row = sheet.createRow(0);
+			while (keys.hasNext()) 
+			{ 
+				populateCell(row, keys.next(), ++counter);
+			}
+		} catch (IllegalAccessException | InvocationTargetException
+				| NoSuchMethodException e) {
+			e.printStackTrace();
+			throw new GeneratorException(e);
+		}
+	}
+
+	private void populateCell(Row row, String value, int counter) {
+		Cell cell = row.createCell(counter);
+		//check the need of Value Conversion. 
+		cell.setCellValue(value);
+	}
+
+	private Sheet createReportSection(Workbook book) {
+		
+		SheetConfiguration sheetConfiguration = options.getSheetConfigurations().iterator().next();
+		if (sheetConfiguration.getSheetName() !=null) 
+			book.createSheet(sheetConfiguration.getSheetName());
+		else 
+			book.createSheet("Sheet1");
+		
+		return book.createSheet("SheetName");
+	}
+
+	private Workbook createWorkBook() {
+		return new HSSFWorkbook();
+	}
+
+//	private Workbook createWorkBook(Base<?> options) {
+//		return new HSSFWorkbook();
+//	}
+
+}

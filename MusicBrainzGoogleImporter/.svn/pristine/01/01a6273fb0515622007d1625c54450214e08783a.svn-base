@@ -1,0 +1,55 @@
+package org.nanotek.mail;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Store;
+
+public class Sample{
+
+  public static void main(String[] args) throws Exception {
+
+    Properties props = new Properties();
+
+    String host = "imap.gmail.com";
+    String provider = "imap";
+
+    props.put("mail.imap.port", "993");
+    props.put("com.sun.mail.imap","FINE");
+    props.put("mail.imap.ssl.enable","true");
+    props.put("mail.pop3.timeout","10");
+    
+    Session session = Session.getDefaultInstance(props, new MailAuthenticator());
+    Store store = session.getStore(provider);
+    store.connect(host,null,null);
+
+    Folder inbox = store.getFolder("INBOX");
+    if (inbox == null) {
+      System.out.println("No INBOX");
+      System.exit(1);
+    }
+    inbox.open(Folder.READ_ONLY);
+
+    Message[] messages = inbox.getMessages();
+//    messages.length
+    for (int i = 0; i < 1; i++) {
+      System.out.println("Message " + (i + 1));
+      messages[i].writeTo(System.out);
+    }
+    inbox.close(false);
+    store.close();
+  }
+}
+
+class MailAuthenticator extends Authenticator {
+
+  public MailAuthenticator() {
+  }
+
+  public PasswordAuthentication getPasswordAuthentication() {
+    return new PasswordAuthentication("", "");
+  }
+}

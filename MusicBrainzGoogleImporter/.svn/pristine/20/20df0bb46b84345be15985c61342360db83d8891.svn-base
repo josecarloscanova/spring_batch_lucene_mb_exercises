@@ -1,0 +1,15 @@
+jdbc.driverClassName=org.postgresql.Driver
+jdbc.musicbrainz.url=jdbc:postgresql://localhost/postgres
+jdbc.batch.url=jdbc:postgresql://localhost/postgres
+jdbc.username=postgres
+jdbc.password=postgres123
+index.location=/artist_alias
+index.global.file.name=/home/java-eclipse/lucene_index_path/tika_index_java_eclipse_pdf
+char.separator=\t
+music.brainz.artist.alias.file=/home/java-eclipse/musicbrainz_files/mbdump/artist_alias
+music.brainz.artist.credit.file=/home/java-eclipse/musicbrainz_files/mbdump/artist_credit
+music.brainz.artist.name.file=/home/java-eclipse/musicbrainz_files/mbdump/artist_name
+music.brainz.artist.credit.name.file=/home/java-eclipse/musicbrainz_files/mbdump.tar/mbdump/artist_credit_name
+music.brainz.artist.file=/home/java-eclipse/musicbrainz_files/mbdump/artist
+tika.file.finder.starting.dir=/home/java-eclipse/pdf_folder
+tika.file.finder.pattern=**.pdf

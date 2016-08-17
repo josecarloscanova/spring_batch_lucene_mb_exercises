@@ -1,0 +1,9 @@
+package org.nanotek;
+
+import org.nanotek.Base;
+
+public interface Region<T extends Limit> extends Base<T>{
+
+	public T getLimit();
+	
+}

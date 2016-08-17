@@ -1,0 +1,73 @@
+package tests.org.nanotek.kong;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Kong;
+import org.nanotek.PostConstructor;
+import org.nanotek.StringKong;
+import org.nanotek.base.BaseException;
+import org.nanotek.base.Contact;
+
+@SuppressWarnings("serial")
+public class Instantiator<T extends Contact> extends ImaginaryBase<T,StringKong>  implements PostConstructor<Instantiator<?>> {
+
+	private Class<T> clazz = null;
+	private Kong<T> kongInstance = null;
+	private T instance = null; 
+	private static final Logger log = Logger.getLogger(Instantiator.class);
+	
+	public static void main(String[] args) {
+		Instantiator<Contact> inst = new Instantiator<Contact>(Contact.class);
+		log.debug(inst.getInstance());
+		log.debug(inst.getClazz().getName());
+	}
+	
+	
+	public Instantiator() {
+	}
+	
+	public Instantiator(Class<T> clazz)
+	{ 
+		this.clazz = clazz;
+		postConstruct();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void postConstruct() {
+		try {
+			if (clazz == null) clazz = (Class<T>) Contact.class;
+			
+			instance = clazz.newInstance();
+			kongInstance = new Kong<T>(){
+				private T instance;
+				public Kong<T> setInstance(T instance){ 
+					this.instance = instance; 
+					return this;
+				}
+				@Override
+				public T get() {
+					return instance;
+				} 
+			}.setInstance(instance);
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+			throw new BaseException(e);
+		}
+	}
+
+	@Override
+	public Class<T> getClazz() {
+		return clazz;
+	}
+
+	@Override
+	public T getInstance() {
+		postConstruct();
+		return instance;
+	}
+
+	@Override
+	public Kong<?> get() {
+		return kongInstance;
+	}
+
+}

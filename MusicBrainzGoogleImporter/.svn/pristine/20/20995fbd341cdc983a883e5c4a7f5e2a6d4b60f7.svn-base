@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:b="http://www.springframework.org/schema/batch" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:p="http://www.springframework.org/schema/p"  
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd
+ 		http://www.springframework.org/schema/task 
+ 		http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+ 		
+	<!-- <import resource="classpath:spring-dao-context.xml" /> -->
+	
+	<!--<import resource="classpath:spring-label-name-context.xml" />
+	<import resource="classpath:spring-batch-datasource.xml" />
+	<import resource="classpath:spring-job-repo.xml" />
+	<import resource="classpath:spring-key-service-factory.xml" />
+	<import resource="classpath:spring-release-name-context.xml" />
+	<import resource="classpath:spring-track-name-context.xml" />
+	<import resource="classpath:spring-work-name-context.xml" /> -->
+	
+	<import resource="classpath:spring-batch-jobs/tika_media_details/lucene/lucene_context_configuration.xml" />
+	<import resource="classpath:database-loaders/spring-dao-context.xml" />
+	
+	<bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:spring-batch-jobs/tika_media_details/configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+	<bean lazy-init="true" id="fileNameQueue" class="java.util.concurrent.LinkedBlockingDeque">
+	</bean>
+<!-- Keep this section referring to base class since no ideal generic id -->
+<!-- Path configuration for File Directory Scanning. -->
+
+	<bean lazy-init="true" id="md5Signer" class="org.nanotek.sign.MD5FileSigner"> 
+	</bean>
+
+	<bean lazy-init="true" id="fileFinder" class="org.nanotek.tika.job.reader.fs.FileFinder">
+		<constructor-arg><value>${tika.file.finder.pattern}</value></constructor-arg>
+	</bean> 
+	
+	<!-- Store file location for future processing. -->
+	<bean lazy-init="true" id="persistentFileFinder" class="org.nanotek.tika.job.reader.fs.PersistentFileFinder" parent="fileFinder">
+		<property name="dao" ref="identityDAO"></property>
+	</bean>
+	
+	<!-- Store file location for future processing. -->
+	<bean lazy-init="true" id="persistentSignerFileFinder" class="org.nanotek.tika.job.reader.fs.PersistentSignerFileFinder" parent="persistentFileFinder">
+		<property name="fileSigner" ref="md5Signer"></property>
+	</bean>
+	
+	<!-- fix starting dir path and pattern to the configuration file -->
+	<bean lazy-init="true" id="configurableFileReader" class="org.nanotek.tika.job.reader.ConfigurableContextItemReader">
+		<property name="startingDir" value="${tika.file.finder.starting.dir}"></property>
+		<property name="globPattern" value="${tika.file.finder.pattern}"></property>
+		<property name="finder" ref="persistentSignerFileFinder"></property>
+	</bean>  
+	
+	<!--<bean lazy-init="true" id="artistAliasReader" class="org.nanotek.musicbrainz.job.readers.BaseReader">
+	</bean>-->	
+	
+	<!--<bean lazy-init="true" id="fileNameReader" class="org.nanotek.tika.job.reader.QueueItemReader">
+	</bean>
+	
+	<bean lazy-init="true" id="fileNameReaderNew" class="org.nanotek.tika.job.reader.ConfigurableContextItemReader"></bean>
+	
+	Keep this section referring to base class since no ideal generic id -->	
+	
+	<bean id="validator"
+      	class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+      	
+	<bean id="baseTemplate" class="org.nanotek.musicbrainz.beans.template.BrainzBaseTemplate">
+		<property name="baseDocumentConfiguration" value="documentConfiguration"></property>
+		<property name="clazz" value="org.nanotek.tika.MediaDetail"></property>
+		<property name="validator" ref="validator"></property>
+	</bean>
+
+
+     <bean id="tikaDefaultDetector" class="org.apache.tika.detect.DefaultDetector">
+    </bean>
+    
+    <bean id="autoDetectParser" class="org.apache.tika.parser.AutoDetectParser">
+        <constructor-arg><ref bean="tikaDefaultDetector"/></constructor-arg>
+    </bean>
+    
+    <bean id="tikaDelegateParser" class="org.nanotek.tika.io.parser.TikaParser">
+    	<property name="parser" ref="autoDetectParser"></property>
+    </bean>
+    
+    <bean id="tikaMediaDetector" class="org.nanotek.tika.io.TikaMediaDetector">
+		<property name="detector" ref="tikaDefaultDetector"></property>
+		<property name="parser" ref="tikaDelegateParser"></property>
+    </bean>
+    
+    <bean id="tikaMediaDetailDetector" class="org.nanotek.tika.io.TikaMediaDetailDetector" >
+    	<!-- <property name="tikaMediaDetector"  ref="tikaMediaDetector"></property> -->
+    </bean>
+    
+    <bean id="tikaThreadGroup" class="java.lang.ThreadGroup">
+    	<constructor-arg><value>tikaThreadGroup</value></constructor-arg>
+    </bean>
+    
+    <!-- <bean id="tikaPersistentFileVisitor" class="org.nanotek.tika.io.TikaPersistentFileVisitor">
+        <property name="dao" ref="mediaDetailsDAO"></property>
+        <property name="tikaMediaDetector" ref="tikaMediaDetector"></property>
+   		<property name="documentBuilder" ref="tikaDocumentBuilder"></property>
+    </bean>
+    <bean id="tikaFileVisitor" class="org.nanotek.tika.io.TikaFileVisitor">
+        <property name="tikaMediaDetector" ref="tikaMediaDetector"></property>
+    </bean>
+    -->
+    
+    <bean id="tika" class="org.apache.tika.Tika" scope="prototype">
+    </bean>
+
+ <!-- Empty classes to adjust the read file system with the parsing on Tika over multiple threads - file readers. -->
+	<bean id="typeReader" class="org.nanotek.spring.batch.TypeReader">
+    </bean>
+    
+    <bean id="fileSignerWriter" class="org.nanotek.tika.job.writer.FileSignerWriter">
+		<property name="tikaMediaDetailDetector" ref="tikaMediaDetailDetector"></property>
+		<property name="dao" ref="identityDAO"></property>
+    </bean>
+    
+	<bean id="fileIdentityReader" class="org.nanotek.tika.job.reader.dao.FileIdentityReader" scope="prototype">
+		<property name="tikaMediaDetailDetector" ref="tikaMediaDetailDetector"></property>
+		<property name="fileIdentityDAO" ref="identityDAO"></property>
+    </bean>
+    
+    <bean id="nextStepTypeWriter" class="org.nanotek.spring.batch.TypeWriter">
+    </bean>
+    
+    <bean id="contentExtractorWriter" class="org.nanotek.tika.job.writer.TikaContentExtractorWriter">
+    	<property name="dao" ref="mediaDetailDAO"></property>
+    	<property name="mediaDetailContentDAO" ref="mediaDetailContentDAO"></property>
+    </bean>
+    
+    <!-- <bean id="tikaPersistentContainer" class="">
+        <property name="tikaDocumentBuilder" ref="tikaDocumentBuilder"></property>
+        <property name="visitor" ref="tikaPersistentFileVisitor"></property>
+    </bean> -->
+
+<!-- Keep this section referring to base class since no ideal generic id 
+<property name="indexWriter" ref="indexWriter"></property>
+<property name="baseTemplate" ref="baseTemplate"></property>
+-->	
+	<!--<bean lazy-init="true" id="tikaQueueBaseWriter" class="org.nanotek.tika.job.writer.QueueBaseWriter">
+	 <property name="tikaMediaDetector" ref="tikaMediaDetailDetector"></property>
+	 <property name="mediaDetailBaseTemplate" ref="mediaDetailBaseTemplate"></property>
+	 <property name="indexWriter" ref="indexWriter"></property>
+	 <property name="tikaThreadGroup" ref="tikaThreadGroup"></property>
+	</bean>-->
+<!-- Keep this section referring to base class since no ideal generic id -->
+	
+	<bean lazy-init="true" id="indexStepListener" class="org.nanotek.tika.job.listeners.IndexWriterStepListener"> 
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean>
+	
+	 <bean lazy-init="true" id="indexChunkListener" class="org.nanotek.lucene.job.listeners.IndexChunkListener">
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean>
+	
+	<!--<bean lazy-init="true" id="artistIndexProcessor" class="org.nanotek.musicbrainz.job.processor.ArtistNameIndexProcessor">
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean> 
+	writer="artistAliasWriter"
+	-->
+	<!-- 
+		<b:next on="*" to="tikaFileJobLoad"/>
+	    </b:step>
+	    <b:step parent="fileSystemScan" id="tikaFileJobLoad">
+	    	<b:tasklet  task-executor="taskExecutor">
+	    		<b:chunk reader="typeReader" commit-interval="1000" writer="tikaQueueBaseWriter">
+	    		</b:chunk>
+	    	</b:tasklet>
+	    </b:step> 
+	    -->	
+	 <task:executor id="taskExecutor"
+	               pool-size="150-1500"
+	               queue-capacity="150"
+	               />
+	               
+	<b:job id="tikaFileJob" job-repository="jobRepository" restartable="false" incrementer="sampleIncrementer">
+	    <b:step id="fileSystemScan">
+		    	<b:tasklet>
+		    		<b:chunk reader="configurableFileReader" commit-interval="0" writer="fileSignerWriter" retry-limit="0">
+		    		</b:chunk>
+		    	</b:tasklet>
+	    	<b:next on="*" to="typeWriterStep"/>
+	    </b:step>  
+	    <b:step parent="fileSystemScan" id="typeWriterStep">
+	    	<b:tasklet>
+	    		<b:chunk reader="fileIdentityReader" commit-interval="0" writer="contentExtractorWriter" retry-limit="0">
+	    		</b:chunk>
+	    	</b:tasklet>
+	    </b:step>
+		<!-- <b:step parent="fileIndexing" id="indexingStep">
+	    	<b:tasklet>
+	    		<b:chunk reader="fileIdentityReader" commit-interval="0" writer="contentExtractorWriter" retry-limit="0">
+	    		</b:chunk>
+	    	</b:tasklet>
+	    </b:step> -->	     
+	</b:job>
+
+	<bean id="jobLauncher"
+	      class="org.springframework.batch.core.launch.support.SimpleJobLauncher" >
+	    <property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+	<bean id="sampleIncrementer"
+	      class="org.nanotek.jobs.SampleIncrementer">
+	</bean>
+
+</beans>

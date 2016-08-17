@@ -1,0 +1,21 @@
+package tests.tika.index.activemq;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class ActiveMQJmsReceiverTest {
+
+	public ActiveMQJmsReceiverTest() {
+		// TODO Auto-generated constructor stub
+	}
+
+	private static ClassPathXmlApplicationContext ctx;
+	
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		ctx = new ClassPathXmlApplicationContext(new String[] {"activemq-config/base-activemq-context.xml"});
+	}
+
+}

@@ -1,0 +1,33 @@
+package org.nanotek.sign;
+
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.util.UUID;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Signer;
+import org.nanotek.indexer.util.key.GenericUUIDService;
+
+public class UUIDFileSigner extends FileSignerSupport<File,String>
+				implements Signer<File,String>{
+	
+	private Logger log = Logger.getLogger(UUIDFileSigner.class);
+
+	
+	public UUIDFileSigner() {
+	}
+
+	protected String signFile(File file) {
+		StringBuilder sb = null; 
+		try {
+			ByteBuffer readBuffer = readFile(file);
+			GenericUUIDService keyService  = new GenericUUIDService();
+			UUID uid = keyService.getKey(readBuffer.array());
+			sb = new StringBuilder(uid.toString());
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.debug(e);
+		}
+		return sb.toString();
+	}
+}

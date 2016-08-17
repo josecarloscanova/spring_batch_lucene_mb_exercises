@@ -1,0 +1,13 @@
+package org.nanotek.musicbrainz.beans.map;
+
+import org.nanotek.Base;
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class GenericMapping<T extends Base<?>>  extends ColumnPositionMappingStrategy<Base<?>>{
+
+	public GenericMapping (TupleDescriptor descriptor) 
+	{ 
+		
+	}
+	
+}

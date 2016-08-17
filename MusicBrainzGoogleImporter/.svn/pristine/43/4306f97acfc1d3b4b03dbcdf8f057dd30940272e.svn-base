@@ -1,0 +1,12 @@
+package org.nanotek.hibernate.dao;
+
+import java.util.List;
+import org.nanotek.Base;
+import org.nanotek.base.PageItemBase;
+
+public interface ContactsDAO<T extends Base<?>> {
+	
+	public List<T> getContactsByName(String name);
+	public List<T> getContactsByName(String name , PageItemBase<?> pageItemBase);
+	
+}

@@ -1,0 +1,33 @@
+package org.nanotek.base.region;
+
+import org.nanotek.Region;
+
+@SuppressWarnings("serial")
+public class ConcreteRegion implements Region<LimitBase> {
+
+	private LimitBase id; 
+	
+	public ConcreteRegion() {
+	}
+
+	public ConcreteRegion(LimitBase id) {
+		super();
+		this.id = id;
+	}
+
+	@Override
+	public void setId(LimitBase id) {
+		this.id = id; 
+	}
+
+	@Override
+	public LimitBase getId() {
+		return id;
+	}
+
+	@Override
+	public LimitBase getLimit() {
+		return id;
+	}
+
+}

@@ -1,0 +1,7 @@
+package org.nanotek.tika.job.reader;
+
+import org.nanotek.spring.batch.step.BaseStatus;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemStream;
+
+public abstract class QueueItemReader<S extends BaseStatus<?,?>>  implements ItemReader<S>  , ItemStream {}

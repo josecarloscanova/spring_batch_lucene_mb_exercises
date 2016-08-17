@@ -1,0 +1,19 @@
+package org.nanotek;
+
+import java.io.Serializable;
+
+/**
+ * User to define a "planar position", defines 2 methods (T1 , T2) to describe a position relative to 
+ * an "hiphotetical origin (T0,I0), where the representation of the Position does not necessary is defined as 
+ * a numeric representation (for example spreadsheets uses "alphanumeric types" to count columns.
+ * @author java-eclipse
+ *
+ * @param <T>
+ * @param <I>
+ */
+public interface Position<T,I> extends Serializable{
+
+	public T getOrigin(); 
+	public I getDistance();
+	
+}

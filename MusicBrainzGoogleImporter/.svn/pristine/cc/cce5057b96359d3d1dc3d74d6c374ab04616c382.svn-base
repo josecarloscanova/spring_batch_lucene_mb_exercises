@@ -1,0 +1,11 @@
+package org.nanotek.tika.document;
+
+
+public interface TikaDocumentTransformer<S,P,T> extends DocumentTransformer<S,T> {
+
+	@Override
+	public T transform (S source) throws TransformerException;
+
+	public T transform (S source , P parameter) throws TransformerException;
+
+}

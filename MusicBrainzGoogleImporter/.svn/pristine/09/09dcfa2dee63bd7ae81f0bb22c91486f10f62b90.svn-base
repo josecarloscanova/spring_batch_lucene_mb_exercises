@@ -1,0 +1,57 @@
+package org.nanotek.base.artist;
+
+import java.util.Set;
+
+import org.nanotek.Base;
+
+/**
+ * Maybe will be kicked out.
+ * 
+ * @author josecanovamauger
+ *
+ */
+@SuppressWarnings("serial")
+public class ArtistGroup implements Base<Long>{
+
+	private Long id;
+	
+	private Set<Artist> artists; 
+
+	private GroupType groupType;
+	
+	public ArtistGroup(){ 
+	}
+	
+	public ArtistGroup(Set<Artist> artists, GroupType groupType) {
+		super();
+		this.artists = artists;
+		this.groupType = groupType;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Set<Artist> getArtists() {
+		return artists;
+	}
+
+	public void setArtists(Set<Artist> artists) {
+		this.artists = artists;
+	}
+
+	public GroupType getGroupType() {
+		return groupType;
+	}
+
+	public void setGroupType(GroupType groupType) {
+		this.groupType = groupType;
+	} 
+	
+	
+	
+}

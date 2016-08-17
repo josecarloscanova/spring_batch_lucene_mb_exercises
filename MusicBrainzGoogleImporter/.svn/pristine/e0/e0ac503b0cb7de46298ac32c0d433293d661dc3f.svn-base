@@ -1,0 +1,56 @@
+package org.nanotek.musicbrainz.beans.template;
+
+import static org.apache.lucene.document.LongField.TYPE_STORED;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.LongField;
+import org.apache.lucene.document.StringField;
+import org.nanotek.lucene.template.base.BaseTemplate;
+import org.nanotek.musicbrainz.beans.ArtistAlias;
+
+public class ArtistAliasTemplate extends BaseTemplate<ArtistAlias>{
+
+	private Log log = LogFactory.getLog(ArtistAliasTemplate.class);
+	
+	/**
+	 * REVIEW: Implement an Interceptor to throw an Exception in case of the 
+	 * nullity of the document. 
+	 */
+	@Override
+	public Document createTemplate(ArtistAlias info) {
+		
+		Set<ConstraintViolation<ArtistAlias>> constraintViolations = 
+	            validator.validate(info);
+		
+		Document document = new Document();
+		
+		log.debug(" VALIDATOR TEST: ConstraintViolations " + constraintViolations.size());
+		
+		if (constraintViolations.size() <= 0) { 
+//		document = new Document();
+		LongField idField = new LongField ("id" , info.getId(),TYPE_STORED);
+		document.add(idField);
+
+//		StringField gidField = new StringField("gid", info.getGid(), Store.YES);
+//		document.add(gidField);
+		
+		StringField nameField = new StringField("name", info.getName(), Store.YES);
+		document.add(nameField);
+		
+		}else { 
+			checkError(constraintViolations);
+		}
+		
+		return document;
+		
+	}
+	
+	
+}

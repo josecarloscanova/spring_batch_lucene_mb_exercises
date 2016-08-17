@@ -1,0 +1,24 @@
+package org.nanotek.beans.mapping;
+
+import org.nanotek.beans.Track;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class TrackMapping extends ColumnPositionMappingStrategy<Track> {
+
+	public TrackMapping() 
+	{ 
+		String [] columns = new String [9]; 
+		columns[0] = "id";
+		columns[1] = "recording";
+		columns[2] = "trackList";
+		columns[3] = "position";
+		columns[4] = "name";
+		columns[5] = "artistCredit";
+		columns[6] = "lenght";
+		columns[7] = null;
+		columns[8] = null;
+		this.setColumnMapping(columns);
+	}
+	
+}

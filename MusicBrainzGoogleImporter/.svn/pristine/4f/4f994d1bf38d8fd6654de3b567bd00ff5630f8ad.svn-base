@@ -1,0 +1,41 @@
+package org.nanotek.tika.job.reader.fs;
+
+import java.nio.file.Path;
+import java.util.UUID;
+
+import org.nanotek.indexer.util.key.GenericUUIDService;
+import org.nanotek.tika.file.FileIdentity;
+
+/**
+ * Simple helper class to mount a pojo result of the file system scanning.
+ * 
+ * @author josecanovamauger.
+ *
+ */
+public class FileIdentityBuilder {
+
+	private final Path filePath; 
+	
+	private FileIdentityBuilder(Path file){
+		this.filePath = file;
+	} 
+	
+	public static FileIdentityBuilder setPath(final Path file) {
+		FileIdentityBuilder self = new FileIdentityBuilder(file); 
+		return self;
+	}
+	
+	public FileIdentity build() {
+		Path parent = filePath.getParent(); 
+		Path fileName = filePath.getFileName();
+		GenericUUIDService uuidService = new GenericUUIDService();
+		UUID id = uuidService.getKey();
+		FileIdentity fileIdentity = new FileIdentity();
+		fileIdentity.setId(id.toString());
+		fileIdentity.setName(parent.toString());
+		fileIdentity.setSortName(fileName.toString());
+		fileIdentity.setCksum("");
+		fileIdentity.setType("");
+		return fileIdentity;
+	}
+}

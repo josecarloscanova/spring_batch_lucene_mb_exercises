@@ -1,0 +1,65 @@
+package tests.flat.files.scan;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringBufferInputStream;
+import java.nio.CharBuffer;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+
+
+public class XmlFileReader {
+
+	public XmlFileReader() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public static void main(String[] args) throws IOException {
+		
+		File inFile = new File("/home/java-eclipse/records.results.xml");
+		BufferedReader reader = new BufferedReader(new FileReader(inFile));
+		XmlFileReader fileReader = new XmlFileReader(); 
+		
+		StringBuilder chara = fileReader.readBuffer(reader);
+		String content = new String(chara.toString());
+//		fileReader.readXmlDocument(content);
+		System.out.println(content);
+		System.out.println(content.length());
+	}
+
+	private StringBuilder readBuffer(BufferedReader reader) throws IOException {
+		StringBuilder builder = new StringBuilder();
+		readBuffer (builder, reader);
+		return builder;
+	}
+	
+	public  void readBuffer(StringBuilder outString , Reader reader) throws IOException
+	{ 
+		int ret = 0; 
+		char c ;
+		while ((ret = reader.read()) != -1)
+		{   
+			c = (char)ret;
+			outString.append(c);
+		}
+	}
+	
+	public void readXmlDocument (String result) 
+	{ 
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try {
+			Document document = factory.newDocumentBuilder().parse(new StringBufferInputStream(result));
+			System.out.println(document.getTextContent());
+		} catch (SAXException | IOException | ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

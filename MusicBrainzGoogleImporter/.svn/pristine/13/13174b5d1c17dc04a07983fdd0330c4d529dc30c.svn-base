@@ -1,0 +1,37 @@
+package org.nanotek.poi.base.ext;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class CellValue implements Base<Long> {
+
+	private Long id; 
+	private CellPosition <Long,Long> cellPosition; 
+	private Base<?> value; 
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id; 
+	}
+
+	public CellPosition<Long, Long> getCellPosition() {
+		return cellPosition;
+	}
+
+	public void setCellPosition(CellPosition<Long, Long> cellPosition) {
+		this.cellPosition = cellPosition;
+	}
+
+	public Base<?> getValue() {
+		return value;
+	}
+
+	public void setValue(Base<?> value) {
+		this.value = value;
+	}
+}

@@ -1,0 +1,36 @@
+package tests.org.nanotek.sign;
+
+import java.io.File;
+
+import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.nanotek.sign.MD5FileSigner;
+import org.nanotek.sign.UUIDFileSigner;
+
+public class TestFileSigner {
+	
+	private Logger log = Logger.getLogger(TestFileSigner.class);
+	
+	File sampleFile = null;	
+	@Before
+	public void setUp() throws Exception {
+		sampleFile = new File("/home/java-eclipse/pdf_folder/99back.pdf");
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void test() {
+		MD5FileSigner mdSigner = new MD5FileSigner(); 
+		String signature = mdSigner.sign(sampleFile);
+		log.debug(signature);
+		UUIDFileSigner uuidSigner = new UUIDFileSigner(); 
+		signature = uuidSigner.sign(sampleFile);
+		log.debug(signature);
+	}
+
+}

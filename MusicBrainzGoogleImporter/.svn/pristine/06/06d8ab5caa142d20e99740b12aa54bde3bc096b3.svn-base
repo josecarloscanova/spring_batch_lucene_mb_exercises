@@ -1,0 +1,103 @@
+package org.nanotek.tika.job.reader.fs;
+
+import static java.nio.file.FileVisitResult.CONTINUE;
+
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.apache.log4j.Logger;
+import org.nanotek.AbstractBase;
+import org.nanotek.Base;
+import org.nanotek.PathFinder;
+
+public class FileFinder extends SimpleFileVisitor<Path> implements PathFinder{
+
+	protected final PathMatcher matcher;
+	protected int numMatches = 0;
+	private static final Logger log = Logger.getLogger(FileFinder.class);
+	protected final Map<String,Set<String>> pathMap;
+	
+	public FileFinder(String pattern) {
+		matcher =
+				FileSystems.getDefault()
+				.getPathMatcher("glob:" + pattern);
+		pathMap = new HashMap<String,Set<String>>();
+	}
+
+	@Override
+	public void find(Path file) {
+		Path name = file.getFileName();
+		if (name != null && matcher.matches(name) && file.isAbsolute()) {
+			numMatches++;
+			Base<String> base = new AbstractBase<String>();
+			base.setId(file.toString());
+			//probably is just put anything on the method call, but who knows what is going on. ?
+			this.storeMatchPath(file);
+			log.debug("num file  found " + numMatches);
+		}
+	}
+
+	public void storeMatchPath(Path path)
+	{ 
+			String parentPathStr = path.getParent().toString();
+			String pathFileNameStr = path.getFileName().toString();
+			Set<String> matchedPathSet  = ((pathMap.get(parentPathStr))!=null)?pathMap.get(parentPathStr): new HashSet<String>();
+			matchedPathSet.add(pathFileNameStr);
+			pathMap.put(parentPathStr,matchedPathSet);
+			log.debug("RootPath " + parentPathStr.toString() + "  File Path " + pathFileNameStr.toString());
+	}
+	
+	// logs the end of the match.
+	public void done() {
+		log.debug("Matched: "
+				+ numMatches);
+	}
+
+	// Invoke the pattern matching
+	// method on each file.
+	@Override
+	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+		if (!attrs.isSymbolicLink() && attrs.isRegularFile())
+			find(file);
+		else 
+			log.debug("Not scanning symbolic link or symbolic link " + file.getFileName().toString());
+		return CONTINUE;
+	}
+
+	// Invoke the pattern matching
+	// method on each directory.
+	@Override
+	public FileVisitResult preVisitDirectory(Path dir,
+			BasicFileAttributes attrs) {
+		if (!attrs.isSymbolicLink()){
+			directoryMatch(dir);
+		}else 
+			log.debug("Not scanning symbolic link to avoid cyclic scan.");
+		return CONTINUE;
+	}
+
+	private void directoryMatch(Path dir) {
+		log.debug("Storing for log directory match " + dir.getFileName().toString());
+	}
+
+	@Override
+	public FileVisitResult visitFileFailed(Path file,
+			IOException exc) {
+		log.error(exc); 
+		return CONTINUE;
+	}
+
+	public Map<String, Set<String>> getPathMap() {
+		return pathMap;
+	}
+}

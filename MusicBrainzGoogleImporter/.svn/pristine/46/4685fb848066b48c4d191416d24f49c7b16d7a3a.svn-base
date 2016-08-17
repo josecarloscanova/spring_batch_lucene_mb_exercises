@@ -1,0 +1,9 @@
+package tests;
+
+import org.nanotek.Base;
+
+public class Horse<T extends Base<?>> {
+    public String identifyMyself(T race) {
+        return "I am a horse. " + race.getId();
+    }
+}

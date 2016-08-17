@@ -1,0 +1,106 @@
+package org.nanotek.tika.job.reader.fs;
+
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.nanotek.spring.batch.TypeWriter;
+import org.nanotek.spring.batch.step.StampFinderStep;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemStream;
+import org.springframework.batch.item.ItemStreamException;
+
+@Deprecated
+public class FileSystemQueueWriter<T extends StampFinderStep> extends TypeWriter<T> implements ItemStream{
+
+	private Logger log = Logger.getLogger(FileSystemQueueWriter.class);
+	private ExecutionContext executionContext;
+	public FileSystemQueueWriter() {}
+
+	@Override
+	public void write(List<? extends T> items) throws Exception {
+		assert(items.size()==1);
+		processElementPath(items.get(0));
+		//		log.debug("Here you have a list of " + items.get(0).size() + "Elements.");
+	}
+
+	//TODO: Decompose the Path again to cascade in a tree structure just for fun. 
+	@SuppressWarnings("unchecked")
+	private void processElementPath(T t) {
+		Map <String,HashSet<String>> pathMap = (Map<String, HashSet<String>>) executionContext.get(Long.toString(t.getId()));
+		for (String base: pathMap.keySet()){  
+			Set<String> fileSet = pathMap.get(base);
+			for (String filePath : fileSet){ 
+				log.debug("WRITER RootPath " + base.toString() + " WRITER FILE PATH  " + filePath.toString());
+				readArchive(base,filePath);
+			}
+		}
+	}
+
+	private void readArchive(String base, String filePath) {
+		
+		String filePathStr = base + System.getProperty("file.separator") +  filePath;
+		File file = new File(filePathStr);
+		try { 
+			if (!file.isDirectory() && file.canRead()) { 
+				ByteBuffer buffer = readFile (file);
+				signFile (buffer);
+				storeFileProcessingStem(file);
+				log.debug(" FILE  READEN " + buffer.capacity() ) ;
+			}else if (!file.canRead()) { 
+				throw new SecurityException();
+			}
+		}catch(SecurityException se) { 
+			if (!file.isDirectory()) 
+			{ 
+				log.debug("File permission read denied " + filePathStr);
+			}else { 
+				log.debug("Directory is not processed on this step");
+			}
+		}
+		
+	}
+
+	private void storeFileProcessingStem(File file) {
+		log.debug("IMPLEMENT STORE PROCESSING ON FILE ");
+	}
+
+	private void signFile(ByteBuffer buffer) {
+		log.debug("IMPLEMENT FILE SIGNATURE TO AVOID SAME FILE INDEXING");
+		buffer.array();
+	}
+
+	private ByteBuffer readFile(File file) {
+		ByteBuffer buffer = null;
+		try {
+			byte [] fileByteArray = Files.readAllBytes(file.toPath());
+			buffer = ByteBuffer.allocate(fileByteArray.length);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.debug(e);
+		}
+		return  buffer; 
+	}
+
+	@Override
+	public void open(ExecutionContext executionContext)
+			throws ItemStreamException {
+		this.executionContext = executionContext; 
+	}
+
+	@Override
+	public void update(ExecutionContext executionContext)
+			throws ItemStreamException {
+	}
+
+	@Override
+	public void close() throws ItemStreamException {
+		this.executionContext = null;
+	}
+
+}

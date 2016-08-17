@@ -1,0 +1,32 @@
+package org.nanotek.base;
+
+import org.nanotek.Label;
+
+/**
+ * Base Class to define a single label, used on POI WorkBook Sheet-Row Configuration.
+ * 
+ * @author java-eclipse
+ *
+ */
+@SuppressWarnings("serial")
+public class BaseLabel implements Label<Long>{
+
+	private String theLabel = ""; 
+	private Long id; 
+	
+	@Override
+	public String get() {
+		return theLabel;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id; 
+	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+}

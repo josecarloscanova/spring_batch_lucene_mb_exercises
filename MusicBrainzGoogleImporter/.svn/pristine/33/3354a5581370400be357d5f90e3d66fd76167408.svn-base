@@ -1,0 +1,1594 @@
+<!doctype html>
+<html itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="/images/google_favicon_128.png" itemprop="image">
+<title>Abe, Costa, Guimarães e Rocha Neto - Google Search</title>
+<style>
+#gbar,#guser {
+	font-size: 13px;
+	padding-top: 1px !important;
+}
+
+#gbar {
+	height: 22px
+}
+
+#guser {
+	padding-bottom: 7px !important;
+	text-align: right
+}
+
+.gbh,.gbd {
+	border-top: 1px solid #c9d7f1;
+	font-size: 1px
+}
+
+.gbh {
+	height: 0;
+	position: absolute;
+	top: 24px;
+	width: 100%
+}
+
+@media all {
+	.gb1 {
+		height: 22px;
+		margin-right: .5em;
+		vertical-align: top
+	}
+	#gbar {
+		float: left
+	}
+}
+
+a.gb1,a.gb4 {
+	text-decoration: underline !important
+}
+
+a.gb1,a.gb4 {
+	color: #00c !important
+}
+
+.gbi .gb4 {
+	color: #dd8e27 !important
+}
+
+.gbf .gb4 {
+	color: #900 !important
+}
+</style>
+<style>
+.j {
+	width: 34em
+}
+
+body,td,div,.p,a {
+	font-family: arial, sans-serif;
+	tap-highlight-color: rgba(255, 255, 255, 0)
+}
+
+body {
+	margin: 0
+}
+
+#gbar {
+	float: left;
+	height: 22px;
+	padding-left: 2px;
+	font-size: 13px
+}
+
+.gsfi,.gsfs {
+	font-size: 17px
+}
+
+.w,.q:active,.q:visited,.tbotu {
+	color: #11c
+}
+
+a.gl {
+	text-decoration: none
+}
+
+.ads a:link {
+	color: #0E1CB3
+}
+
+#foot {
+	padding: 0 8px
+}
+
+#foot a {
+	white-space: nowrap
+}
+
+h3 {
+	font-size: 16px;
+	font-weight: normal;
+	margin: 0;
+	padding: 0
+}
+
+#res h3 {
+	display: inline
+}
+
+.hd {
+	height: 1px;
+	position: absolute;
+	top: -1000em
+}
+
+li.g,body,html,table,.std {
+	font-size: 13px
+}
+
+li.g {
+	margin-bottom: 23px;
+	margin-top: 0;
+	zoom: 1
+}
+
+ol li,ul li {
+	list-style: none
+}
+
+h1,ol,ul,li {
+	margin: 0;
+	padding: 0
+}
+
+#mbEnd h2 {
+	color: #676767;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: normal
+}
+
+.e {
+	margin: 2px 0 0.75em
+}
+
+#leftnav a,.slk a {
+	text-decoration: none
+}
+
+#leftnav h2 {
+	color: #767676;
+	font-weight: normal;
+	margin: 0
+}
+
+#nav {
+	border-collapse: collapse;
+	margin-top: 17px;
+	text-align: left
+}
+
+#nav td {
+	text-align: center
+}
+
+.nobr {
+	white-space: nowrap
+}
+
+.ts {
+	border-collapse: collapse
+}
+
+.s br {
+	display: none
+}
+
+.spon {
+	font-size: 11px;
+	font-weight: normal;
+	color: #666
+}
+
+.spon b {
+	color: #444
+}
+
+.csb {
+	display: block;
+	height: 40px
+}
+
+.images_table td {
+	line-height: 17px;
+	padding-bottom: 16px
+}
+
+.images_table img {
+	border: 1px solid #ccc;
+	padding: 1px
+}
+
+#tbd,#abd {
+	display: block;
+	min-height: 1px
+}
+
+#abd {
+	padding-top: 3px
+}
+
+#tbd li {
+	display: inline
+}
+
+.tbfo,.tbpd {
+	margin-bottom: 8px
+}
+
+#tbd .tbt li {
+	display: block;
+	font-size: 13px;
+	line-height: 1.2;
+	padding-bottom: 3px;
+	padding-left: 8px;
+	text-indent: -8px
+}
+
+.tbos,.b {
+	font-weight: bold
+}
+
+em {
+	font-weight: bold;
+	font-style: normal
+}
+
+.mime {
+	color: #12c;
+	font-weight: bold;
+	font-size: x-small
+}
+
+.gac_wd {
+	right: -2px !important;
+	overflow: hidden
+}
+
+.soc a {
+	text-decoration: none
+}
+
+.soc {
+	color: #666
+}
+
+.sr_color a {
+	text-decoration: none
+}
+
+.sr_color {
+	color: #666
+}
+
+.sr_num_color {
+	color: #e7711b
+}
+
+#aob {
+	border: 1px solid #e0e0e0;
+	margin-left: -8px;
+	margin-right: -8px;
+	padding: 15px 20px 5px
+}
+
+#aoba {
+	font-size: 32px
+}
+
+#aobea {
+	color: #777;
+	font-size: 16px;
+	margin-top: 5px
+}
+
+#vob {
+	border: 1px solid #e0e0e0;
+	padding: 15px 15px
+}
+
+#vob_t {
+	font-size: 22px;
+	line-height: 22px;
+	padding-bottom: 5px
+}
+
+#vob_st {
+	line-height: 1.24
+}
+
+.lrob_c {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #eee;
+	background-color: #fff;
+	position: relative;
+	margin-bottom: 26px
+}
+
+.lrob_ans,.lrob_sh,.lrob_txt {
+	font-family: Arial;
+	font-weight: lighter
+}
+
+.lrob_ans {
+	margin-bottom: 5px
+}
+
+.lrob_ans {
+	font-size: xx-large
+}
+
+.lrob_sh {
+	font-size: medium
+}
+
+.lrob_txt {
+	font-size: small
+}
+
+.lrob_c {
+	margin-left: -8px;
+	margin-right: -15px;
+	padding: 20px 20px 24px
+}
+
+.lrob_bk {
+	color: #212121
+}
+
+.lrob_gy {
+	color: #878787
+}
+
+.gssb_a {
+	padding: 0 10px !important
+}
+
+.gssb_c {
+	left: 132px !important;
+	right: 295px !important;
+	top: 78px !important;
+	width: 572px !important
+}
+
+.gssb_c table {
+	font-size: 16px !important
+}
+
+.gssb_e {
+	border: 1px solid #ccc !important;
+	border-top-color: #d9d9d9 !important
+}
+
+.gssb_i {
+	background: #eee !important
+}
+
+#res {
+	padding: 0 8px
+}
+
+#spe {
+	padding: 0 8px
+}
+
+#subform_ctrl {
+	font-size: 11px;
+	height: 17px;
+	margin: 5px 3px 0 17px
+}
+
+.taf {
+	padding: 1px 0 3px
+}
+
+.tam {
+	padding: 20px 0 3px
+}
+
+.tal {
+	padding: 20px 0 3px
+}
+
+.slk .sld {
+	width: 250px
+}
+
+.slk {
+	margin-bottom: -3px
+}
+
+.slk .asld {
+	padding-bottom: 5px;
+	width: 250px
+}
+
+.slk-exp-table {
+	margin-top: 1px;
+	margin-bottom: -11px
+}
+
+.slk-exp {
+	color: #373737
+}
+
+.slk-line2 {
+	padding-top: 2px;
+	padding-bottom: 1px
+}
+
+.slk-line3 {
+	padding-top: 1px;
+	margin-bottom: 14px
+}
+
+.ac,.st {
+	line-height: 1.24
+}
+
+#mfr,#ofr {
+	font-size: 16px;
+	padding: 0 8px
+}
+
+.s {
+	color: #444
+}
+
+.ac {
+	color: #373737
+}
+
+a.fl,.flc a,.osl a {
+	color: #12c;
+	text-decoration: none
+}
+
+a:link {
+	color: #1e0fbe;
+	cursor: pointer
+}
+
+div#tads a:link {
+	color: #1e0fbe
+}
+
+div#tads .soc a:link {
+	color: #666
+}
+
+div#tads .sr_color a:link {
+	color: #666
+}
+
+.sr_color a:link {
+	color: #666
+}
+
+.sr_color a:visited {
+	color: #666
+}
+
+.sr_color a:hover {
+	color: #666;
+	text-decoration: underline
+}
+
+a:visited {
+	color: #61C
+}
+
+.blg a {
+	text-decoration: none
+}
+
+cite,cite a:link {
+	color: #006621;
+	font-style: normal
+}
+
+div#tads cite {
+	color: #006621
+}
+
+.kv {
+	font-size: 14px
+}
+
+.kvs {
+	margin-top: 1px
+}
+
+.kv,.kvs,.slp {
+	display: block;
+	margin-bottom: 1px
+}
+
+.kt {
+	border-spacing: 2px 0;
+	margin-top: 1px
+}
+
+#mbEnd li {
+	margin: 20px 8px 0 0
+}
+
+.f {
+	color: #666
+}
+
+.grn {
+	color: #093
+}
+
+h4.r {
+	display: inline;
+	font-size: small;
+	font-weight: normal
+}
+
+li {
+	line-height: 1.2
+}
+
+.mglbl {
+	display: inline-block;
+	vertical-align: top;
+	overflow: hidden;
+	position: relative
+}
+
+.nrsug {
+	margin: 0 0 2em 1.3em
+}
+
+.nrsug li {
+	list-style-type: disc
+}
+
+.osl {
+	color: #777;
+	margin-top: 4px
+}
+
+.r {
+	font-size: 16px;
+	margin: 0
+}
+
+.spell {
+	font-size: 16px
+}
+
+.spell_orig {
+	font-size: 13px
+}
+
+.spell_orig a {
+	text-decoration: none
+}
+
+.spell_orig b i {
+	font-style: normal;
+	font-weight: normal
+}
+
+.star {
+	float: left;
+	margin-top: 1px;
+	overflow: hidden
+}
+
+.th {
+	border: 1px solid #ebebeb
+}
+
+.thc {
+	font-size: 11px
+}
+
+.ts td {
+	padding: 0
+}
+
+.videobox {
+	padding-bottom: 3px
+}
+
+#leftnav a:hover,#leftnav .tbou a:hover,.slk h3 a,a:hover {
+	text-decoration: underline
+}
+
+#mn {
+	table-layout: fixed;
+	width: 100%
+}
+
+#leftnav a {
+	color: #222;
+	font-size: 13px
+}
+
+#leftnav {
+	padding: 43px 4px 4px 0
+}
+
+.tbos {
+	color: #dd4b39
+}
+
+.lnsec {
+	border-top: 1px solid #efefef;
+	font-size: 13px;
+	margin: 10px 0 14px 10px;
+	padding: 0
+}
+
+.tbt {
+	margin-bottom: 28px
+}
+
+#tbd {
+	padding: 0 0 0 16px
+}
+
+.tbou a {
+	color: #222
+}
+
+#center_col {
+	border: 0;
+	padding: 0 8px 0 0
+}
+
+#topstuff .e {
+	padding-top: 3px
+}
+
+#topstuff .sp_cnt {
+	padding-top: 6px
+}
+
+#ires {
+	padding-top: 6px
+}
+
+#ab_name {
+	color: #dd4b39;
+	font: 20px "Arial";
+	margin-left: 15px
+}
+
+.ab_bg {
+	border-bottom: 1px solid #dedede;
+	height: 56px;
+	padding-top: 1px
+}
+
+#resultStats {
+	color: #999;
+	font-size: 13px;
+	overflow: hidden;
+	white-space: nowrap
+}
+
+.mslg>td {
+	padding-right: 1px;
+	padding-top: 2px
+}
+
+.slk .sld {
+	margin-top: 2px;
+	padding: 5px 0 5px 5px
+}
+
+.fml,.fmp {
+	padding-top: 3px
+}
+
+.close_btn {
+	overflow: hidden
+}
+
+#fll a,#bfl a {
+	color: #12c !important;
+	margin: 0 12px;
+	text-decoration: none !important
+}
+
+.ng {
+	color: #dd4b39
+}
+
+#mnav .b {
+	text-decoration: underline
+}
+
+#mss {
+	margin: .33em 0 0;
+	padding: 0;
+	display: table
+}
+
+.mss_col {
+	display: inline-block;
+	float: left;
+	white-space: nowrap;
+	padding-right: 16px
+}
+
+#mss p {
+	margin: 0;
+	padding-top: 5px
+}
+
+.tn {
+	border-bottom: 1px solid #ebebeb;
+	display: block;
+	float: left;
+	height: 59px;
+	line-height: 54px;
+	min-width: 980px;
+	padding: 0;
+	position: relative;
+	white-space: nowrap
+}
+
+.tn-mode,a.tn-mode {
+	color: #777;
+	cursor: pointer;
+	display: inline-block;
+	font-family: arial, sans-serif;
+	font-size: small;
+	height: 54px;
+	line-height: 54px;
+	margin: 0 8px;
+	padding: 0 8px;
+	text-decoration: none;
+	white-space: nowrap
+}
+
+.tn-selected-mode {
+	border-bottom: 3px solid #dd4b39;
+	color: #dd4b39;
+	font-weight: bold;
+	margin: 2px 8px 0
+}
+
+a.tn-unselected-mode:hover {
+	color: black;
+	text-decoration: none;
+	white-space: nowrap
+}
+
+body {
+	margin: 0;
+	padding: 0
+}
+
+.tn-div {
+	display: inline-block;
+	float: left;
+	margin-top: 2px
+}
+
+.tn-first-mode,a.tn-first-mode {
+	margin-left: 1px
+}
+
+.sd {
+	line-height: 43px;
+	padding: 0 8px 0 9px
+}
+
+a:active,.osl a:active,.tbou a:active,#leftnav a:active {
+	color: #dd4b39
+}
+
+#ffl a:active,#bfl a:active {
+	color: #dd4b39 !important
+}
+
+.csb {
+	background: url(/images/nav_logo176.png) no-repeat;
+	overflow: hidden
+}
+
+.close_btn {
+	background: url(/images/nav_logo176.png) no-repeat -138px -84px;
+	height: 14px;
+	width: 14px;
+	display: block
+}
+
+.star {
+	background: url(/images/nav_logo176.png) no-repeat -94px -245px;
+	height: 13px;
+	width: 65px;
+	display: block
+}
+
+.star div,.star span {
+	background: url(/images/nav_logo176.png) no-repeat 0 -245px;
+	height: 13px;
+	width: 65px;
+	display: block
+}
+
+.sr {
+	background: url(/images/nav_logo176.png) no-repeat -66px -292px;
+	height: 13px;
+	width: 65px;
+	display: block
+}
+
+.sr span {
+	background: url(/images/nav_logo176.png) no-repeat 0 -292px;
+	height: 13px;
+	width: 65px;
+	display: block
+}
+
+.am-dwn-arw-container {
+	display: inline;
+	margin: 0 3px;
+	outline-color: transparent;
+	overflow: hidden;
+	position: relative
+}
+
+.am-dwn-arw-container>div {
+	outline-color: transparent
+}
+
+.am-dwn-arw {
+	border-color: transparent;
+	border-style: solid dashed dashed;
+	border-top-color: green;
+	border-width: 4px 4px 0 4px;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 0;
+	height: 0;
+	left: 4px;
+	line-height: 0;
+	outline-color: transparent;
+	position: relative;
+	top: -3px;
+	width: 0
+}
+
+.am-dwn-arw {
+	margin-top: -4px
+}
+
+.am-dropdown-menu {
+	display: block;
+	background: #fff;
+	border: 1px solid #dcdcdc;
+	font-size: 13px;
+	left: 0;
+	padding: 0;
+	position: absolute;
+	right: auto;
+	white-space: nowrap;
+	z-index: 3
+}
+
+.am-dropdown-menu-item {
+	list-style: none;
+	white-space: nowrap
+}
+
+.am-dropdown-menu-item:hover {
+	background-color: #eee
+}
+
+a.am-dropdown-menu-item-text {
+	color: #333;
+	cursor: pointer;
+	display: block;
+	padding: 7px 18px;
+	text-decoration: none
+}
+
+div#tads a.am-dropdown-menu-item-text {
+	color: #333
+}
+</style>
+<style>
+.sfbgg {
+	background: #f1f1f1;
+	border-bottom: 1px solid #e5e5e5;
+	height: 71px
+}
+
+#logocont {
+	z-index: 1;
+	padding-left: 4px;
+	padding-top: 4px
+}
+
+#logo {
+	display: block;
+	height: 49px;
+	margin-top: 12px;
+	margin-left: 12px;
+	overflow: hidden;
+	position: relative;
+	width: 137px
+}
+
+#logo img {
+	left: 0;
+	position: absolute;
+	top: -41px
+}
+
+.lst-a {
+	background: white;
+	border: 1px solid #d9d9d9;
+	border-top-color: silver;
+	width: 570px
+}
+
+.lst-a:hover {
+	border: 1px solid #b9b9b9;
+	border-top: 1px solid #a0a0a0;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1)
+}
+
+.lst-td {
+	border: none;
+	padding: 0
+}
+
+.tia input {
+	border-right: none;
+	padding-right: 0
+}
+
+.tia {
+	padding-right: 0
+}
+
+.lst {
+	background: none;
+	border: none;
+	color: #000;
+	font: 16px arial, sans-serif;
+	float: left;
+	height: 22px;
+	margin: 0;
+	padding: 3px 6px 2px 9px;
+	vertical-align: top;
+	width: 100%;
+	word-break: break-all
+}
+
+.lst:focus {
+	outline: none
+}
+
+.lst-b {
+	background: none;
+	border: none;
+	height: 26px;
+	padding: 0 6px 0 12px
+}
+
+.ds {
+	border-right: 1px solid #e7e7e7;
+	position: relative;
+	height: 29px;
+	margin-left: 17px;
+	z-index: 100
+}
+
+.lsbb {
+	background-image: -moz-linear-gradient(top, #4d90fe, #4787ed);
+	background-image: -ms-linear-gradient(top, #4d90fe, #4787ed);
+	background-image: -o-linear-gradient(top, #4d90fe, #4787ed);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe),
+		to(#4787ed));
+	background-image: -webkit-linear-gradient(top, #4d90fe, #4787ed);
+	background-image: linear-gradient(top, #4d90fe, #4787ed);
+	border: 1px solid #3079ed;
+	border-radius: 2px;
+	background-color: #4d90fe;
+	height: 27px;
+	width: 68px
+}
+
+.lsbb:hover {
+	background-image: -moz-linear-gradient(top, #4d90fe, #357ae8);
+	background-image: -ms-linear-gradient(top, #4d90fe, #357ae8);
+	background-image: -o-linear-gradient(top, #4d90fe, #357ae8);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe),
+		to(#357ae8));
+	background-image: -webkit-linear-gradient(top, #4d90fe, #357ae8);
+	background-color: #357ae8;
+	background-image: linear-gradient(top, #4d90fe, #357ae8);
+	border: 1px solid #2f5bb7
+}
+
+.lsb {
+	background: transparent;
+	background-position: 0 -343px;
+	background-repeat: repeat-x;
+	border: none;
+	color: #000;
+	cursor: default;
+	font: 15px arial, sans-serif;
+	height: 29px;
+	margin: 0;
+	vertical-align: top;
+	width: 100%
+}
+
+.lsb:active {
+	-moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+	background: transparent;
+	color: transparent;
+	overflow: hidden;
+	position: relative;
+	width: 100%
+}
+
+.sbico {
+	color: transparent;
+	display: inline-block;
+	height: 15px;
+	margin: 0 auto;
+	margin-top: 2px;
+	width: 15px;
+	overflow: hidden
+}
+</style>
+<script type="text/javascript">window.google = {y:{}};google.lc=[];google.li=0;var a=function(e,g,h){var k="",b=new Image,l=google.lc,f=google.li;b.onerror=b.onload=b.onabort=function(){delete l[f]};l[f]=b;h||-1!=g.search("&ei=")||(k="&ei="+google.kEI);e=h||"/gen_204?atyp=i&ct="+e+"&cad="+g+k+"&zx="+(new Date).getTime();b.src=e;google.li=f+1},c=["google","log"],d=this;c[0]in d||!d.execScript||d.execScript("var "+c[0]);for(var m;c.length&&(m=c.shift());)c.length||void 0===a?d[m]?d=d[m]:d=d[m]={}:d[m]=a;</script>
+<script type="text/javascript"></script>
+<script type="text/javascript"></script>
+<script>(function(){var a=function(f){for(var g=f.parentElement,d=null,e=0;e<g.childNodes.length;e++){var h=g.childNodes[e];-1<(" "+h.className+" ").indexOf(" am-dropdown-menu ")&&(d=h)}"none"==d.style.display?(d.style.display="",google.log("hpam","&ved="+f.getAttribute("data-ved"))):d.style.display="none"},b=["google","sham"],c=this;b[0]in c||!c.execScript||c.execScript("var "+b[0]);for(var k;b.length&&(k=b.shift());)b.length||void 0===a?c[k]?c=c[k]:c=c[k]={}:c[k]=a;}).call(window);</script>
+</head>
+<body bgcolor="#ffffff" marginheight="0" marginwidth="0" topmargin="0">
+	<div id=gbar>
+		<nobr>
+			<b class=gb1>Search</b> <a class=gb1
+				href="https://www.google.com/search?q=Abe,+Costa,+Guimar%C3%83%C2%A3es+e+Rocha+Neto&um=1&ie=UTF-8&hl=en&tbm=isch&source=og&sa=N&tab=wi">Images</a>
+			<a class=gb1
+				href="https://maps.google.com/maps?q=Abe,+Costa,+Guimar%C3%83%C2%A3es+e+Rocha+Neto&um=1&ie=UTF-8&hl=en&sa=N&tab=wl">Maps</a>
+			<a class=gb1
+				href="https://play.google.com/?q=Abe,+Costa,+Guimar%C3%83%C2%A3es+e+Rocha+Neto&um=1&ie=UTF-8&hl=en&sa=N&tab=w8">Play</a>
+			<a class=gb1
+				href="https://www.youtube.com/results?q=Abe,+Costa,+Guimar%C3%83%C2%A3es+e+Rocha+Neto&um=1&ie=UTF-8&sa=N&tab=w1">YouTube</a>
+			<a class=gb1 href="https://news.google.com/nwshp?hl=en&tab=wn">News</a>
+			<a class=gb1 href="https://mail.google.com/mail/?tab=wm">Gmail</a> <a
+				class=gb1 href="https://drive.google.com/?tab=wo">Drive</a> <a
+				class=gb1 style="text-decoration: none"
+				href="http://www.google.com/intl/en/options/"><u>More</u>
+				&raquo;</a>
+		</nobr>
+	</div>
+	<div id=guser width=100%>
+		<nobr>
+			<span id=gbn class=gbi></span><span id=gbf class=gbf></span><span
+				id=gbe></span><a href="http://www.google.com/history/optout?hl=en"
+				class=gb4>Web History</a> | <a href="/preferences?hl=en" class=gb4>Settings</a>
+			| <a target=_top id=gb_70
+				href="https://accounts.google.com/ServiceLogin?hl=en&continue=https://www.google.com/search%3Fq%3DAbe,%2BCosta,%2BGuimar%25C3%2583%25C2%25A3es%2Be%2BRocha%2BNeto%26oq%3DAbe,%2BCosta,%2BGuimar%25C3%2583%25C2%25A3es%2Be%2BRocha%2BNeto%26ie%3DUTF-8"
+				class=gb4>Sign in</a>
+		</nobr>
+	</div>
+	<div class=gbh style="left: 0"></div>
+	<div class=gbh style="right: 0"></div>
+	<table border="0" cellpadding="0" cellspacing="0" id="mn"
+		style="position: relative">
+		<tr>
+			<th width="132"></th>
+			<th width="573"></th>
+			<th width="278"></th>
+			<th></th>
+		</tr>
+		<tr>
+			<td class="sfbgg" valign="top"><div id="logocont">
+					<h1>
+						<a href="/webhp?hl=en" id="logo" title="Go to Google Home"
+							style="background: url(/images/nav_logo176.png) no-repeat 0 -41px; height: 37px; width: 95px; display: block"></a>
+					</h1>
+				</div></td>
+			<td class="sfbgg" colspan="2" valign="top" style="padding-left: 0px"><form
+					action="/search" id="tsf" method="GET" name="gs"
+					style="display: block; margin: 0; background: none">
+					<table border="0" cellpadding="0" cellspacing="0"
+						style="margin-top: 20px; position: relative">
+						<tr>
+							<td><div class="lst-a">
+									<table cellpadding="0" cellspacing="0">
+										<tr>
+											<td class="lst-td" width="555" valign="bottom"><div
+													style="position: relative; zoom: 1">
+													<input class="lst"
+														value="Abe, Costa, Guimarães e Rocha Neto" title="Search"
+														autocomplete="off" id="sbhost" maxlength="2048" name="q"
+														type="text">
+												</div></td>
+										</tr>
+									</table>
+								</div></td>
+							<td><div class="ds">
+									<div class="lsbb">
+										<button class="lsb" value="Search" name="btnG" type="submit">
+											<span class="sbico"
+												style="background: url(/images/nav_logo176.png) no-repeat -36px -111px; height: 14px; width: 13px; display: block"></span>
+										</button>
+									</div>
+								</div></td>
+							<td style="font-size: 11px; padding-left: 13px"></td>
+						</tr>
+					</table>
+				</form></td>
+			<td class="sfbgg">&nbsp;</td>
+		</tr>
+		<tr style="position: relative">
+			<td><div style="border-bottom: 1px solid #ebebeb; height: 59px"></div></td>
+			<td colspan="2"><div class="tn">
+					<div class="tn-mode tn-selected-mode tn-div tn-first-mode">Web</div>
+					<div class="tn-div">
+						<a class="tn-mode tn-unselected-mode"
+							href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnms&amp;tbm=isch&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CAUQ_AU">Images</a>
+					</div>
+					<div class="tn-div">
+						<a class="tn-mode tn-unselected-mode"
+							href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnms&amp;tbm=vid&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CAYQ_AU">Videos</a>
+					</div>
+					<div class="tn-div">
+						<a class="tn-mode tn-unselected-mode"
+							href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnms&amp;tbm=nws&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CAcQ_AU">News</a>
+					</div>
+					<div class="tn-div">
+						<a class="tn-mode tn-unselected-mode"
+							href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnms&amp;tbm=shop&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CAgQ_AU">Shopping</a>
+					</div>
+					<div class="tn-div">
+						<a class="tn-mode tn-unselected-mode"
+							href="http://maps.google.com/maps?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;um=1&amp;ie=UTF-8&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CAkQ_AU">Maps</a>
+					</div>
+					<div class="tn-div">
+						<a class="tn-mode tn-unselected-mode"
+							href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnms&amp;tbm=bks&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CAoQ_AU">Books</a>
+					</div>
+				</div>
+				<div style="border-bottom: 1px solid #ebebeb; height: 59px"></div></td>
+			<td><div style="border-bottom: 1px solid #ebebeb; height: 59px"></div></td>
+		</tr>
+		<tr>
+			<td id="leftnav" valign="top"><div>
+					<h2 class="hd">Search Options</h2>
+					<ul class="med" id="tbd">
+						<li><ul class="tbt">
+								<li class="tbos" id="qdr_">Any time</li>
+								<li class="tbou" id="qdr_h"><a class="q"
+									href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnt&amp;tbs=qdr:h&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CA8QpwUoAQ">Past
+										hour</a></li>
+								<li class="tbou" id="qdr_d"><a class="q"
+									href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnt&amp;tbs=qdr:d&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CBAQpwUoAg">Past
+										24 hours</a></li>
+								<li class="tbou" id="qdr_w"><a class="q"
+									href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnt&amp;tbs=qdr:w&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CBEQpwUoAw">Past
+										week</a></li>
+								<li class="tbou" id="qdr_m"><a class="q"
+									href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnt&amp;tbs=qdr:m&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CBIQpwUoBA">Past
+										month</a></li>
+								<li class="tbou" id="qdr_y"><a class="q"
+									href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnt&amp;tbs=qdr:y&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CBMQpwUoBQ">Past
+										year</a></li>
+							</ul></li>
+						<li><ul class="tbt">
+								<li class="tbos" id="whv_">All results</li>
+								<li class="tbou" id="li_1"><a class="q"
+									href="/search?q=Abe,+Costa,+Guimar%C3%83%C2%A3es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;source=lnt&amp;tbs=li:1&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CBYQpwUoAQ">Verbatim</a></li>
+							</ul></li>
+					</ul>
+				</div></td>
+			<td valign="top"><div id="center_col">
+					<div class="sd" id="resultStats">About 6,000,000 results</div>
+					<div id="spe"
+						style="font-size: 16px; padding-top: 6px; margin-bottom: 1em">
+						<div>
+							<span class="spell">Showing results for</span> <a class="spell"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;hl=en&amp;sa=X&amp;as_q=&amp;nfpr=&amp;spell=1&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CBgQvwU">Abe,
+								Costa, <b><i>Guimar�es</i></b> e Rocha Neto
+							</a><br>
+							<span class="spell_orig">Search instead for <a
+								href="/search?q=Abe,+Costa,+Guimar%C3%83%C2%A3es+e+Rocha+Neto&amp;hl=en&amp;sa=X&amp;as_q=&amp;nfpr=1&amp;spell=">Abe,
+									Costa, <b><i>Guimarães</i></b> e Rocha Neto
+							</a></span>
+						</div>
+					</div>
+					<div id="res">
+						<div id="topstuff"></div>
+						<div id="search">
+							<div id="ires">
+								<ol>
+									<li class="g"><h3 class="r">
+											<a
+												href="http://maps.google.com/maps?um=1&amp;ie=UTF-8&amp;q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;fb=1&amp;hq=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;cid=4779715101591122017&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CB4QtQMwAA"><div>
+													Map for <b>Abe, Costa, Guimar�es e Rocha Neto</b>
+												</div></a>
+										</h3>
+										<div class="mlmcm" style="margin: 16px 0">
+											<a
+												href="http://maps.google.com/maps?um=1&amp;ie=UTF-8&amp;q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;fb=1&amp;hq=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;cid=4779715101591122017&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CB8QtgMwAA"><img
+												height="233"
+												src="/maps/vt/data=VLHX1wd2Cgu8wR6jwyh-km8JBWAkEzU4,P53e1_HbWPaF_K94MW_SL7L-mCdj7hHMYtLh6RJua4X8Bojgk99ese1QC89PiZeylfPLOvdMPGO76pPAMbnkNsuJcj_l7466S0ENX_HHXn6f_SFcvs3Z8cHAi6A"
+												width="550" style="border: 0; padding: 1px"></a>
+										</div>
+										<h3 class="r">
+											<a
+												href="/url?q=http://www.abe.adv.br/&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CCEQFjAA&amp;usg=AFQjCNEOQZp-f-5roUj4mk6NEj5KWCU19w"><b>Abe</b>,
+												<b>Guimar�es e Rocha Neto</b> Advogados: <b>ABE</b>
+												Advogados</a>
+										</h3>
+										<div class="s">
+											<div class="kv" style="margin-bottom: 2px">
+												<cite>www.<b>abe</b>.adv.br/
+												</cite>
+												<div class="am-dwn-arw-container">
+													&#8206;
+													<div onclick="google.sham(this);" aria-expanded="false"
+														aria-haspopup="true" tabindex="0" data-ved="0CCIQ7B0wAA"
+														style="display: inline">
+														<span class="am-dwn-arw"></span>
+													</div>
+													<div class="am-dropdown-menu" role="menu" tabindex="-1"
+														style="display: none">
+														<ul>
+															<li class="am-dropdown-menu-item"><a
+																class="am-dropdown-menu-item-text"
+																href="/url?q=http://webcache.googleusercontent.com/search%3Fq%3Dcache:sDspMsF7nS4J:http://www.abe.adv.br/%252BAbe,%2BCosta,%2BGuimar%25C3%2583es%2Be%2BRocha%2BNeto%26hl%3Den%26ct%3Dclnk&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CCQQIDAA&amp;usg=AFQjCNEnVZBpxMKYvS6JWfAyIdx6TbiQhQ">Cached</a></li>
+															<li class="am-dropdown-menu-item"><a
+																class="am-dropdown-menu-item-text"
+																href="/search?ie=UTF-8&amp;q=related:www.abe.adv.br/+Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;tbo=1&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CCUQHzAA">Similar</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<span class="st">Bem vindo. O escrit�rio <b>Abe</b>
+												Advogados destaca-se por suas caracter�sticas full <br>
+												service, atendendo seus clientes nas principais �reas do
+												direito. Navegue em&nbsp;...
+											</span><br>
+											<div style="margin-top: 13px">
+												<table width="100%">
+													<tr>
+														<td valign="top" width="24"
+															style="padding-right: 4px; padding-top: 1px"><img
+															src="/mapfiles/marker-noalpha.png"></td>
+														<td valign="top" width="485"><span
+															style="vertical-align: top">Rua Bela Cintra, 904 -
+																Consola��o, S�o Paulo - SP, 01415-000, Brazil<br
+																style="display: block">
+															<span class="nobr">+55 11 3512-1300</span>
+														</span></td>
+														<td valign="top"
+															style="padding-top: 2px; padding-left: 9px"><div
+																style="float: right">
+																<div class="star" style="float: none">
+																	<div style="width: 0px">&nbsp;</div>
+																</div>
+															</div>
+															<div style="clear: both">
+																<a class="fl nobr"
+																	href="/url?q=https://plus.google.com/105652188818746365326/about%3Fhl%3Den%26socfid%3Dweb:lu:unknown:localdetails%26socpid%3D1&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CCkQ4gkwAA&amp;usg=AFQjCNFZcdd3syuLW3nnY-5EUC4ZzLoouQ">more</a>
+															</div></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+										<table class="slk" cellpadding="0" cellspacing="0"
+											style="border-collapse: collapse; margin-top: 1px">
+											<tr class="mslg">
+												<td style="padding-left: 23px; vertical-align: top"><div
+														class="sld">
+														<h3 class="r">
+															<a class="sla"
+																href="/url?q=http://www.abe.adv.br/en/&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CCwQjBAwAQ&amp;usg=AFQjCNGkXBSjRyECra05V-At1EFpmzmhOw">English</a>
+														</h3>
+														<div class="s st" style="width: 220px; overflow: hidden">Welcome.
+															The law firm Abe Advogados stands out due to its ...</div>
+													</div></td>
+												<td style="padding-left: 7px; vertical-align: top"><div
+														class="sld">
+														<h3 class="r">
+															<a class="sla"
+																href="/url?q=http://www.abe.adv.br/advogados&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CC4QjBAwAg&amp;usg=AFQjCNHD5pQcYi5WnSDZBwAM1BbSksayHA">Advogados</a>
+														</h3>
+														<div class="s st" style="width: 220px; overflow: hidden">Advogada
+															graduada pela Universidade de S�o Paulo ...</div>
+													</div></td>
+											</tr>
+											<tr>
+												<td colspan="2"
+													style="padding-left: 28px; vertical-align: top"><div
+														style="padding-top: 5px">
+														<a class="fl"
+															href="/search?ie=UTF-8&amp;q=+site:abe.adv.br+Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;sa=X&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CC8QrAM">More
+															results from abe.adv.br��</a>
+													</div></td>
+											</tr>
+										</table></li>
+									<li class="g"><h3 class="r">
+											<a
+												href="/url?q=https://pt-br.facebook.com/pages/Abe-Costa-Guimar%25C3%25A3es-e-Rocha-Neto-Advogados/117226811650106&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CDEQFjAD&amp;usg=AFQjCNEWGZYFRBDW4XrhxVFDHpTaZWph-Q"><b>Abe</b>,
+												<b>Costa</b>, <b>Guimar�es e Rocha Neto</b> Advogados |
+												Facebook</a>
+										</h3>
+										<div class="s">
+											<div class="kv" style="margin-bottom: 2px">
+												<cite>https://pt-br.facebook.com/.../<b>Abe</b>-<b>Costa</b>-<b>Guimar�es</b>-<b>e</b>-<b>Rocha</b>-<b>Neto</b>.../
+													117226811650106
+												</cite>
+												<div class="am-dwn-arw-container">
+													&#8206;
+													<div onclick="google.sham(this);" aria-expanded="false"
+														aria-haspopup="true" tabindex="0" data-ved="0CDIQ7B0wAw"
+														style="display: inline">
+														<span class="am-dwn-arw"></span>
+													</div>
+													<div class="am-dropdown-menu" role="menu" tabindex="-1"
+														style="display: none">
+														<ul>
+															<li class="am-dropdown-menu-item"><a
+																class="am-dropdown-menu-item-text"
+																href="/url?q=http://webcache.googleusercontent.com/search%3Fq%3Dcache:xmXo_7-fVEUJ:https://pt-br.facebook.com/pages/Abe-Costa-Guimar%2525C3%2525A3es-e-Rocha-Neto-Advogados/117226811650106%252BAbe,%2BCosta,%2BGuimar%25C3%2583es%2Be%2BRocha%2BNeto%26hl%3Den%26ct%3Dclnk&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CDQQIDAD&amp;usg=AFQjCNHK-q7WfXcLRn0NuevTl7q5KkMmZw">Cached</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<span class="st"><b>Abe</b>, <b>Costa</b>, <b>Guimar�es
+													e Rocha Neto</b> Advogados. 41 curtidas. Empresa.</span><br>
+										</div></li>
+									<li class="g"><h3 class="r">
+											<a
+												href="/url?q=https://www.facebook.com/AbeAdvogados&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CDYQFjAE&amp;usg=AFQjCNGBuNdMXxkcRsrRDnDCYV8R3zCyIw"><b>Abe</b>,
+												<b>Guimar�es e Rocha Neto</b> Advogados - S�o Paulo <b>...</b>
+												- Facebook</a>
+										</h3>
+										<div class="s">
+											<div class="kv" style="margin-bottom: 2px">
+												<cite>https://www.facebook.com/<b>Abe</b>Advogados
+												</cite>
+												<div class="am-dwn-arw-container">
+													&#8206;
+													<div onclick="google.sham(this);" aria-expanded="false"
+														aria-haspopup="true" tabindex="0" data-ved="0CDcQ7B0wBA"
+														style="display: inline">
+														<span class="am-dwn-arw"></span>
+													</div>
+													<div class="am-dropdown-menu" role="menu" tabindex="-1"
+														style="display: none">
+														<ul>
+															<li class="am-dropdown-menu-item"><a
+																class="am-dropdown-menu-item-text"
+																href="/url?q=http://webcache.googleusercontent.com/search%3Fq%3Dcache:UYiO78q5DHEJ:https://www.facebook.com/AbeAdvogados%252BAbe,%2BCosta,%2BGuimar%25C3%2583es%2Be%2BRocha%2BNeto%26hl%3Den%26ct%3Dclnk&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CDkQIDAE&amp;usg=AFQjCNHrV5hQsU39kewXFigP_QT__6kL9g">Cached</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<span class="st"><b>Abe</b>, <b>Guimar�es e Rocha
+													Neto</b> Advogados, S�o Paulo (S�o Paulo, Brazil). 84 <br>
+												likes � 16 talking about this � 1 was here. Escrit�rios <b>Abe</b>,
+												<b>Guimar�es e Rocha</b> <br> <b>Neto</b>&nbsp;...</span><br>
+										</div></li>
+									<li class="g"><h3 class="r">
+											<a
+												href="/url?q=http://www.linkedin.com/company/abe-costa-guimar-es-e-rocha-neto-advogados&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CDsQFjAF&amp;usg=AFQjCNH9KtGEJtVzZDsFA9HSSuK8jdYDLw"><b>Abe</b>,
+												<b>Guimar�es e Rocha Neto</b> Advogados | LinkedIn</a>
+										</h3>
+										<div class="s">
+											<div class="kv" style="margin-bottom: 2px">
+												<cite>www.linkedin.com/.../<b>abe</b>-<b>costa</b>-guimar-<b>es</b>-<b>e</b>-<b>rocha</b>-<b>neto</b>-advogados
+												</cite>
+												<div class="am-dwn-arw-container">
+													&#8206;
+													<div onclick="google.sham(this);" aria-expanded="false"
+														aria-haspopup="true" tabindex="0" data-ved="0CDwQ7B0wBQ"
+														style="display: inline">
+														<span class="am-dwn-arw"></span>
+													</div>
+													<div class="am-dropdown-menu" role="menu" tabindex="-1"
+														style="display: none">
+														<ul>
+															<li class="am-dropdown-menu-item"><a
+																class="am-dropdown-menu-item-text"
+																href="/url?q=http://webcache.googleusercontent.com/search%3Fq%3Dcache:SBGR_qvZDLUJ:http://www.linkedin.com/company/abe-costa-guimar-es-e-rocha-neto-advogados%252BAbe,%2BCosta,%2BGuimar%25C3%2583es%2Be%2BRocha%2BNeto%26hl%3Den%26ct%3Dclnk&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CD4QIDAF&amp;usg=AFQjCNGURRH1ubNHMfgI-XefekFAQM4s2w">Cached</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<span class="st">Join LinkedIn and see how you are
+												connected to <b>Abe</b>, <b>Guimar�es e Rocha Neto</b> <br>
+												Advogados. It&#39;s free.Get access to insightful
+												information about your network at&nbsp;...
+											</span><br>
+										</div></li>
+									<li class="g"><h3 class="r">
+											<a
+												href="/url?q=http://www.indeed.com.br/empregos-de-Abe,costa,guimar%25C3%25A3es-E-Rocha-Neto&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CEAQFjAG&amp;usg=AFQjCNFb-LQrI936fI8U3Uz3cUrAu6uedg"><b>Abe</b>,<b>costa</b>,<b>guimar�es
+													E Rocha Neto</b> - Indeed</a>
+										</h3>
+										<div class="s">
+											<div class="kv" style="margin-bottom: 2px">
+												<cite>www.indeed.com.br/empregos-de-<b>Abe</b>,<b>costa</b>,<b>guimar�es</b>-<b>E</b>-<b>Rocha</b>-<b>Neto</b></cite>
+												<div class="am-dwn-arw-container">
+													&#8206;
+													<div onclick="google.sham(this);" aria-expanded="false"
+														aria-haspopup="true" tabindex="0" data-ved="0CEEQ7B0wBg"
+														style="display: inline">
+														<span class="am-dwn-arw"></span>
+													</div>
+													<div class="am-dropdown-menu" role="menu" tabindex="-1"
+														style="display: none">
+														<ul>
+															<li class="am-dropdown-menu-item"><a
+																class="am-dropdown-menu-item-text"
+																href="/url?q=http://webcache.googleusercontent.com/search%3Fq%3Dcache:L5YRzQD8p10J:http://www.indeed.com.br/empregos-de-Abe,costa,guimar%2525C3%2525A3es-E-Rocha-Neto%252BAbe,%2BCosta,%2BGuimar%25C3%2583es%2Be%2BRocha%2BNeto%26hl%3Den%26ct%3Dclnk&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CEMQIDAG&amp;usg=AFQjCNHlpv9EtdqkO9HtMUaKlSCKIvGS_w">Cached</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<span class="st">Busca Gr�tis - 835 vagas de <b>Abe</b>,<b>costa</b>,<b>guimar�es
+													E Rocha Neto</b> no Indeed. uma <br> busca. todos os
+												empregos.
+											</span><br>
+										</div></li>
+									<li class="g"><h3 class="r">
+											<a
+												href="/url?q=http://jooble.com.br/search-empregos-br/rgn-S%25C3%25A3o-Paulo-%2B-SP/kw-abe-costa-guimar%25C3%25A3es-rocha-neto-advogados&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CEUQFjAH&amp;usg=AFQjCNGkWelVTrM2TaQtn-72fj2YiUwiLA"><b>abe
+													costa guimar�es rocha neto</b> advogados S�o Paulo - empregos</a>
+										</h3>
+										<div class="s">
+											<div class="kv" style="margin-bottom: 2px">
+												<cite>jooble.com.br/.../kw-<b>abe</b>-<b>costa</b>-<b>guimar�es</b>-<b>rocha</b>-<b>neto</b>-advogados
+												</cite>
+												<div class="am-dwn-arw-container">
+													&#8206;
+													<div onclick="google.sham(this);" aria-expanded="false"
+														aria-haspopup="true" tabindex="0" data-ved="0CEYQ7B0wBw"
+														style="display: inline">
+														<span class="am-dwn-arw"></span>
+													</div>
+													<div class="am-dropdown-menu" role="menu" tabindex="-1"
+														style="display: none">
+														<ul>
+															<li class="am-dropdown-menu-item"><a
+																class="am-dropdown-menu-item-text"
+																href="/url?q=http://webcache.googleusercontent.com/search%3Fq%3Dcache:2wuPNvb6_mEJ:http://jooble.com.br/search-empregos-br/rgn-S%2525C3%2525A3o-Paulo-%252B-SP/kw-abe-costa-guimar%2525C3%2525A3es-rocha-neto-advogados%252BAbe,%2BCosta,%2BGuimar%25C3%2583es%2Be%2BRocha%2BNeto%26hl%3Den%26ct%3Dclnk&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CEgQIDAH&amp;usg=AFQjCNHkL-FHhic6g4a7izdLBdO_jZ6n-Q">Cached</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<span class="st"><b>Abe costa guimar�es rocha neto</b>
+												advogados S�o Paulo empregos. Empregos de <br> todo
+												Internet para Brasil. Emprego Advogado e advogado junior S�o
+												Paulo.</span><br>
+										</div></li>
+									<li class="g"><h3 class="r">
+											<a
+												href="/url?q=http://www.bmaiscompet.com.br/conteudo_pti.asp%3Fidioma%3D0%26tipo%3D43777%26conta%3D45%26id%3D172496&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CEoQFjAI&amp;usg=AFQjCNEC3NRtIyBWXB6873y2FurH8rZQWg">Pequenas
+												e m�dias empresas brasileiras despertam interesse para <b>...</b>
+											</a>
+										</h3>
+										<div class="s">
+											<div class="kv" style="margin-bottom: 2px">
+												<cite>www.bmaiscompet.com.br/conteudo_pti.asp?idioma=0...id...</cite>
+												<div class="am-dwn-arw-container">
+													&#8206;
+													<div onclick="google.sham(this);" aria-expanded="false"
+														aria-haspopup="true" tabindex="0" data-ved="0CEsQ7B0wCA"
+														style="display: inline">
+														<span class="am-dwn-arw"></span>
+													</div>
+													<div class="am-dropdown-menu" role="menu" tabindex="-1"
+														style="display: none">
+														<ul>
+															<li class="am-dropdown-menu-item"><a
+																class="am-dropdown-menu-item-text"
+																href="/url?q=http://webcache.googleusercontent.com/search%3Fq%3Dcache:Kq4bdyB3G7UJ:http://www.bmaiscompet.com.br/conteudo_pti.asp%253Fidioma%253D0%2526tipo%253D43777%2526conta%253D45%2526id%253D172496%252BAbe,%2BCosta,%2BGuimar%25C3%2583es%2Be%2BRocha%2BNeto%26hl%3Den%26ct%3Dclnk&amp;sa=U&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;ved=0CE0QIDAI&amp;usg=AFQjCNFT0qem7acyVGNJZsOtX8xfvGOBCA">Cached</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<span class="st">2 maio 2013 <b>...</b> Abe Advogados:
+												Fundado em 2007, o escrit�rio de advocacia <b>Abe</b>, <b>Costa</b>,
+												<br> <b>Guimar�es e Rocha Neto</b> Advogados � formado
+												por uma equipe de&nbsp;...
+											</span><br>
+										</div></li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="foot">
+					<table align="center" border="0" cellpadding="0" cellspacing="0"
+						id="nav">
+						<tr valign="top">
+							<td align="left" class="b"><span class="csb"
+								style="background-position: -24px 0; width: 28px"></span><b></b></td>
+							<td><span class="csb"
+								style="background-position: -53px 0; width: 20px"></span><b>1</b></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=10&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>2</a></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=20&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>3</a></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=30&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>4</a></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=40&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>5</a></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=50&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>6</a></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=60&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>7</a></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=70&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>8</a></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=80&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>9</a></td>
+							<td><a class="fl"
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=90&amp;sa=N"><span
+									class="csb" style="background-position: -74px 0; width: 20px"></span>10</a></td>
+							<td class="b" style="text-align: left"><a
+								href="/search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns&amp;ei=OEpFU6L4OcKn0gH48IHACQ&amp;start=10&amp;sa=N"
+								style="text-align: left"><span class="csb"
+									style="background-position: -96px 0; width: 71px"></span><span
+									style="display: block; margin-left: 53px">Next</span></a></td>
+						</tr>
+					</table>
+					<p class="flc" id="bfl"
+						style="margin: 19px 0 0; text-align: center">
+						<a
+							href="/advanced_search?q=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;ie=UTF-8&amp;prmd=ivns">Advanced
+							search</a><a
+							href="/support/websearch/bin/answer.py?answer=134479&amp;hl=en">Search
+							Help</a> <a
+							href="/tools/feedback/survey/html?productId=196&amp;query=Abe,+Costa,+Guimar%C3%83es+e+Rocha+Neto&amp;hl=en">Send
+							feedback</a>
+					</p>
+					<div class="flc" id="fll"
+						style="margin: 19px auto 19px auto; text-align: center">
+						<a href="/">Google&nbsp;Home</a> <a href="/intl/en/ads">Advertising&nbsp;Programs</a>
+						<a href="/services">Business Solutions</a> <a
+							href="/intl/en/policies/">Privacy & Terms</a> <a
+							href="/intl/en/about.html">About Google</a>
+					</div>
+				</div></td>
+			<td valign="top"></td>
+		</tr>
+	</table>
+	<script type="text/javascript">(function(){var eventid='OEpFU6L4OcKn0gH48IHACQ';google.kEI = eventid;})();</script>
+	<script
+		src="/xjs/_/js/k=xjs.hp.en_US.75bv2nh_qxI.O/m=sb_he,pcc/rt=j/d=1/sv=1/rs=AItRSTOX5WMsAVpkgEafYeVKZ7ZCJdNXcg"></script>
+	<script type="text/javascript">google.ac&&google.ac.c({"agen":true,"cgen":true,"client":"heirloom-serp","dh":true,"ds":"","eqch":true,"fl":true,"host":"google.com","jam":0,"jsonp":true,"msgs":{"dym":"Did you mean:","lcky":"I\u0026#39;m Feeling Lucky","lml":"Learn more","oskt":"Input tools","psrc":"This search was removed from your \u003Ca href=\"/history\"\u003EWeb History\u003C/a\u003E","psrl":"Remove","sbit":"Search by image","srch":"Google Search"},"ovr":{},"pq":"Abe, Costa, Guimar�es e Rocha Neto","qcpw":false,"scd":10,"sce":5,"stok":"vDzmzS_EeF1o1M4j5sDRrx8Fv4A"})</script>
+</body>
+</html>

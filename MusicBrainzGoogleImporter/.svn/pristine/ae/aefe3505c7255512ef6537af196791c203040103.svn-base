@@ -1,0 +1,17 @@
+package org.nanotek.base.date;
+
+import org.nanotek.base.Groupable;
+
+public enum CalendarGroupType implements Groupable<CalendarGroupType>{
+
+	DATE, 
+	DAY, 
+	MINUTE,
+	TIMEZONE;
+	
+	@Override
+	public CalendarGroupType getGroup() {
+		return this;
+	}
+
+}

@@ -1,0 +1,9 @@
+package org.nanotek.mq;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+
+public interface MessageBase<K extends Serializable> extends Base<String> {
+	public K getMessage();
+}

@@ -1,0 +1,24 @@
+package org.nanotek.tika.pdf;
+
+import org.nanotek.StringKong;
+
+@SuppressWarnings("serial")
+public abstract class PdfAnalyzer extends StringKong{
+	
+	private String pdfExtracted; 
+	
+	public PdfAnalyzer() {
+		super(new Long(System.nanoTime()).toString());
+	}
+
+	public String getPdfExtracted() {
+		return pdfExtracted;
+	}
+
+	public void setPdfExtracted(String pdfExtracted) {
+		this.pdfExtracted = pdfExtracted;
+	}
+	
+	public abstract void analyzeContentSegment();
+
+}

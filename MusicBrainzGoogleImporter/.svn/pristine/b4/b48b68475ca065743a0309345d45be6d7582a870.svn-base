@@ -1,0 +1,104 @@
+package org.nanotek.tika.io;
+
+//import java.io.File;
+import java.nio.file.Files;
+import java.util.Date;
+
+import org.apache.log4j.Logger;
+import org.apache.tika.Tika;
+import org.apache.tika.detect.Detector;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.PasswordProvider;
+import org.nanotek.PostConstructor;
+import org.nanotek.tika.MediaDetail;
+import org.nanotek.tika.MediaDetectionException;
+import org.nanotek.tika.MediaDetector;
+import org.nanotek.tika.io.media.MediaDetailFactory;
+
+
+public class TikaMediaDetector  implements MediaDetector< MediaDetail , TikaInputStream>, PostConstructor<TikaMediaDetector>{
+
+	private Detector detector; 
+	private Parser parser;
+	private static final Logger log = Logger.getLogger(TikaMediaDetector.class);
+	//TODO:Tika is used for debugging purposes and on future replace the workaround on ParseReader file, since there 
+	//are steps done by parsers (parse by parse) that might change the Metadata and the Detector. 
+	private Tika tika;
+//	private  ThreadPoolTaskExecutor taskExecutor;
+
+	public TikaMediaDetector() {
+		postConstruct();
+	}
+
+	public TikaMediaDetector(Detector detector) {
+		super();
+		this.detector = detector;
+		postConstruct();
+	}
+
+	public TikaMediaDetector(Detector detector, Parser parser) {
+		super();
+		this.detector = detector;
+		this.parser = parser;
+		postConstruct();
+	}
+
+	public void postConstruct()
+	{ 
+		tika = new Tika (detector);
+//		tp = new ThreadPoolExecutor(4, 10, 10, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable> (20));
+	}
+
+	//TODO:Change the model to use a event like processing for the future. 
+	@SuppressWarnings("unused")
+	public MediaDetail detectMediaType(final TikaInputStream input) throws MediaDetectionException {
+
+		try { 
+			//This is the location of the temp file not the original location of the file. 
+			String url  = input.getFile().toString();
+			Metadata metaData = new Metadata();
+			ParseContext context = new ParseContext();
+			context.set(Parser.class, parser);
+			context.set(PasswordProvider.class, new PasswordProvider() {
+				public String getPassword(Metadata metadata) {
+					String password = "";
+					return password ;
+				}
+			});
+			MediaType mediaType = detector.detect(input, metaData);
+			MediaDetail mediaDetails = MediaDetailFactory.getDetail(); //new MediaDetail();
+			mediaDetails.setLocation(url);
+			mediaDetails.setDateUpdate(new Date());
+			mediaDetails.setSize(Files.size(input.getFile().toPath()));
+			mediaDetails.setContentType(mediaType.toString());
+			return mediaDetails;
+		}catch (Throwable ex){ 
+			log.debug (ex);
+			throw new MediaDetectionException(ex);
+		}
+	}
+	
+	public Detector getDetector() {
+		return detector;
+	}
+
+	public void setDetector(Detector detector) {
+		this.detector = detector;
+	}
+
+	public Parser getParser() {
+		return parser;
+	}
+
+	public void setParser(Parser parser) {
+		this.parser = parser;
+	}
+
+	public Tika getTika() {
+		return tika;
+	}
+}

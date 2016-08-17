@@ -1,0 +1,75 @@
+package org.nanotek.tika.job.reader;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
+
+import org.apache.log4j.Logger;
+import org.nanotek.Base;
+import org.nanotek.tika.job.reader.fs.FileFinder;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
+import org.springframework.batch.item.UnexpectedInputException;
+
+
+public class ConfigurableQueueItemReader  implements ItemReader<Queue<Base<?>>> {
+
+	private boolean done = false; 
+	private String startingDir;
+	private String pattern = "**.java";
+	private static final Logger log = Logger.getLogger(ConfigurableQueueItemReader.class);
+	
+//    public static void main(String[] args)
+//        throws IOException {
+//
+////        if (args.length < 3 
+////            || !args[1].equals("-name"))
+////            usage();
+//
+//    	ConfigurableQueueItemReader find = new ConfigurableQueueItemReader();
+//        try {
+//			Queue <Base<?>> baseQueue = find.read();
+//			Base<?> element = null;
+//			while ((element = baseQueue.poll())!=null)
+//				log.debug(element.getId());
+//        } catch (Exception e) {
+//			e.printStackTrace();
+//		}
+////        Finder finder = new Finder(pattern);
+////        Files.walkFileTree(startingDir, finder);
+////        finder.done();
+//    }
+
+	@Override
+	public Queue<Base<?>> read() throws Exception, UnexpectedInputException,
+			ParseException, NonTransientResourceException {
+		if (done) return null;
+		Queue<Base<?>> foundFilesOnPattern = new LinkedBlockingDeque<Base<?>>();
+//      Path startingDir = Paths.get("/home/java-eclipse/hk2~git/");
+//        String pattern = "**.java";
+		FileFinder finder = new FileFinder(pattern);
+        Files.walkFileTree(Paths.get(startingDir), finder);
+        finder.done();
+        done = true;
+        log.debug("number of Files Found on Pattern " + foundFilesOnPattern.size());
+		return foundFilesOnPattern;
+	}
+	
+	public String getStartingDir() {
+		return startingDir;
+	}
+
+	public void setStartingDir(String startingDir) {
+		this.startingDir = startingDir;
+	}
+
+	public String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+}

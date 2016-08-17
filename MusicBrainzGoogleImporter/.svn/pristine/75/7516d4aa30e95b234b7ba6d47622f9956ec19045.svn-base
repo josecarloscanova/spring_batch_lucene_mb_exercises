@@ -1,0 +1,84 @@
+package tests.datasource;
+
+import static org.junit.Assert.*;
+
+import java.lang.reflect.Proxy;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.nanotek.Base;
+import org.nanotek.dao.DAO;
+import org.nanotek.hibernate.dao.GeneralPurposeDAO;
+import org.nanotek.tika.file.FileProcessed;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class DataMethodsTest {
+
+	private static ClassPathXmlApplicationContext ctx;
+	private static final Logger log = Logger.getLogger(DataMethodsTest.class);
+	@Before
+	public void setUp() throws Exception {
+		ctx = new ClassPathXmlApplicationContext(new String[] {"database-loaders/spring-dao-context.xml"});
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		ctx.close();
+	}
+
+	@Test
+	public void testLoadAll() {
+		GeneralPurposeDAO dao = (GeneralPurposeDAO ) ctx.getBean("identityDAO");
+		assertNotNull(ctx);
+		Iterator<?> iterator = dao.loadAll().iterator(); 
+		while (iterator.hasNext()) 
+			log.debug("FILE IDENTITY " + iterator.next());
+		dao.listRecords(1,4);
+	}
+
+	@Ignore
+	@Test
+	public void testPersist() {
+		assertNotNull(ctx);
+		GeneralPurposeDAO dao = (GeneralPurposeDAO ) ctx.getBean("identityDAO");
+		assertNotNull(dao);
+		FileProcessed fileProcessed = createFileProcessed();
+		dao.persist(fileProcessed);
+
+	}
+
+	private FileProcessed createFileProcessed() {
+		FileProcessed file = new FileProcessed();
+		file.setId(System.nanoTime());
+		file.setGid("GID " + System.nanoTime());
+		file.setName("name "  + System.nanoTime());
+		file.setSortName("sortName "  + System.nanoTime());
+		file.setType("type "  + System.nanoTime());
+		return file;
+	}
+
+	@Ignore
+	@Test
+	public void testUpdate() {
+		assertNotNull(ctx);
+		GeneralPurposeDAO dao = (GeneralPurposeDAO ) ctx.getBean("identityDAO");
+		Iterator<?> iterator = dao.loadAll().iterator(); 
+		while (iterator.hasNext()) { 
+			FileProcessed base = (FileProcessed) iterator.next(); 
+			dao.findById(base.getId());
+			base.setName("Name Updated");
+			dao.update(base);
+		}
+	}
+
+	@Test
+	public void testGetClazz() {
+		assertNotNull(ctx);
+	}
+
+}

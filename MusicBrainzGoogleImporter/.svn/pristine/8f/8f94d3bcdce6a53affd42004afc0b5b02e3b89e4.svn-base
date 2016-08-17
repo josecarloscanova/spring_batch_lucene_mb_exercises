@@ -1,0 +1,93 @@
+package org.nanotek.musicbrainz.beans;
+
+import javax.validation.constraints.NotNull;
+
+import org.nanotek.Base;
+import org.nanotek.Stampable;
+
+@SuppressWarnings("serial")
+public class Artist implements Base<Long>, Stampable<Long> {
+
+	@NotNull
+	private Long id;
+	@NotNull
+	private String gid; 
+	@NotNull
+	private String name;
+	@NotNull
+	private String sortName; 
+	
+	private String type; 
+	
+	private String gender;
+	
+	private String area;
+
+	@NotNull
+	private Long stamp; 
+	
+	public Artist() {
+		stamp = System.currentTimeMillis();
+	}
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getGid() {
+		return gid;
+	}
+
+	public void setGid(String gid) {
+		this.gid = gid;
+	}
+
+	public String getSortName() {
+		return sortName;
+	}
+
+	public void setSortName(String sortName) {
+		this.sortName = sortName;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public Long getStamp() {
+		return stamp;
+	}
+}

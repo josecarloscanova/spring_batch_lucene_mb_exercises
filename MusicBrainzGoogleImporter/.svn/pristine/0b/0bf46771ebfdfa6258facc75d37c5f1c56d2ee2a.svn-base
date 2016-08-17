@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.nanotek.beans">
+
+    <class name="Isrc" table="ISRC">
+
+    	<id name="id" type="long"  column="ID">
+			  <generator class="sequence">  
+                <param name="sequence">isrc_id_seq</param>  
+             </generator>
+        </id>
+         <property name="isrcId" type="long" column="ISRC_ID" not-null="true"/>
+    	 <property name="recording" type="long" column="RECORDING_ID" not-null="true"/>
+         <property name="isrc" type="string" column="ISRC" not-null="true"/>
+         <property name="source" type="string" column="SOURCE" not-null="false"/>
+    </class>
+    
+</hibernate-mapping>

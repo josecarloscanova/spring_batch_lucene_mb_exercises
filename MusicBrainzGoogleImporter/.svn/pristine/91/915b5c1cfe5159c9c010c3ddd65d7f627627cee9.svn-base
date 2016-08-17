@@ -1,0 +1,13 @@
+package org.nanotek;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+import org.nanotek.Kong;
+import org.nanotek.base.Configurable;
+
+public interface Configurator<I extends  Base<?> ,K extends Serializable> extends Base<K>{
+
+	public Configurable<I,K>  configure(I info);
+	
+}

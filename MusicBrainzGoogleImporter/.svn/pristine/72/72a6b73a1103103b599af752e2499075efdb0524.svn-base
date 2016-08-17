@@ -1,0 +1,11 @@
+package org.nanotek.task.callable;
+
+import org.nanotek.Base;
+import org.nanotek.Task;
+import org.nanotek.task.ConcreteTaskBase;
+
+public abstract class CallableTaskReceiverBase<T extends Task<T,V>,V extends Base<?>> extends CallableTaskReceiver<T,V>{
+
+	protected T task; 
+	
+}

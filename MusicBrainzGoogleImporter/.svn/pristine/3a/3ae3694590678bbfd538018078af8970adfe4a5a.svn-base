@@ -1,0 +1,22 @@
+package org.nanotek.musicbrainz.beans.mapping;
+
+import org.nanotek.musicbrainz.beans.Language;
+
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+
+public class LanguageMapping extends ColumnPositionMappingStrategy<Language> {
+
+	
+	public LanguageMapping() 
+	{ 
+		String [] columns = new String [6]; 
+		columns[0] = "id";
+		columns[1] = "isoCode3t";
+		columns[2] = "isoCode3d";
+		columns[3] = "isCode2";
+		columns[4] = "name";
+		columns[5] = "frequency";
+		this.setColumnMapping(columns);
+	}
+	
+}

@@ -1,0 +1,15 @@
+package org.nanotek.base.event;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
+import org.nanotek.base.date.CalendarBase;
+
+@Entity
+@SuppressWarnings("serial")
+public class CalendarEventBase extends EventBase {
+	
+	@OneToOne
+	private CalendarBase eventDate; 
+	
+}

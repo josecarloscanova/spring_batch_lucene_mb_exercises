@@ -1,0 +1,33 @@
+package org.nanotek.base.region;
+
+import org.nanotek.Base;
+import org.nanotek.Limit;
+import org.nanotek.Position;
+
+@SuppressWarnings("serial")
+public class LimitBase implements Base<Long> , Limit{
+
+	private Long id; 
+	
+	private Position position;
+	
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id; 
+	}
+
+	@Override
+	public Position getPostion() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+}

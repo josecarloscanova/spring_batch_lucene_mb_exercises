@@ -1,0 +1,23 @@
+package org.nanotek.dao.spring.impl;
+
+import java.util.List;
+
+import org.nanotek.Base;
+import org.nanotek.beans.ArtistCreditName;
+import org.nanotek.dao.spring.ArtistCreditNameDAO;
+
+public class ArtistCreditNameDAOImpl extends GeneralPurposeDAO implements ArtistCreditNameDAO<ArtistCreditName>{
+
+	@Override
+	public List<Base<?>> loadAll() {
+		return getHibernateTemplate().loadAll(clazz);
+	}
+	
+	
+	public ArtistCreditName findById (String id)
+	{ 
+		return (ArtistCreditName) getHibernateTemplate().get(clazz, id);
+	}
+
+
+}

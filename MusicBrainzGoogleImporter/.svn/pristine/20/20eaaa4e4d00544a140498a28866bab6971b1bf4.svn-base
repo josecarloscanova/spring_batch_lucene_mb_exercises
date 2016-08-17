@@ -1,0 +1,73 @@
+/**
+ * Need a review on Interface. Shall return a QueryResult Object that encapsulate some additinal
+ * data returned from LuceneQuery
+ *
+ */
+
+package org.nanotek.lucene.query;
+import java.util.Map;
+
+import org.nanotek.Base;
+import org.nanotek.Kong;
+import org.nanotek.query.QueryBase;
+import org.nanotek.query.QueryObject;
+
+
+/**
+ * Kong dance Squadd...
+ * @author josecanovamauger
+ *
+ */
+@SuppressWarnings("serial")
+public class BaseQueryObject <T extends Base<?>> implements QueryObject<T> , Base<String>{
+
+	private final String id;
+	private Map<String,Base<?>> queryParameters;
+//	private SurrougateMap<String , Base<?>> pirateMap;
+	protected QueryBase query; 
+	
+	public BaseQueryObject() {
+		this.id = "";
+	}
+
+	public BaseQueryObject(String query) {
+		this.id = query; 
+		this.query = new QueryBase(query);
+	}
+	
+	public void setId(String id) {
+		throw new RuntimeException ("Not allowed on BaseQueryObject"); 
+//		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+	
+	public Map<String, Base<?>> getQueryParameters() {
+		return queryParameters;
+	}
+
+	public void setQueryParameters(Map<String, Base<?>> queryParameters) {
+		this.queryParameters = queryParameters;
+	}
+
+/*	public SurrougateMap<String, Base<?>> getPirateMap() {
+		return pirateMap;
+	}
+
+	public void setPirateMap(SurrougateMap<String, Base<?>> pirateMap) {
+		this.pirateMap = pirateMap;
+	}*/
+
+	@Override
+	public <Q extends Base<?>> Q getQuery() {
+		return (Q) query;
+	}
+
+/*	@Override
+	public <OQ> T getQueryTarget() {
+		return (T) query;
+	}*/
+
+}

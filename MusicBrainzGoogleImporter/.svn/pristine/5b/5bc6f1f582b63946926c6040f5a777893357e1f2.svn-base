@@ -1,0 +1,9 @@
+package org.nanotek.hibernate.dao;
+
+import java.util.List;
+
+public interface OfficeDetailDAO<OfficeDetail> {
+
+	public List<?> getOfficesForEdition();
+	
+}

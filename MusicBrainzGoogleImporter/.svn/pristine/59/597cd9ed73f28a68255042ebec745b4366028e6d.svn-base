@@ -1,0 +1,29 @@
+# Set root logger level to DEBUG and its only appender to A1.
+log4j.rootLogger=DEBUG, A1, A2
+
+# A1 is set to be a ConsoleAppender.
+log4j.appender.A1=org.apache.log4j.ConsoleAppender
+log4j.appender.A2=org.apache.log4j.FileAppender
+
+# A1 uses PatternLayout.
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+log4j.appender.A1.layout.ConversionPattern=%-4r [%t] %-5p %c %x - %m%n
+
+log4j.appender.A2.layout=org.apache.log4j.PatternLayout
+log4j.appender.A2.layout.ConversionPattern=%-4r [%t] %-5p %c %x - %m%n
+log4j.appender.A2.Append=false
+log4j.appender.A2.File=/home/shared-web-data/directory_scanner.log
+log4j.appender.A2.Threshold=debug
+
+log4j.logger.org.su=DEBUG
+log4j.logger.test.search=DEBUG
+log4j.logger.org.nanotek=DEBUG
+log4j.logger.org.apache=INFO
+log4j.logger.org.apache.additivity=false
+log4j.logger.org.springframework=INFO
+log4j.logger.org.springframework.additivity=false
+log4j.logger.org.hibernate=INFO
+log4j.logger.org.hibernate.additivity=false
+#log4j.logger.org.hibernate=INFO
+#log4j.logger.org.springframework.orm=INFO
+#log4j.logger.org.springframework.batch=INFO

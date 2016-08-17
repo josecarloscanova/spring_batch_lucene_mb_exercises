@@ -1,0 +1,83 @@
+package tests.search.tika;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.nanotek.lucene.index.Index;
+import org.nanotek.lucene.index.info.FieldStat;
+import org.nanotek.lucene.search.local.IndexSearcherProvider;
+import org.nanotek.lucene.search.local.LocalSearcherService;
+import org.nanotek.query.QueryException;
+//import org.nanotek.query.QueryResult;
+//import org.springframework.batch.core.Job;
+//import org.springframework.batch.core.JobParametersBuilder;
+//import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TikaIndexSearcherTest {
+
+	ApplicationContext ctx; 
+	Logger log = Logger.getLogger(TikaIndexSearcherTest.class);
+	@Before
+	public void setUp() throws Exception {
+		try { 
+			ctx = new ClassPathXmlApplicationContext(new String[] {
+			"spring-index-searchers/index-reader-configuration_java.xml"});
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@SuppressWarnings("unused")
+	@Test
+	public void testSearcherService() {
+		LocalSearcherService searcherService = (LocalSearcherService) ctx.getBean("searcherService");
+		//		Index index = (Index) ctx.getBean("index");
+		//		searcherService.createIndexSearcher(index);
+		Index index = (Index) ctx.getBean("index");
+		searcherService.search("(\"JavaServer*\")");
+		//		System.out.println("");
+		//		System.err.println("Result Class " + result.getClass());
+		//		assertTrue(result  != null);//("Not yet implemented");
+	}
+
+	@SuppressWarnings("unused")
+	@Test(expected=QueryException.class)
+	public void testSearcherServiceException() {
+		LocalSearcherService searcherService = (LocalSearcherService) ctx.getBean("searcherService");
+		//		Index index = (Index) ctx.getBean("index");
+		//		searcherService.createIndexSearcher(index);
+		Index index = (Index) ctx.getBean("index");
+		searcherService.search("asdasdasdasd*");
+		//		System.out.println("");
+		//		System.err.println("Result Class " + result.getClass());
+		//		assertTrue(result  != null);//("Not yet implemented");
+	}
+	
+	@Test
+	@Ignore
+	public void testSearcherProvider()
+	{ 
+		IndexSearcherProvider indexSearcherProvider = (IndexSearcherProvider) ctx.getBean("indexSearcherProvider");
+		Index index = (Index) ctx.getBean("index");
+		FieldStat stat = indexSearcherProvider.getFieldStat(index, "content");
+		List<String> fields = indexSearcherProvider.getFieldNames(index);
+		Iterator <String> it = fields.iterator();
+		while (it.hasNext())
+			log.debug(it.next());
+		log.debug("Stat Messages");
+		log.debug(stat.getSumTotalTermFreq() + "  " + stat.getDocCount() + " " + stat.getDocFrequency());
+	}
+
+}

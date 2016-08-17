@@ -1,0 +1,65 @@
+package org.nanotek.tika.io;
+
+import java.io.FileInputStream;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+
+import org.apache.log4j.Logger;
+import org.apache.tika.io.TemporaryResources;
+import org.apache.tika.io.TikaInputStream;
+import org.nanotek.tika.MediaDetail;
+
+public class RunnableVisitor implements Runnable {
+
+	protected PathMatcher matcher;
+	private TikaMediaDetector tikaMediaDetector;
+	private Path file;
+	private static final Logger log = Logger.getLogger(RunnableVisitor.class);
+	
+	public RunnableVisitor(PathMatcher macher , TikaMediaDetector tikaMediaDetector , Path file) {
+		this.matcher = macher;
+		this.tikaMediaDetector = tikaMediaDetector;
+		this.file = file; 
+	}
+
+	@Override
+	public void run() {
+		visitFile();
+	}
+
+	void visitFile() {
+		Path name = file.getFileName();
+		TikaInputStream input = null;
+		if (name != null && matcher.matches(name)) {
+			TemporaryResources tmp = null;
+//			String type;
+			try {
+//				File targetFile = name.toFile();
+//				System.out.format("%s\t", file.toString());
+//				System.out.println();
+				tmp = new TemporaryResources();
+				input = TikaInputStream.get(new FileInputStream(file.toString()), tmp);
+				MediaDetail mediaDetails = tikaMediaDetector.detectMediaType(input);
+				mediaDetails.setLocation(file.toFile().getAbsolutePath());
+//				type = Files.probeContentType(file);
+//				System.out.format("%s\t", mediaDetails.toString());
+//				System.out.println();
+				log.debug(mediaDetails.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+//				throw new RuntimeException(e);
+			}finally {
+				if (input !=null) {
+					try {
+						input.close();
+						if (tmp !=null)
+							tmp.dispose();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+		}
+	}
+}

@@ -1,0 +1,50 @@
+package org.nanotek.lucene.analysis;
+
+/**
+ * Base clazz to encapsulate a target analyzer for configuration on spring. 
+ */
+import java.util.Map;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.util.Version;
+import org.nanotek.AbstractBase;
+import org.nanotek.base.Configuration;
+
+@SuppressWarnings("serial")
+public abstract class AnalyzerConfigurationBase extends AbstractBase<Long> implements Configuration<Map<String,Analyzer>> {
+
+	private Version matchVersion; 
+	private Map<String,Analyzer> analyzers; 
+	
+	
+	 public AnalyzerConfigurationBase(Version matchVersion) {
+		    this.matchVersion = matchVersion;
+	 }
+
+	 public AnalyzerConfigurationBase(Version matchVersion , Map<String,Analyzer> analyzers) {
+		    this.matchVersion = matchVersion;
+		    this.analyzers = analyzers; 
+	 }
+
+	@Override
+	public Map<String, Analyzer> get() {
+		return null;
+	}
+
+	public Version getMatchVersion() {
+		return matchVersion;
+	}
+
+	public void setMatchVersion(Version matchVersion) {
+		this.matchVersion = matchVersion;
+	}
+
+	public Map<String, Analyzer> getAnalyzers() {
+		return analyzers;
+	}
+
+	public void setAnalyzers(Map<String, Analyzer> analyzers) {
+		this.analyzers = analyzers;
+	}
+
+}

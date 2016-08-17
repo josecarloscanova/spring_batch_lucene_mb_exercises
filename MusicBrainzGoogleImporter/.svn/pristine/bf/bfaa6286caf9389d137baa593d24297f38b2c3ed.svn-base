@@ -1,0 +1,17 @@
+package org.nanotek.hibernate.dao;
+
+import java.util.List;
+
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.nanotek.base.OfficeDetail;
+import org.nanotek.base.OfficeUrl;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+public interface OfficeUrlDAO {
+
+	public List<OfficeUrl> getOfficesWithoutDetail();
+	
+}

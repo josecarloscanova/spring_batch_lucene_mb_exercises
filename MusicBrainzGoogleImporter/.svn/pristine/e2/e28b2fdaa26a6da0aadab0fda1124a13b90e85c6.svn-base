@@ -1,0 +1,19 @@
+package org.nanotek.hibernate.dao;
+
+import java.util.List;
+
+import org.nanotek.base.Office;
+import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+public class OfficeDAO extends GeneralPurposeDAO<Office>   {
+
+	@Override
+	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	public List<Office> listRecords(Integer firstResult, Integer maxResults, DetachedCriteria criteria) {
+		List<Office> offices = super.listRecords(firstResult, maxResults, criteria);
+		return offices;
+	}
+
+}

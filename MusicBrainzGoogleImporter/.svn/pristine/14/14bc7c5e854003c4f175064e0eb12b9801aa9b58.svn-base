@@ -1,0 +1,14 @@
+package org.nanotek.dao.spring;
+
+import java.util.List;
+
+import org.nanotek.Base;
+import org.nanotek.beans.ArtistAlias;
+import org.nanotek.dao.DAO;
+
+public interface ArtistAliasDAO<T extends ArtistAlias> extends DAO<Base<?>>{
+
+	public T findById (Long id);
+	public List<ArtistAlias> findByKeyId (Long keyId);
+	
+}

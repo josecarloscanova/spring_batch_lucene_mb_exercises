@@ -1,0 +1,22 @@
+package org.nanotek.mq.send;
+
+import javax.jms.Destination;
+
+import org.nanotek.Base;
+import org.springframework.jms.core.JmsTemplate;
+
+public class MessageSenderService extends QueueSender<Destination, Base<?>>{
+
+	private final JmsTemplate jmsTemplate;
+    
+	    public MessageSenderService( final JmsTemplate jmsTemplate )
+	    {
+	 		this.jmsTemplate = jmsTemplate;
+	    }
+	 	
+	 	public void send(Base<?> message )
+	    {
+	        jmsTemplate.convertAndSend(destination , message);
+	    }
+	 	
+}

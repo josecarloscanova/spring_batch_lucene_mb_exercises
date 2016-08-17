@@ -1,0 +1,18 @@
+package org.nanotek.base;
+
+import org.nanotek.AbstractBase;
+
+@SuppressWarnings("serial")
+public class Work extends AbstractBase<Long>{
+	
+	private WorkType workType;
+
+	public WorkType getWorkType() {
+		return workType;
+	}
+
+	public void setWorkType(WorkType workType) {
+		this.workType = workType;
+	} 
+
+}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 		
+
+	<bean lazy-init="true" id="workIndexVersion" class="org.apache.lucene.util.Version" factory-method="valueOf">
+		<constructor-arg value="LUCENE_31"/>
+	</bean>
+	
+	<bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+	<bean lazy-init="true" id="workStandardAnalyser" class="org.apache.lucene.analysis.standard.StandardAnalyzer">
+		<constructor-arg type="org.apache.lucene.util.Version" ref="workIndexVersion"/>
+	</bean>
+	
+	<bean lazy-init="true" id="workNameCsvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="workNameFileReader"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="workNameFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.work.name.file}"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="workIndexFilePath" class="java.io.File">
+		<constructor-arg value="F:/IndexPath/WorkName_Index"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="workIndexFsDirectory" class="org.apache.lucene.store.SimpleFSDirectory">
+		<constructor-arg ref="workIndexFilePath"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="workNameMapping" class="org.nanotek.beans.mapping.WorkNameMapping">
+		<property name="type" value="org.nanotek.beans.WorkName"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="workIndexWriterConfig" class="org.apache.lucene.index.IndexWriterConfig">
+		<constructor-arg ref="workIndexVersion"></constructor-arg>
+		<constructor-arg ref="workStandardAnalyser"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="workIndexWriter" class="org.apache.lucene.index.IndexWriter"> 
+		<constructor-arg ref="workIndexFsDirectory"></constructor-arg>
+		<constructor-arg ref="workIndexWriterConfig"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="workNameToBean" class="org.nanotek.beans.mapping.WorkNameCsvToBean"></bean>
+	
+	<bean lazy-init="true" id="workNameReader" class="org.nanotek.musicbrainz.job.readers.WorkNameReader">
+		<property name="itemMapping" ref="workNameMapping"></property>
+		<property name="fileStr" value="${music.brainz.work.name.file}"></property>
+		<property name="csvMap" ref="workNameToBean"></property>
+		<property name="reader" ref="workNameCsvReader"></property>
+	</bean>
+	
+	<!-- <bean lazy-init="true" id="workNameIndexWriter" class="org.nanotek.lucene.job.writers.WorkNameIndexWriter">
+		<property name="indexWriter" ref="workIndexWriter"></property>
+	</bean> -->
+	
+	<bean lazy-init="true" id="workNameWriter" class="org.nanotek.musicbrainz.job.writers.WorkNameWriter">
+		<property name="dao" ref="workNameDAO"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="workIndexStepListener" class="org.nanotek.lucene.job.listeners.IndexWriterStepListener"> 
+		<property name="indexWriter" ref="workIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="workNameIndexChunkLister" class="org.nanotek.lucene.job.listeners.IndexWriterChunkListener">
+		<property name="indexWriter" ref="workIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="workNameIndexProcessor" class="org.nanotek.musicbrainz.job.processor.WorkNameIndexProcessor">
+		<property name="indexWriter" ref="workIndexWriter"></property>
+	</bean>
+	
+	<b:job id="workNameJob" job-repository="jobRepository" restartable="false">
+	    <b:step id="workNameLoad">
+	    	<b:tasklet>
+	    		<b:chunk reader="workNameReader" processor="workNameIndexProcessor" commit-interval="10000" writer="workNameWriter"></b:chunk>
+	    		<b:listeners>
+	    			<b:listener ref="workNameIndexChunkLister"/>
+	    		</b:listeners>
+	    	</b:tasklet>
+	    	<b:listeners>
+            		<b:listener ref="workIndexStepListener"/>
+       		</b:listeners>
+	    </b:step>
+	</b:job>
+	
+</beans>

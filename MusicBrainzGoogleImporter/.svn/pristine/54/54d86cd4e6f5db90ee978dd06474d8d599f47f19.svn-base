@@ -1,0 +1,24 @@
+package org.nanotek.lucene.manage;
+
+/**
+ * http://c2.com/cgi/wiki?InstanceManagerPattern
+ * An instance manager is a class/object which serves to manage
+ * instance(s) of some other type of object, and provide a point of
+ * access to the instances being managed. Such a class should generally have the following methods:
+ * Ability to set the number of instances being managed
+ * Ability to place an instance of whatever is being managed under
+ * management. (Note that the ability to construct instances of the singleton is not constrained, just the ability to manage them).
+ * Ability to look up one or more instances (via a key) of the managed object(s).
+ * If only one managed object, then a key is not necessary.
+ * Optionally, the ability to remove an object from management (which does not cause the object's destruction).
+ */
+import java.util.List;
+
+public interface IndexManager <I,K>{
+
+	public I createIndex (K  parameters);
+	public List<I> getIndexes (K  parameters);
+	public I mergeIndexes (List<I> indexes);
+	public void deleteIndex (I index);
+
+}

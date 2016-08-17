@@ -1,0 +1,76 @@
+package org.nanotek.poi.configuration.excel;
+
+import java.util.Set;
+
+import org.nanotek.Base;
+import org.nanotek.base.BaseLabel;
+import org.nanotek.base.Configuration;
+
+@SuppressWarnings("serial")
+public class RowConfiguration implements Base<String> , Configuration<RowConfiguration> {
+
+	private String id; 
+	
+	private Short width; 
+	
+	private Short height; 
+	
+	private Set<CellConfiguration> cellConfigurations;
+	
+	private BaseLabel rowLabel;
+	
+	public RowConfiguration(){ 
+	}
+
+	public RowConfiguration(Set<CellConfiguration> cellConfigurations){ 
+		this.cellConfigurations = cellConfigurations;
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	@Override
+	public RowConfiguration get() {
+		return this;
+	}
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Short getWidth() {
+		return width;
+	}
+
+	public void setWidth(Short width) {
+		this.width = width;
+	}
+
+	public Short getHeight() {
+		return height;
+	}
+
+	public void setHeight(Short height) {
+		this.height = height;
+	}
+
+	public Set<CellConfiguration> getCellConfigurations() {
+		return cellConfigurations;
+	}
+
+	public void setCellConfigurations(Set<CellConfiguration> cellConfigurations) {
+		this.cellConfigurations = cellConfigurations;
+	}
+
+	public BaseLabel getRowLabel() {
+		return rowLabel;
+	}
+
+	public void setRowLabel(BaseLabel rowLabel) {
+		this.rowLabel = rowLabel;
+	}
+
+}

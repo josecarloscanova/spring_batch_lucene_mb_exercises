@@ -1,0 +1,11 @@
+package org.nanotek.pipe;
+
+import java.nio.channels.Pipe;
+
+import org.nanotek.Receiver;
+
+public interface PipeReceiver<D, P extends Pipe> extends Receiver<D> {
+
+	public P getPipe();
+	
+}

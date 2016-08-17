@@ -1,0 +1,9 @@
+package org.nanotek.tika;
+
+
+
+public interface MediaDetector< M  , T > {
+
+	public M detectMediaType(T t) throws MediaDetectionException;
+	
+}

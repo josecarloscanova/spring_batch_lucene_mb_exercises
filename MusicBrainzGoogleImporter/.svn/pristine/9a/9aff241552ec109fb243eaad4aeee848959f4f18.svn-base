@@ -1,0 +1,39 @@
+/**
+ * A "Sender Pattern, contrai(nin)ting which postprocessor will be used.
+ * on which core. on such sample ->
+ * a spring message post processor on a apache mq core.
+ *
+ * @author josecanovamauger.
+ */
+package org.nanotek.mq.send;
+
+import javax.jms.Destination;
+
+import org.nanotek.Base;
+import org.nanotek.mq.MessageAddressable;
+import org.springframework.stereotype.Component;
+
+@Component
+public abstract class QueueSender<D extends Destination, M extends Base<?>>  implements MessageAddressable<D>,Sender<M>
+{
+
+	protected D destination;
+
+	public QueueSender() 
+	{ 
+	}
+	
+	public QueueSender(D destination) 
+	{ 
+		this.destination = destination;
+	}
+	
+	@Override
+	public D getDestination() {
+		return destination;
+	}
+	
+	@Override
+	public abstract void send(M message);
+	
+}

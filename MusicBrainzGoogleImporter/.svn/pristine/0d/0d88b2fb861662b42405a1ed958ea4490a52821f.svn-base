@@ -1,0 +1,36 @@
+package tests.queue;
+
+import java.util.Date;
+
+import org.nanotek.AbstractBase;
+import org.nanotek.Base;
+import org.nanotek.lucene.index.BaseDocument;
+import org.nanotek.mq.send.MetaIndexerSenderService;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class BaseDocumentQueueSenderTest {
+
+	private static ClassPathXmlApplicationContext ctx;
+
+	public BaseDocumentQueueSenderTest() {
+	}
+
+	/**
+	 * @param args
+	 * @throws InterruptedException 
+	 */
+	public static void main(String[] args) throws InterruptedException {
+		ctx = new ClassPathXmlApplicationContext(new String[] {"activemq-config/base-activemq-sender-context.xml"});
+		MetaIndexerSenderService sender =  (MetaIndexerSenderService) ctx.getBean("metaIndexerSenderService");
+		for (int i = 0 ; i < 10 ; i++){
+			BaseDocument baseDocument = new BaseDocument();
+			AbstractBase<Base<?>> msgContainer = new AbstractBase<Base<?>>(baseDocument);
+			baseDocument.setId("This is the BaseDocumentID");
+			baseDocument.setContent("This is the Base document content " + i + " " + new Date().getTime());
+			baseDocument.setReferURL("THIS IS THE REFER URL " + i + " " + new Date().getTime());
+			sender.sendMessage(msgContainer);
+		}
+		System.exit(0);
+	}
+
+}

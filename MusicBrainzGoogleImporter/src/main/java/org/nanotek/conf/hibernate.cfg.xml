@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory name="">
+  <property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+  <property name="connection.url">jdbc:sqlserver://127.0.0.1:64004;databaseName=music_brainz;</property>
+  <property name="connection.username">sa</property>
+  <property name="connection.password">saSenha123</property>
+  <property name="connection.pool_size">100</property>
+  <property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
+  <property name="current_session_context_class">thread</property>
+  <property name="cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
+  <property name="show_sql">false</property>
+  <property name="hbm2ddl.auto">update</property>
+  <property name="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</property>
+  <!-- validate update create create-drop -->
+  <mapping resource="org/nanotek/conf/ArtistAlias.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/ArtistKey.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/ArtistName.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/ArtistCredit.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/ArtistCreditName.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/CdToc.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Isrc.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Recording.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Track.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/TrackName.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Medium.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/MediumCdToc.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/MediumFormat.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Label.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Language.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/LabelName.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/LabelAlias.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Release.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/ReleasePackaging.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/ReleaseGroup.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/ReleaseName.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Url.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/Work.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/WorkName.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/WorkAlias.hbm.xml"/>
+  <mapping resource="org/nanotek/conf/WorkType.hbm.xml"/>
+ </session-factory>
+</hibernate-configuration>

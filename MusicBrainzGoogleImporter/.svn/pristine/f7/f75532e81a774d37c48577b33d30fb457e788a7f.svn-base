@@ -1,0 +1,63 @@
+package org.nanotek.tika.job.listeners;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.index.IndexWriter;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
+
+public class IndexWriterStepListener implements StepExecutionListener {
+
+	private static final int MAX_NUM_SEGMENTS = 100; 
+	
+	private Integer maximumNumberSegments = MAX_NUM_SEGMENTS; 
+	
+	private Log log = LogFactory.getLog(IndexWriterStepListener.class);
+	
+//	private Queue<Base<?>> fileNameQueue; 
+	private IndexWriter indexWriter;
+	
+	public IndexWriter getIndexWriter() {
+		return indexWriter;
+	}
+
+	public void setIndexWriter(IndexWriter indexWriter) {
+		this.indexWriter = indexWriter;
+	}
+
+	@Override
+	public void beforeStep(StepExecution stepExecution) {
+		checkTikaJobFinished(); 
+	}
+
+	private void checkTikaJobFinished() {
+		//TODO: perform any check necessary 
+		//if there are other jobs pending on commit on indexWriter.
+	}
+
+	@Override
+	public ExitStatus afterStep(StepExecution stepExecution) {
+		ExitStatus status = ExitStatus.EXECUTING;
+		try {
+			indexWriter.commit();
+			indexWriter.forceMerge(getMaximumNumberSegments());
+			indexWriter.close();
+			status = ExitStatus.COMPLETED;
+		} catch (Exception e) {
+			log.debug("Error During AfterStep: ", e);
+			e.printStackTrace();
+			status = ExitStatus.UNKNOWN;
+		}
+		return status;
+	}
+
+	public Integer getMaximumNumberSegments() {
+		return maximumNumberSegments;
+	}
+
+	public void setMaximumNumberSegments(Integer maximumNumberSegments) {
+		this.maximumNumberSegments = maximumNumberSegments;
+	}
+
+}

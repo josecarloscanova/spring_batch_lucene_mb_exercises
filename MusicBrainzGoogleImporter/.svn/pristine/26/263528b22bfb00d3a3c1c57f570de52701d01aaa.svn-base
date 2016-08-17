@@ -1,0 +1,65 @@
+package org.nanotek.dao;
+
+import java.util.List;
+
+import javax.security.auth.login.Configuration;
+
+import org.hibernate.Session;
+import org.nanotek.Base;
+import org.nanotek.util.HibernateUtil;
+
+public abstract class BaseDAO<T extends Base<?>>  implements DAO<Base<?>>{
+
+	protected Configuration hibernateConfiguration; 
+	protected Session hibernateSession;
+
+	public BaseDAO (){
+		hibernateSession = new HibernateUtil().getSessionFactory().openSession();
+	}
+	
+	public abstract List<Base<?>> loadAll();  
+	
+	public BaseDAO (Session hibernateSession)
+	{ 
+		this.hibernateSession = hibernateSession;
+	}
+	
+	public Session getHibernateSession() {
+		return hibernateSession;
+	}
+
+	public void setHibernateSession(Session hibernateSession) {
+		this.hibernateSession = hibernateSession;
+	}
+	
+	@Override
+	public void persist(Base<?> object) {
+		Session session = getHibernateSession();
+//		Transaction t = session.beginTransaction(); 
+		session.save(object);
+//		t.commit();
+	}
+	
+	@Override
+	public void update(Base<?> object) {
+		Session session = getHibernateSession();
+//		Transaction t = session.beginTransaction(); 
+		session.saveOrUpdate(object);
+//		t.commit();
+	}
+
+	@Override
+	public void delete(Base<?> object) {
+		Session session = getHibernateSession();
+//		Transaction t = session.beginTransaction(); 
+		session.delete(object);
+//		t.commit();
+	}
+	
+	public void detach (T object) 
+	{ 
+		Session session = getHibernateSession();
+		session.evict(object); 
+	}
+	
+}

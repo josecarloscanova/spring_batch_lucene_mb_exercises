@@ -1,0 +1,56 @@
+package org.nanotek.beans.batch;
+
+import org.nanotek.Base;
+
+/*
+ * CREATE TABLE batch_job_instance
+(
+  job_instance_id bigint NOT NULL,
+  version bigint,
+  job_name character varying(100) NOT NULL,
+  job_key character varying(32) NOT NULL,
+  CONSTRAINT batch_job_instance_pkey PRIMARY KEY (job_instance_id ),
+  CONSTRAINT job_inst_un UNIQUE (job_name , job_key )
+)
+ */
+@SuppressWarnings("serial")
+public class JobInstance implements Base<Long>{
+	
+	private Long id; 
+	private Long version; 
+	private String jobName; 
+	private String jobKey;
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public Long getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
+	public String getJobName() {
+		return jobName;
+	}
+	
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
+	}
+	
+	public String getJobKey() {
+		return jobKey;
+	}
+	
+	public void setJobKey(String jobKey) {
+		this.jobKey = jobKey;
+	} 
+
+}

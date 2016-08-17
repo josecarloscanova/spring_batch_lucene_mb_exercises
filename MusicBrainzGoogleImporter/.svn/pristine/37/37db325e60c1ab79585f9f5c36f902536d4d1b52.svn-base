@@ -1,0 +1,111 @@
+package org.nanotek.tika.job.writer;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.apache.lucene.document.Document;
+import org.nanotek.base.Configurable;
+import org.nanotek.base.Configurator;
+import org.nanotek.lucene.document.DocumentBuilder;
+import org.nanotek.lucene.document.configuration.DocumentConfiguration;
+import org.nanotek.lucene.document.configuration.FieldConfiguration;
+import org.nanotek.lucene.template.base.BaseTemplate;
+import org.nanotek.tika.MediaDetail;
+
+
+@SuppressWarnings("serial")
+public class MediaDetailBaseTemplate extends BaseTemplate<MediaDetail> implements Configurator<DocumentConfiguration, MediaDetail, Serializable>{
+
+	private Logger log = Logger.getLogger(MediaDetailBaseTemplate.class);
+	private DocumentConfiguration	documentConfiguration;
+
+
+	public MediaDetailBaseTemplate() {
+	}
+
+	@Override
+	public void setId(Serializable id) {
+	}
+
+	@Override
+	public Serializable getId() {
+		throw new RuntimeException ("not yet implemented.");
+	}
+
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Document createTemplate(MediaDetail info) {
+
+		Set<?> constraintViolations = null;
+		if (validator !=null){ 
+			constraintViolations =  validator.validate(info);
+			log.debug(" VALIDATOR TEST: ConstraintViolations " + constraintViolations.size());
+		} 
+		Document document = null;
+		if (constraintViolations == null || constraintViolations.size() <= 0) { 
+			/**
+			 * TODO: Repĺace for a property Document Configuration.
+			 */
+			//			DocumentConfiguration	documentConfiguration = (DocumentConfiguration) applicationContext.getBean(baseDocumentConfiguration); 
+			assert (documentConfiguration!=null);
+			//			ConfigurableReferenceBase<?> configurable = new ConfigurableReferenceBase<MappableReferenceBase<Base<?>,ColumnPositionMappingStrategy<Base<?>>>>(info);
+			DocumentBuilder builder = new DocumentBuilder();
+			Map<String,?> map = buildDataMap(info); 
+			if (map !=null){ 
+				builder.setDataMap(buildDataMap(info));
+				document = builder.build(documentConfiguration);
+			} 
+		}else { 
+			document = new Document();
+			//			checkError(constraintViolations);
+		}
+
+		return document;
+	}
+
+	private Map<String,?> buildDataMap(MediaDetail info) {
+		Map<String,String> infoMap = null;
+		if (info !=null){ 
+			log.debug("BUILDING DATA MAP FOR +++" + info.getLocation());
+			Collection<FieldConfiguration> fields = (Collection<FieldConfiguration>) documentConfiguration.getFields();
+			for (FieldConfiguration field : fields)
+			{ 
+				log.debug(field.getName());
+			}
+			try { 
+				infoMap = new HashMap<>();
+				infoMap.put("id" , Long.toString(System.nanoTime()));
+				infoMap.put("name", info.getLocation());
+				infoMap.put("content", info.getTikaStringContent());
+				log.debug("content : " + info.getTikaStringContent());
+				infoMap.put("stamp", Long.toString(System.nanoTime()));
+			}catch (Exception ex) { 
+				ex.printStackTrace();
+				infoMap = null;
+			}
+		} 
+		else { 
+			log.debug("INFO IS NULL  +++");			
+		}
+		return infoMap;
+	}
+
+	@Override
+	public Configurable<MediaDetail, Serializable> configure(MediaDetail info) {
+		return null;
+	}
+
+	public DocumentConfiguration getDocumentConfiguration() {
+		return documentConfiguration;
+	}
+
+	public void setDocumentConfiguration(DocumentConfiguration documentConfiguration) {
+		this.documentConfiguration = documentConfiguration;
+	}
+
+}

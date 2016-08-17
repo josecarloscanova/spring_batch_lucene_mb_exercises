@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 	
+    <import resource="classpath:properties_config.xml" />
+    	
+ 	<!-- FLAT FILE SECTION_BEGIN -->
+	<bean lazy-init="true" id="trackNameMapping" class="org.nanotek.beans.mapping.TrackNameMapping">
+		<property name="type" value="org.nanotek.beans.TrackName"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="trackNameToBean" class="org.nanotek.beans.mapping.TrackNameCsvToBean"></bean>
+	
+	<bean lazy-init="true" id="trackNameFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.track.name.file}"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="trackNameCsvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="trackNameFileReader"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="trackNameReader" class="org.nanotek.musicbrainz.job.readers.TrackNameReader">
+		<property name="itemMapping" ref="trackNameMapping"></property>
+		<property name="fileStr" value="${music.brainz.track.name.file}"></property>
+		<property name="csvMap" ref="trackNameToBean"></property>
+		<property name="reader" ref="trackNameCsvReader"></property>
+	</bean>
+	
+</beans>

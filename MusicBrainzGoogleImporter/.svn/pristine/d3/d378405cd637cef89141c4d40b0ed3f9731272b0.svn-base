@@ -1,0 +1,8 @@
+package org.nanotek.tika;
+
+
+public interface Detector<T,R> {
+
+	public T detect(R ref);
+	
+}

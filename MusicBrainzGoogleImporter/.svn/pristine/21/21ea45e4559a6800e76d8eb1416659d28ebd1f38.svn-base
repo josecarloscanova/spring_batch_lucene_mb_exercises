@@ -1,0 +1,62 @@
+package org.nanotek.tika;
+
+import org.nanotek.StringKong;
+
+@SuppressWarnings("serial")
+public class MediaDetailContent extends StringKong {
+
+	private byte[] tikaSegment;
+	private MediaDetail mediaDetail; 
+	
+	public MediaDetailContent() {
+		super(Long.toString(System.currentTimeMillis()));
+	}
+
+	public byte[] getTikaSegment() {
+		return tikaSegment;
+	}
+
+	public void setTikaSegment(byte[] tikaSegment) {
+		this.tikaSegment = tikaSegment;
+	}
+
+	public MediaDetail getMediaDetail() {
+		return mediaDetail;
+	}
+
+	public void setMediaDetail(MediaDetail mediaDetail) {
+		this.mediaDetail = mediaDetail;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((mediaDetail == null) ? 0 : mediaDetail.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		MediaDetailContent other = (MediaDetailContent) obj;
+		if (mediaDetail == null) {
+			if (other.mediaDetail != null) {
+				return false;
+			}
+		} else if (!mediaDetail.equals(other.mediaDetail)) {
+			return false;
+		}
+		return true;
+	}
+
+}

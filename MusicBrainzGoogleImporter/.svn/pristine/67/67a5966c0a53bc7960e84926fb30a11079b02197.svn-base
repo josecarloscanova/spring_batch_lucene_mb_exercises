@@ -1,0 +1,9 @@
+package org.nanotek.mq;
+
+import org.nanotek.Base;
+
+public interface SenderService {
+
+	public void sendMessage(Base<?> messageContainer) throws MessageException; 
+
+}

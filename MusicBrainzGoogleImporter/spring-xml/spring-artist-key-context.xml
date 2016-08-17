@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 		
+    <import resource="classpath:hibernate-context.xml" />
+	<import resource="classpath:spring-batch-datasource.xml" />
+	<import resource="classpath:spring-job-repo.xml" />
+	<import resource="classpath:spring-key-service-factory.xml" />
+	
+	<bean id="propertyPlaceholderConfigurer"  
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+	  <property name="locations">  
+	    <list>  
+	      <value>classpath:configuration.properties</value>  
+	    </list>  
+	  </property>  
+	</bean> 
+	
+	<bean lazy-init="true" id="trackIndexVersion" class="org.apache.lucene.util.Version" factory-method="valueOf">
+		<constructor-arg value="LUCENE_31"/>
+	</bean>
+	
+	<bean  lazy-init="true"  id="artistKeyDAO" class="org.nanotek.dao.spring.impl.ArtistDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistKey"></property>
+	</bean>
+
+	<bean  lazy-init="true"  id="artistCreditDAO" class="org.nanotek.dao.spring.impl.ArtistCreditDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistCredit"></property>
+	</bean>
+	
+	<bean  lazy-init="true"  id="artistCreditNameDAO" class="org.nanotek.dao.spring.impl.ArtistCreditNameDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistCreditName"></property>
+	</bean>
+	
+	<bean  lazy-init="true"  id="artistNameDAO" class="org.nanotek.dao.spring.impl.ArtistNameDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="clazz" value="org.nanotek.beans.ArtistName"></property>
+	</bean>
+	
+	<bean  lazy-init="true"  id="daoChunkListener" class="org.nanotek.lucene.job.listeners.DAOPageChunkListener">
+	    <property name="artistCreditNameReader" ref="artistCreditNameDAOReader"></property>
+	    <property name="numRecords" value="10000"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="artistCreditNameDAOReader" class="org.nanotek.lucene.job.readers.ArtistCreditNameDAOReader">
+	    <property name="artistCreditNameDAO" ref="artistCreditNameDAO"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="artistKeyWriter" class="org.nanotek.lucene.job.writers.ArtistKeyWriter">
+		<property name="artistNameDAO" ref="artistNameDAO"></property>
+		<property name="artistCreditDAO" ref="artistCreditDAO"></property>
+		<property name="artistCreditNameDAO" ref="artistCreditNameDAO"></property>
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean>
+	
+	<!-- <bean lazy-init="true" id="trackIndexWriter" class="org.nanotek.lucene.job.writers.TrackIndexWriter">
+		<property name="indexWriter" ref="trackIndexWriter"></property>
+	</bean> -->
+	
+			
+	<bean lazy-init="true" id="defaultVersion" class="org.apache.lucene.util.Version" factory-method="valueOf">
+		<constructor-arg value="LUCENE_31"/>
+	</bean>
+	
+	<bean lazy-init="true" id="defaultOpenMode" class="org.apache.lucene.index.IndexWriterConfig.OpenMode" factory-method="valueOf">
+		<constructor-arg value="CREATE_OR_APPEND"/>
+	</bean>
+	
+	<bean lazy-init="true" id="standardAnalyser" class="org.apache.lucene.analysis.standard.StandardAnalyzer">
+		<constructor-arg type="org.apache.lucene.util.Version" ref="defaultVersion"/>
+	</bean>
+	
+	<bean lazy-init="true" id="indexFilePath" class="java.io.File">
+		<constructor-arg value="F:/IndexPath/GlobalArtistName_Index"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="indexFsDirectory" class="org.apache.lucene.store.SimpleFSDirectory">
+		<constructor-arg ref="indexFilePath"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="indexWriterConfig" class="org.apache.lucene.index.IndexWriterConfig">
+		<constructor-arg ref="defaultVersion"></constructor-arg>
+		<constructor-arg ref="standardAnalyser"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="indexWriter" class="org.apache.lucene.index.IndexWriter"> 
+		<constructor-arg ref="indexFsDirectory"></constructor-arg>
+		<constructor-arg ref="indexWriterConfig"></constructor-arg>
+	</bean>	
+	
+
+	<bean  lazy-init="true"  id="indexWriterChunkListener" class="org.nanotek.lucene.job.listeners.IndexWriterChunkListener">
+	    <property name="indexWriter" ref="indexWriter"></property>
+	</bean>
+	
+	<bean  lazy-init="true"  id="indexWriterStepListener" class="org.nanotek.lucene.job.listeners.IndexWriterStepListener">
+	<property name="indexWriter" ref="indexWriter"></property>    
+	</bean>
+	
+	<b:job id="artistKeyJob" job-repository="jobRepository" restartable="false">
+	    <b:step id="artistKeyLoad">
+	    	<b:tasklet>
+	    		<b:chunk reader="artistCreditNameDAOReader"  commit-interval="1" writer="artistKeyWriter"></b:chunk>
+	    		<b:listeners>
+	    			<b:listener ref="daoChunkListener"/>
+	    			<b:listener ref="indexWriterChunkListener"/>
+	    		</b:listeners>
+	    	</b:tasklet>
+	    	 <b:listeners>
+            		<b:listener ref="indexWriterStepListener"/>
+       		</b:listeners> 
+	    </b:step>
+	</b:job>
+	
+</beans>

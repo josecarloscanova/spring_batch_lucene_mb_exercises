@@ -1,0 +1,43 @@
+package org.nanotek.query.result;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexableField;
+import org.nanotek.lucene.query.result.ScoreDocument;
+import org.nanotek.lucene.query.result.SimpleQueryResult;
+
+@SuppressWarnings("unchecked")
+public class SimpleQueryResultTransformer <K extends Serializable> 
+			implements QueryResultTransformer<ResultBase<K>, SimpleQueryResult<ScoreDocument,K>> {
+
+	public SimpleQueryResultTransformer() {
+	}
+	
+	
+	@Override
+	public ResultBase<K> transform(SimpleQueryResult<ScoreDocument, K> input) {
+		ResultBase<Long> result = new ResultBase<>(input.getScoreDocument().getId());
+		processScoreDocument(input.getScoreDocument(), result);
+		return (ResultBase<K>) result;
+	}
+	
+	private void processScoreDocument(ScoreDocument scoreDoc , ResultBase<Long> base) 
+	{ 
+		Document document = scoreDoc.getDocument();
+		Map<String,String>  map1 = new HashMap<String,String>();
+		Iterator<IndexableField> iterator = document.iterator();
+		while (iterator.hasNext()) 
+		{ 
+			IndexableField field = iterator.next(); 
+			map1.put(field.name(), field.stringValue());
+		}
+		base.setResultMap(map1);
+		base.score = scoreDoc.getScoreDoc().score;
+		base.shardIndex = scoreDoc.getScoreDoc().shardIndex;
+		base.doc = scoreDoc.getScoreDoc().doc;
+	}
+}

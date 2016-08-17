@@ -1,0 +1,40 @@
+package org.nanotek.lucene.query;
+
+import org.nanotek.Base;
+import org.nanotek.lucene.index.Index;
+
+@SuppressWarnings("serial")
+public class QueryHistory implements Base<Long> {
+
+	private Long id; 
+	private String searchPhrase; 
+	private Index index; 
+
+	public QueryHistory() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getSearchPhrase() {
+		return searchPhrase;
+	}
+
+	public void setSearchPhrase(String searchPhrase) {
+		this.searchPhrase = searchPhrase;
+	}
+
+	public Index getIndex() {
+		return index;
+	}
+
+	public void setIndex(Index index) {
+		this.index = index;
+	}
+
+}

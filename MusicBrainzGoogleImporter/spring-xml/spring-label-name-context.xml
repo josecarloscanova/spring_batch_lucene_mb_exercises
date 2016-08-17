@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 		
+
+	
+	<bean lazy-init="true" id="labelIndexVersion" class="org.apache.lucene.util.Version" factory-method="valueOf">
+		<constructor-arg value="LUCENE_31"/>
+	</bean>
+	
+	<bean lazy-init="true" id="propertyPlaceholderConfigurer"  
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		  <property name="locations">  
+		    <list>  
+		      <value>classpath:configuration.properties</value>  
+		    </list>  
+		  </property>  
+	</bean> 
+	
+	<bean lazy-init="true" id="labelStandardAnalyser" class="org.apache.lucene.analysis.standard.StandardAnalyzer">
+		<constructor-arg type="org.apache.lucene.util.Version" ref="labelIndexVersion"/>
+	</bean>
+	
+	<bean lazy-init="true" id="labelNameCsvReader" class="org.nanotek.util.CsvTabReader">
+		 <constructor-arg ref="labelNameFileReader"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="labelNameFileReader" class="java.io.FileReader"> 
+		<constructor-arg  type="java.lang.String" value="${music.brainz.label.name.file}"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="labelIndexFilePath" class="java.io.File">
+		<constructor-arg value="F:/IndexPath/LabelName_Index"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="labelIndexFsDirectory" class="org.apache.lucene.store.SimpleFSDirectory">
+		<constructor-arg ref="labelIndexFilePath"></constructor-arg>
+	</bean>
+		
+	<bean lazy-init="true" id="labelNameMapping" class="org.nanotek.beans.mapping.LabelNameMapping">
+		<property name="type" value="org.nanotek.beans.LabelName"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="labelIndexWriterConfig" class="org.apache.lucene.index.IndexWriterConfig">
+		<constructor-arg ref="labelIndexVersion"></constructor-arg>
+		<constructor-arg ref="labelStandardAnalyser"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="labelIndexWriter" class="org.apache.lucene.index.IndexWriter"> 
+		<constructor-arg ref="labelIndexFsDirectory"></constructor-arg>
+		<constructor-arg ref="labelIndexWriterConfig"></constructor-arg>
+	</bean>
+	
+	<bean lazy-init="true" id="labelNameToBean" class="org.nanotek.beans.mapping.LabelNameCsvToBean"></bean>
+	
+	<bean lazy-init="true" id="labelNameReader" class="org.nanotek.musicbrainz.job.readers.LabelNameReader">
+		<property name="itemMapping" ref="labelNameMapping"></property>
+		<property name="fileStr" value="${music.brainz.label.name.file}"></property>
+		<property name="csvMap" ref="labelNameToBean"></property>
+		<property name="reader" ref="labelNameCsvReader"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="labelNameIndexWriter" class="org.nanotek.lucene.job.writers.LabelNameIndexWriter">
+		<property name="indexWriter" ref="labelIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="labelIndexStepListener" class="org.nanotek.lucene.job.listeners.IndexWriterStepListener"> 
+		<property name="indexWriter" ref="labelIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="labelNameIndexChunkLister" class="org.nanotek.lucene.job.listeners.IndexWriterChunkListener">
+		<property name="indexWriter" ref="labelIndexWriter"></property>
+	</bean>
+	
+	<bean lazy-init="true" id="labelNameIndexProcessor" class="org.nanotek.musicbrainz.job.processor.LabelNameIndexProcessor">
+		<property name="indexWriter" ref="labelIndexWriter"></property>
+	</bean>
+	
+	<b:job id="labelNameIndexJob" job-repository="jobRepository" restartable="false">
+	    <b:step id="labelNameIndexLoad">
+	    	<b:tasklet>
+	    		<b:chunk reader="labelNameReader" processor="labelNameIndexProcessor" commit-interval="10000" writer="labelNameIndexWriter"></b:chunk>
+	    		<b:listeners>
+	    			<b:listener ref="labelNameIndexChunkLister"/>
+	    		</b:listeners>
+	    	</b:tasklet>
+	    	<b:listeners>
+            		<b:listener ref="labelIndexStepListener"/>
+       		</b:listeners>
+	    </b:step>
+	</b:job>
+	
+</beans>

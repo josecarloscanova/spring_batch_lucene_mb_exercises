@@ -1,0 +1,12 @@
+package org.nanotek.mq.converters;
+
+import org.nanotek.Base;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+
+public interface MessageConverter<M extends Message> {
+
+	public abstract M toMessage(Base<?> arg , MessageProperties properties);
+	public abstract Base<?> fromMessage(org.springframework.amqp.core.Message arg0);
+
+}

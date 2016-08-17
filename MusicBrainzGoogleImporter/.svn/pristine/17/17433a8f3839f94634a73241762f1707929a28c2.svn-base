@@ -1,0 +1,19 @@
+package org.nanotek.hibernate.dao;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.nanotek.Base;
+import org.nanotek.base.PageItemBase;
+
+public interface DAO <T extends Base<?>> extends org.nanotek.dao.DAO<T>{
+	
+	public List<T> listRecords(PageItemBase<?> pageItemBase);
+	public List<T> listRecords(PageItemBase<?> pageItemBase,DetachedCriteria criteria);
+	public List<T> listRecords(Integer firstResult, Integer maxResults,Order order);
+	public List<T> listRecords(Integer firstResult, Integer maxResults, DetachedCriteria criteria);
+ 	
+}

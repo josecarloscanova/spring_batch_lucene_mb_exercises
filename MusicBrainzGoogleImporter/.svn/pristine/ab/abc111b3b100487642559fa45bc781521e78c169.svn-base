@@ -1,0 +1,41 @@
+package org.nanotek.message;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public class PipeMessage<K extends Serializable> implements Base<K>{
+
+	protected K id;
+	private PipeHeader<K> pipeHeader; 
+	private Base<?>  messageBase;
+	
+	public PipeMessage() {
+	}
+
+	public K getId() {
+		return id;
+	}
+
+	public void setId(K id) {
+		this.id = id;
+	}
+
+	public PipeHeader<K> getPipeHeader() {
+		return pipeHeader;
+	}
+
+	public void setPipeHeader(PipeHeader<K> pipeHeader) {
+		this.pipeHeader = pipeHeader;
+	}
+
+	public Base<?> getMessageBase() {
+		return messageBase;
+	}
+
+	public void setMessageBase(Base<?> messageBase) {
+		this.messageBase = messageBase;
+	}
+
+}

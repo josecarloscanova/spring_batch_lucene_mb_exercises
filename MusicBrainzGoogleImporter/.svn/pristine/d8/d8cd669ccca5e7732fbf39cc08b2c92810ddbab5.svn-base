@@ -1,0 +1,25 @@
+package org.nanotek.base.date.jpa;
+
+import javax.persistence.PrePersist;
+
+import org.nanotek.base.date.DayBase;
+import org.nanotek.base.jpa.PrePersistEventListener;
+
+/**
+ * Provisory Id generation. 
+ * 
+ * @author josecanova
+ *
+ */
+public class DayBaseEventListener implements PrePersistEventListener<DayBase>{
+
+	@Override
+	@PrePersist
+	public void prePersist(DayBase e) {
+		Integer min = e.getMinute() << 16;
+		e.setBitWise(new Integer(e.getHour() | min));
+		e.setId(new Long(e.getHour() | min));
+		System.err.println("ID TO DIE " + e.getId());
+	}
+
+}

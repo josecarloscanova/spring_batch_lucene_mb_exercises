@@ -1,0 +1,14 @@
+package org.nanotek.spring.batch.step;
+
+import java.io.Serializable;
+
+import org.nanotek.Base;
+
+@SuppressWarnings("serial")
+public abstract class FinderStepStatus<T extends Serializable, M extends Base<?>> extends
+		BaseStatus<T, M> {
+
+	protected T id; 
+	protected M message;
+	
+}

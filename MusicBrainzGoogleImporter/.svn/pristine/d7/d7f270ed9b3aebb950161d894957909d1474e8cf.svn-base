@@ -1,0 +1,11 @@
+lucene.index.base=/home/java-eclipse/lucene_index_path/
+lucene.index.artist.name=ArtistName_Index
+lucene.index.artist.name=ArtistAlias_Index
+lucene.index.global.artist.name=GlobalArtistName_Index
+lucene.index.global.track=GlobalTrack_Index
+lucene.index.label.name=LabelName_Index
+lucene.index.recording=Recording_Index
+lucene.index.release.name=ReleaseName_Index
+lucene.index.track=Track_Index
+lucene.index.track.name=TrackName_Index
+lucene.index.work.name=WorkName_Index

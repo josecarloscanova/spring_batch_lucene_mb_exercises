@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch
+      	http://www.springframework.org/schema/batch/spring-batch.xsd
+       	http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <import resource="classpath:spring-batch-file-readers/artist_credit_file_reader.xml" /> 
+    <import resource="classpath:spring-batch-file-writers/database/artist_credit_database_writer.xml" />
+    
+    <!--<bean lazy-init="true" id="artistCreditStepListener" class="org.nanotek.lucene.job.listeners.ArtistNameStepListener"> 
+		<property name="indexWriter" ref="indexWriter"></property>
+	</bean>-->
+	
+	<bean lazy-init="true" id="artistCreditChunkListener" class="org.nanotek.lucene.job.listeners.DAOPageChunkListener">
+	</bean>
+	
+    <b:job id="artistCreditDatabaseJob" job-repository="jobRepository" restartable="false">
+	<b:step id="artistCreditDatabaseLoad">
+	    	<b:tasklet>
+	    		<b:chunk reader="artistCreditReader" commit-interval="10000" writer="artistCreditDatabaseWriter"></b:chunk>
+	    		</b:tasklet>
+	    		<!--<b:listeners>
+	    			<b:listener ref="artistCreditChunkListener"/>
+	    		</b:listeners>
+	    	</b:tasklet>
+	    	 <b:listeners>
+            		<b:listener ref="artistCreditStepListener"/>
+       		</b:listeners> -->
+	    </b:step>
+	</b:job>
+</beans>

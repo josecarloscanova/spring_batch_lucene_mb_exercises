@@ -1,0 +1,11 @@
+package org.nanotek.tika.job.reader;
+
+import org.nanotek.spring.batch.step.StampFinderStep;
+
+public class StampFinderFactory {
+
+	public static StampFinderStep newStampFinder() {
+		return  new StampFinderStep(System.nanoTime());
+	}
+
+}

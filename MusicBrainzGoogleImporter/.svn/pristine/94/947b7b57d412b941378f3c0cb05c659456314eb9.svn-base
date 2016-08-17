@@ -1,0 +1,162 @@
+package org.nanotek.tika.job.writer;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.apache.tika.io.TemporaryResources;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.DefaultParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.PasswordProvider;
+import org.nanotek.hibernate.dao.GeneralPurposeDAO;
+import org.nanotek.spring.batch.TypeWriter;
+import org.nanotek.tika.MediaDetail;
+import org.nanotek.tika.MediaDetailContent;
+import org.nanotek.tika.file.FileIdentity;
+import org.nanotek.tika.io.TikaContentExtractor;
+import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemStream;
+import org.springframework.batch.item.ItemStreamException;
+
+@SuppressWarnings("unused")
+public class TikaContentExtractorWriter extends TypeWriter<List<? extends FileIdentity>> implements ItemStream {
+
+	private static final String posixPathSeparator = "/";//works on both Linux and Windows while the oposite don't.
+	
+	private TikaContentExtractor contentExtractor; 
+	private TemporaryResources temporaryResources;
+
+	private ExecutionContext executionContext;
+	private GeneralPurposeDAO<MediaDetail> dao; 
+	private GeneralPurposeDAO<MediaDetailContent> mediaDetailContentDAO;
+	
+	
+	private static final Logger log = Logger.getLogger(TikaContentExtractorWriter.class);
+	public TikaContentExtractorWriter() {
+	}
+
+	@Override
+	public void write(List<? extends List<? extends FileIdentity>> items)
+			throws Exception {
+		List<? extends FileIdentity>fileIdentityList  = items.get(0);
+				for (FileIdentity item : fileIdentityList) { 
+					write(item);
+				}
+	}
+	
+	public void write(FileIdentity fileIdentity) throws TikaExtratorException {
+			Path parent = Paths.get(fileIdentity.getName());
+			TikaInputStream input = getTikaInputStream (parent.resolve(fileIdentity.getSortName()));
+//			Detector detector = new CompositeDetector();
+			Metadata metaData = new Metadata();
+			MediaDetail mediaDetail = new MediaDetail();
+			ParseContext context = new ParseContext();
+			Parser parser = new DefaultParser();
+			context.set(Parser.class, parser);
+			context.set(PasswordProvider.class, new PasswordProvider() {
+				public String getPassword(Metadata metadata) {
+					String password = "";
+					return password ;
+				}
+			});
+			TikaContentExtractor extractor = new TikaContentExtractor(mediaDetail,context,metaData);
+//			mediaDetail.setId(fileIdentity.getId()); //getCksum()
+			mediaDetail.setFileIdentity(fileIdentity);
+			mediaDetail.setLocation(fileIdentity.getName() + posixPathSeparator + fileIdentity.getSortName());
+			mediaDetail.setContentType(fileIdentity.getType());
+			mediaDetail.setDateUpdate(new Date());
+			try { 
+				mediaDetail.setSize(Files.size(Paths.get(mediaDetail.getLocation())));
+				mediaDetail.setReadable('Y');
+				extractor.extractContent(input);
+				log.debug(mediaDetail.get());
+//				synchronized (dao) { 
+					dao.persist(mediaDetail);
+					convertSegment(mediaDetail);
+//				}
+			} catch (Exception ex) 
+			{ 
+				log.debug(ex);
+			}
+	}
+
+	private void convertSegment(MediaDetail mediaDetail) {
+		MediaDetailContent detailSegment = new MediaDetailContent();
+		detailSegment.setTikaSegment(mediaDetail.getTikaStringContent().getBytes());
+		detailSegment.setMediaDetail(mediaDetail);
+		mediaDetailContentDAO.persist(detailSegment);
+	}
+
+	private TikaInputStream getTikaInputStream(Path resolvedPath) {
+		FileInputStream fileInputStream;
+		TikaInputStream inputStream = null;
+		try {
+			temporaryResources = new TemporaryResources ();
+			fileInputStream = new FileInputStream(resolvedPath.toFile());
+			inputStream =  TikaInputStream.get(fileInputStream , temporaryResources);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return inputStream;
+	}
+
+	public TikaContentExtractor getContentExtractor() {
+		return contentExtractor;
+	}
+
+	public void setContentExtractor(TikaContentExtractor contentExtractor) {
+		this.contentExtractor = contentExtractor;
+	}
+
+	public TemporaryResources getTemporaryResources() {
+		return temporaryResources;
+	}
+
+	public void setTemporaryResources(TemporaryResources temporaryResources) {
+		this.temporaryResources = temporaryResources;
+	}
+
+	@Override
+	public void open(ExecutionContext executionContext)
+			throws ItemStreamException {
+		this.executionContext = executionContext; 
+	}
+
+	@Override
+	public void update(ExecutionContext executionContext)
+			throws ItemStreamException {
+	}
+
+	@Override
+	public void close() throws ItemStreamException {
+		this.executionContext = null;
+	}
+
+	public GeneralPurposeDAO<MediaDetail> getDao() {
+		return dao;
+	}
+
+	public void setDao(GeneralPurposeDAO<MediaDetail> dao) {
+		this.dao = dao;
+	}
+
+	public GeneralPurposeDAO<MediaDetailContent> getMediaDetailContentDAO() {
+		return mediaDetailContentDAO;
+	}
+
+	public void setMediaDetailContentDAO(
+			GeneralPurposeDAO<MediaDetailContent> mediaDetailContentDAO) {
+		this.mediaDetailContentDAO = mediaDetailContentDAO;
+	}
+	
+}
+

@@ -1,0 +1,187 @@
+package org.nanotek.lucene.document.configuration;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType.NumericType;
+import org.apache.lucene.index.FieldInfo.IndexOptions;
+import org.nanotek.Base;
+import org.nanotek.base.Configuration;
+
+/**
+ * The Entity Class which store the values for a specific lucene field.
+ * @author josecanovamauger.
+ *
+ */
+@SuppressWarnings("serial")
+public class FieldConfiguration implements Base<String>,Configuration<FieldConfiguration> {
+
+//	private static final Logger log = Logger.getLogger("FieldConfiguration.class");
+
+	protected String id; 
+	protected String name; 
+	protected Boolean storeTermVector  = true;
+	protected Boolean storeOffsetWithTermVector  = true;
+	protected Boolean storePositionWithTermVector  = true;
+	protected Boolean omitTermFreqAndPositions = true;
+	protected Boolean indexed = true; 
+	protected Boolean omitNorms = false;
+	protected Field.Store store = Field.Store.YES; 
+	protected NumericType numericType = null;
+	protected Boolean tokenized = false; 
+	protected IndexOptions indexOptions = IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS;
+	/*	protected Field.Index fieldIndex = Field.Index.ANALYZED; 
+	protected Field.TermVector termVectors = Field.TermVector.NO;*/
+	protected DocumentConfiguration parentDocument;
+	protected Analyzer analyzer; 
+	
+	public FieldConfiguration() {
+		super();
+	}
+
+	public FieldConfiguration(String id, String name) {
+		this();
+		this.id = id;
+		this.name = name;
+	}
+
+	public FieldConfiguration(String id, String name,
+			DocumentConfiguration parentDocument) {
+		this();
+		this.id = id;
+		this.name = name;
+		this.parentDocument = parentDocument;
+	}
+	
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+	public Field.Store getStore() {
+		return store;
+	}
+
+	public void setStore(Field.Store store) {
+		this.store = store;
+	}
+
+	public DocumentConfiguration getParentDocument() {
+		return parentDocument;
+	}
+
+	public void setParentDocument(DocumentConfiguration parentDoc) {
+		this.parentDocument = parentDoc;
+	}
+
+	public NumericType getNumericType() {
+		return numericType;
+	}
+
+	public void setNumericType(NumericType numericType) {
+		this.numericType = numericType;
+	}
+
+	@Override
+	public FieldConfiguration get() {
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "FieldConfiguration [id=" + id + ", name=" + name
+				+ ", storeTermVector=" + storeTermVector
+				+ ", storeOffsetWithTermVector=" + storeOffsetWithTermVector
+				+ ", storePositionWithTermVector="
+				+ storePositionWithTermVector + ", omitTermFreqAndPositions="
+				+ omitTermFreqAndPositions + ", indexed=" + indexed
+				+ ", store=" + store + ", numericType=" + numericType
+				+ ", parentDocument=" + parentDocument + ", omitNorms="
+				+ omitNorms + "]";
+	}
+
+	public Boolean getStoreTermVector() {
+		return storeTermVector;
+	}
+
+	public void setStoreTermVector(Boolean storeTermVector) {
+		this.storeTermVector = storeTermVector;
+	}
+
+	public Boolean getStoreOffsetWithTermVector() {
+		return storeOffsetWithTermVector;
+	}
+
+	public void setStoreOffsetWithTermVector(Boolean storeOffsetWithTermVector) {
+		this.storeOffsetWithTermVector = storeOffsetWithTermVector;
+	}
+
+	public Boolean getStorePositionWithTermVector() {
+		return storePositionWithTermVector;
+	}
+
+	public void setStorePositionWithTermVector(Boolean storePositionWithTermVector) {
+		this.storePositionWithTermVector = storePositionWithTermVector;
+	}
+
+	public Boolean getOmitTermFreqAndPositions() {
+		return omitTermFreqAndPositions;
+	}
+
+	public void setOmitTermFreqAndPositions(Boolean omitTermFreqAndPositions) {
+		this.omitTermFreqAndPositions = omitTermFreqAndPositions;
+	}
+
+	public Boolean getIndexed() {
+		return indexed;
+	}
+
+	public void setIndexed(Boolean indexed) {
+		this.indexed = indexed;
+	}
+
+	public Boolean getOmitNorms() {
+		return omitNorms;
+	}
+
+	public void setOmitNorms(Boolean omitNorms) {
+		this.omitNorms = omitNorms;
+	}
+
+	public Boolean getTokenized() {
+		return tokenized;
+	}
+
+	public void setTokenized(Boolean tokenized) {
+		this.tokenized = tokenized;
+	}
+
+	public IndexOptions getIndexOptions() {
+		return indexOptions;
+	}
+
+	public void setIndexOptions(IndexOptions indexOptions) {
+		this.indexOptions = indexOptions;
+	}
+
+	public Analyzer getAnalyzer() {
+		return analyzer;
+	}
+
+	public void setAnalyzer(Analyzer analyzer) {
+		this.analyzer = analyzer;
+	}
+
+}

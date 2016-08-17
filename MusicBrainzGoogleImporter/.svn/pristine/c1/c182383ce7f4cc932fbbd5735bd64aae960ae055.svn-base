@@ -1,0 +1,14 @@
+package org.nanotek.musicbrainz.dao;
+
+import java.util.List;
+
+import org.nanotek.Base;
+import org.springframework.batch.item.ItemReader;
+
+public interface ITrackDAOReader extends  ItemReader< List<Base<?>>>{
+
+	public abstract void setStartRecord(Integer startIndex);
+
+	public abstract void setMaxResults(Integer maxResults);
+
+}

@@ -1,0 +1,315 @@
+package org.nanotek.web;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.lang.reflect.Field;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.pattern.PatternTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.nanotek.base.ATContactBase;
+import org.nanotek.base.OfficeDetail;
+import org.nanotek.base.OfficeUrl;
+import org.nanotek.base.PageItemBase;
+import org.nanotek.base.ScannedOffice;
+import org.nanotek.hibernate.dao.GeneralPurposeDAO;
+import org.nanotek.hibernate.dao.impl.OfficeDetailDAOImpl;
+import org.nanotek.hibernate.dao.impl.OfficeUrlDAOImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.JsonArray;
+
+@SuppressWarnings("unused")
+@Controller
+@RequestMapping("/offices")
+public class OfficeRecordController {
+
+	private static ClassPathXmlApplicationContext ctx;
+
+	@Autowired
+	private OfficeUrlDAOImpl officeUrlDAO;
+
+	@Autowired
+	private OfficeDetailDAOImpl officeDetailsDAO;
+
+	private static final Logger log = Logger.getLogger(OfficeRecordController.class);
+
+	public OfficeRecordController() {
+	}
+	
+	@RequestMapping(value = "/getFieldList",method = RequestMethod.GET)
+	public  @ResponseBody Model getFieldList (Model model)
+	{ 
+		List<String> fields = getContactBaseDeclaredFields();
+		model.addAttribute("fieldList" , fields);
+		return model;
+	}
+	
+	@RequestMapping(value = "/newCompanyRecord",method = RequestMethod.GET)
+	public void newCompanyRecord(Model model) {
+		log.debug("New Record Requested.");
+		List<OfficeUrl> officesUrl =  loadRecordsForEdition();
+		List<ScannedOffice> scannedOffices = new ArrayList<ScannedOffice>();
+		List<String> selectFields = getContactBaseDeclaredFields();
+		
+		model.addAttribute("officesList", scannedOffices);
+	}
+
+	@RequestMapping(value = "/listOfficesNormalized",method = RequestMethod.GET)
+	public void listCompanies(Model model) {
+		log.debug("List Office Resolved.");
+		List<OfficeUrl> officesUrl =  loadRecordsForEdition();
+		List<ScannedOffice> scannedOffices = new ArrayList<ScannedOffice>();
+		String officeName = null;
+		List<String> descriptions = null;
+		String urlDecoded = null; 
+		for (OfficeUrl office : officesUrl)
+		{   
+			boolean errorProcessingOffice = false; 
+			try {
+				officeName = doubleDecode(office.getName());
+				String officeInfo = office.getContactInfo();
+//				descriptions = parseDescription(officeInfo);
+				urlDecoded = doubleDecode(office.getUrl());
+				log.debug("Office Name " + officeName);
+			} catch (Exception e) {
+				e.printStackTrace();
+				errorProcessingOffice = true;
+			}finally { 
+				if (!errorProcessingOffice) { 
+					ScannedOffice scannedOffice = new ScannedOffice(); 
+					scannedOffice.setId(office.getId());
+					scannedOffice.setNormalizedName(officeName);
+					scannedOffice.setOfficeUrl(urlDecoded);
+					scannedOffice.setOfficeData(descriptions);
+					scannedOffices.add(scannedOffice);
+				} else { 
+					log.debug("Office on error " + office.getId());
+				}
+			}
+		}
+		model.addAttribute("officesList", scannedOffices);
+	}
+
+	private List<OfficeUrl> loadRecordsForEdition() 
+	{ 
+		
+		List result = officeUrlDAO.getOfficesWithoutDetail();
+		
+//		DetachedCriteria criteria = DetachedCriteria.forClass(OfficeUrl.class);
+//		criteria.add(Restrictions.ne("contactInfo", "bing_search")); 
+//		criteria.addOrder(Order.asc("name"));
+//		officeForEditList = officeUrlDAO.listRecords(0 ,  recordCount.intValue(), criteria); 
+////		
+//		for (OfficeDetail officeAddress: officesDetail) 
+//		{ 
+//			officesId.add(officeAddress.getId());
+//		}
+
+//		officeUrlDAO.listRecords(0 ,  recordCount.intValue(), criteria)
+		
+		return result; 
+	}
+	
+	/**
+	 * Double Decode just in case. 
+	 * 
+	 * @param officeEncoded
+	 * @return officeDecoded
+	 */
+	public String doubleDecode(String officeEncoded) 
+	{ 
+		String officeDecoded = new String(); 
+		try { 
+			officeDecoded = URLDecoder.decode(officeEncoded,"UTF-8");
+			officeDecoded = URLDecoder.decode(officeDecoded , "UTF-8");
+		}catch (Exception ex) 
+		{ 
+			ex.printStackTrace();
+		}
+
+		return officeDecoded;
+	}
+
+	@SuppressWarnings({"resource"})
+	private List<String> parseDescription(String officeInfo) throws IOException {
+
+		StringReader reader = new StringReader(officeInfo);
+
+		PatternTokenizer patternTokenized = new PatternTokenizer(reader, Pattern.compile("\n"),-1);
+
+		patternTokenized.reset(); 
+
+		List<String> tokenString = new ArrayList<String>();
+
+		while (patternTokenized.incrementToken())
+		{ 
+			CharTermAttribute charTermAttribute =
+					patternTokenized.addAttribute(CharTermAttribute.class);
+			//			tokenString.add(charTermAttribute.toString());
+			String value = charTermAttribute.toString(); 
+			if (!value.trim().equals("")){ 
+//				System.out.println(value.trim());
+				tokenString.add(value.trim());
+			}
+//			System.out.println(charTermAttribute.toString());
+		}
+		return tokenString;
+	}
+
+	@RequestMapping(value = "/getOffice/{officeid}",method = RequestMethod.GET,produces="application/json")
+	public  @ResponseBody Model getCompany(@PathVariable("officeid") String officeId,Model model) {
+		log.debug("Get Company Resolved");
+		OfficeUrl office = officeUrlDAO.findById(Long.parseLong(officeId));
+		model.addAttribute("office", office);
+		String officeName = null;
+		List <String> descriptions = null; 
+		String urlDecoded = null;
+		
+		boolean errorProcessingOffice = false; 
+		try {
+			officeName = doubleDecode(office.getName());
+			String officeInfo = office.getContactInfo();
+			descriptions = parseDescription(officeInfo);
+			urlDecoded = doubleDecode(office.getUrl());
+			log.debug("Office Name " + officeName);
+		} catch (IOException e) {
+			e.printStackTrace();
+			errorProcessingOffice = true;
+		}finally { 
+			if (!errorProcessingOffice) { 
+				ScannedOffice scannedOffice = new ScannedOffice(); 
+				scannedOffice.setId(office.getId());
+				scannedOffice.setNormalizedName(officeName);
+				scannedOffice.setOfficeUrl(urlDecoded);
+				scannedOffice.setOfficeData(descriptions);
+				model.addAttribute("scannedOffice", scannedOffice);
+			} else { 
+				log.debug("Office on error " + office.getId());
+			}
+		}
+		
+		model.addAttribute("baseFields", getContactBaseDeclaredFields()); 
+		
+		return model;
+	}
+
+	@RequestMapping(value = "/newCompany",method = RequestMethod.POST,produces="application/json",consumes="application/json")
+	public  @ResponseBody Model newCompany(@RequestBody Map<String,?> officeDetailMap, Model model) {
+		log.debug("Post Company Resolved");
+		log.debug("Message Received Normalized Office " + officeDetailMap );
+		OfficeUrl office = new OfficeUrl();
+		office.setName(officeDetailMap.get("name").toString());
+		office.setUrl(officeDetailMap.get("url").toString());
+		officeUrlDAO.update(office);
+		ArrayList<?> list = (ArrayList<?>) officeDetailMap.get("details");
+		for (Object el : list) { 
+			log.debug("Object type " +el.getClass().getName());
+			Map<String,String> elMap = (Map<String, String>) el;
+			OfficeDetail officeDetail = new OfficeDetail(); 
+			officeDetail.setName(elMap.get("name"));
+			officeDetail.setValue(elMap.get("value"));
+			officeDetail.setOfficeUrl(office);
+			Set<OfficeDetail> officeDetails = new HashSet<OfficeDetail>();
+			office.setOfficeDetails(officeDetails);
+			office.getOfficeDetails().add(officeDetail);
+			officeUrlDAO.update(office);
+			officeDetailsDAO.update(officeDetail);
+		}
+		model.addAttribute("office", office);
+//		OfficeUrl office = officeUrlDAO.findById(Long.parseLong(officeId));
+//		office.setContactInfo(officeUpdate.getContactInfo());
+//		officeUrlDAO.update(office);
+//		model.addAttribute("office", office);
+		return model;
+	}
+
+	
+
+	@RequestMapping(value = "/updateNormalizedOffice/{officeid}",method = RequestMethod.POST,produces="application/json",consumes="application/json")
+	public  @ResponseBody Model updateCompany(@PathVariable("officeid") String officeId, @RequestBody Map<String,String> officeDetailMap, Model model) {
+		log.debug("Post Company Resolved");
+		log.debug("Message Received Normalized Office " + officeDetailMap );
+		updateOfficeDetail (officeDetailMap); 
+//		OfficeUrl office = officeUrlDAO.findById(Long.parseLong(officeId));
+//		office.setContactInfo(officeUpdate.getContactInfo());
+//		officeUrlDAO.update(office);
+//		model.addAttribute("office", office);
+		return model;
+	}
+
+	@SuppressWarnings({"unchecked" })
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
+	private void updateOfficeDetail(Map<String, ?> officeDetailMap) {
+		
+		Long candidateid = Long.parseLong(officeDetailMap.get("id").toString());
+		OfficeUrl officeUrl = officeUrlDAO.findById(candidateid);
+		if (officeUrl !=null) 
+		{ 
+			officeUrl.setName(officeDetailMap.get("name").toString());
+			officeUrl.setUrl(officeDetailMap.get("url").toString());
+					ArrayList<?> list = (ArrayList<?>) officeDetailMap.get("details");
+					for (Object el : list) { 
+						log.debug("Object type " +el.getClass().getName());
+						Map<String,String> elMap = (Map<String, String>) el;
+						OfficeDetail officeDetail = new OfficeDetail(); 
+						officeDetail.setName(elMap.get("name"));
+						officeDetail.setValue(elMap.get("value"));
+						officeDetail.setOfficeUrl(officeUrl);
+						officeUrl.getOfficeDetails().add(officeDetail);
+						officeUrlDAO.update(officeUrl);
+						officeDetailsDAO.update(officeDetail);
+					}
+//					JSONArray json = new JSONArray();
+			
+//			OfficeDetail officeDetail = new OfficeDetail(); 
+		}
+		
+	}
+
+	public List<String> getContactBaseDeclaredFields() 
+	{ 
+		Field [] contactBaseFields = ATContactBase.class.getDeclaredFields(); 
+		
+		List<String> fieldList = new ArrayList<String>(); 
+		
+		for (Field field : contactBaseFields) 
+		{ 
+			fieldList.add(field.getName());
+		}
+		return fieldList;
+	}
+	
+	public OfficeUrlDAOImpl getOfficeUrlDAO() {
+		return officeUrlDAO;
+	}
+
+	public OfficeDetailDAOImpl getOfficeDetailsDAO() {
+		return officeDetailsDAO;
+	}
+
+}

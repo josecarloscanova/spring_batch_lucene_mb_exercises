@@ -1,0 +1,11 @@
+package org.nanotek.dao.spring;
+
+
+import org.nanotek.Base;
+import org.nanotek.beans.ArtistKey;
+import org.nanotek.dao.DAO;
+
+public interface ArtistKeyDAO<T extends ArtistKey> extends DAO<Base<?>> {
+
+	public T findById (String id);
+}

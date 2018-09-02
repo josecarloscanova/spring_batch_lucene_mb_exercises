@@ -1,11 +1,15 @@
 package org.nanotek.beans;
 
 import org.nanotek.Base;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 @SuppressWarnings("serial")
-public class ArtistAlias implements Base<Long> {
+public class ArtistAlias implements Base<String> {
 
-	private Long id; 
+	@Id
+	private String id; 
 	private Long artistId; 
 	private Long nameId; 
 	private String locale;
@@ -13,12 +17,12 @@ public class ArtistAlias implements Base<Long> {
 	public ArtistAlias() {
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	
 	@Override
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 	

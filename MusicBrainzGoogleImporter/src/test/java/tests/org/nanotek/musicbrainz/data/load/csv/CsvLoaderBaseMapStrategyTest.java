@@ -5,21 +5,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.nanotek.base.LongBase;
+import org.nanotek.beans.ArtistAlias;
 import org.nanotek.opencsv.BaseMap;
 import org.nanotek.opencsv.CsvBaseMapper;
 import org.nanotek.opencsv.CsvTabReader;
 import org.nanotek.opencsv.HashMapCsvMapper;
 import org.nanotek.opencsv.MapColumnStrategy;
 import org.nanotek.xstream.XStreamBaseSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 
 public class CsvLoaderBaseMapStrategyTest {
 
-	private static final Logger log = Logger.getLogger(CsvLoaderBaseMapStrategyTest.class);
+	private static final Logger log = LoggerFactory.getLogger(CsvLoaderBaseMapStrategyTest.class);
 	
 	public CsvLoaderBaseMapStrategyTest() {
 	}
@@ -37,7 +38,7 @@ public class CsvLoaderBaseMapStrategyTest {
 			HashMapCsvMapper mapCsvMapper = new HashMapCsvMapper();
 			String [] nextLine; 
 			
-			XStreamBaseSerializer baseSerializer = new XStreamBaseSerializer(LongBase.class, new XStream(new JettisonMappedXmlDriver())); 
+			XStreamBaseSerializer baseSerializer = new XStreamBaseSerializer<ArtistAlias>(ArtistAlias.class, new XStream(new JettisonMappedXmlDriver())); 
 
 			while ((nextLine = csvTabReader.readNext()) != null) {
 				mapStrategy.buildMapping(nextLine.length);

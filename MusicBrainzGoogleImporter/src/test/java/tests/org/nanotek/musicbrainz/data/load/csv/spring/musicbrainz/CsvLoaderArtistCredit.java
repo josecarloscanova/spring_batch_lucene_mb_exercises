@@ -11,22 +11,22 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.nanotek.batch.BlockExecutor;
 import org.nanotek.beans.ArtistCredit;
-import org.nanotek.dao.DAO;
 import org.nanotek.opencsv.BaseMap;
 import org.nanotek.opencsv.CsvBaseMapper;
 import org.nanotek.opencsv.CsvTabReader;
 import org.nanotek.opencsv.HashMapCsvMapper;
 import org.nanotek.opencsv.MapColumnStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class CsvLoaderArtistCredit {
 
-	private static final Logger log = Logger.getLogger(CsvLoaderArtistCredit.class);
+	private static final Logger log = LoggerFactory.getLogger(CsvLoaderArtistCredit.class);
 	
 	public CsvLoaderArtistCredit() {
 		
@@ -80,14 +80,14 @@ public class CsvLoaderArtistCredit {
 	@SuppressWarnings({ "unchecked"})
 	public void executeDataInsert(final List<ArtistCredit> artistCreditNameList , ApplicationContext dataBaseContext)
 	{ 
-		final DAO<ArtistCredit> dao = (DAO<ArtistCredit>) dataBaseContext.getBean("artistCreditNameDAO");
-		artistCreditNameList.parallelStream().forEach(new Consumer<ArtistCredit>() {
-			@Override
-			public void accept(ArtistCredit t) {
-				System.out.println("calling persist " + t.toString());
-				dao.persist(t);
-			}
-		});
+//		final DAO<ArtistCredit> dao = (DAO<ArtistCredit>) dataBaseContext.getBean("artistCreditNameDAO");
+//		artistCreditNameList.parallelStream().forEach(new Consumer<ArtistCredit>() {
+//			@Override
+//			public void accept(ArtistCredit t) {
+//				System.out.println("calling persist " + t.toString());
+//				dao.persist(t);
+//			}
+//		});
 		/*final BlockExecutor runnerExecutor = (BlockExecutor) dataBaseContext.getBean("blockExecutor");
 		new Thread (
 					new Runnable (){

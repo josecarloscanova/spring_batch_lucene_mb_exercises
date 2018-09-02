@@ -14,7 +14,7 @@ import org.springframework.batch.item.UnexpectedInputException;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.CSVReader;
-//import org.apache.log4j.Logger;
+//import org.slf4j.Logger;
 
 public class BaseReader extends GenericReader{
 

@@ -1,5 +1,6 @@
 package org.nanotek.opencsv;
 
+import org.slf4j.Logger;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.nanotek.Base;
 

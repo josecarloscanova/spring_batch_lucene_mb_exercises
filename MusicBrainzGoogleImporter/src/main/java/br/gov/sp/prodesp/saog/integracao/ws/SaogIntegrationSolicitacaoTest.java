@@ -15,22 +15,21 @@ package br.gov.sp.prodesp.saog.integracao.ws;
  * limitations under the License.
  */
 
-import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.integration.endpoint.PollingConsumer;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.integration.support.channel.BeanFactoryChannelResolver;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.core.DestinationResolver;
+
 
 /**
  *
@@ -38,7 +37,7 @@ import org.springframework.messaging.core.DestinationResolver;
  */
 public class SaogIntegrationSolicitacaoTest implements ApplicationContextAware {
 
-	private static final Logger log = Logger.getLogger(SaogIntegrationSolicitacaoTest.class);
+	private static final Logger log = LoggerFactory.getLogger(SaogIntegrationSolicitacaoTest.class);
 	
 	private DynamicPeriodicTrigger trigger;
 	
@@ -119,8 +118,8 @@ public class SaogIntegrationSolicitacaoTest implements ApplicationContextAware {
 	public void checkMessagePayload(Message<?> message)
 	{ 
 		log.debug("Checking messagePayload" );
-		log.debug(message.getPayload());
-		log.debug(message.getHeaders());
+		log.debug(message.getPayload().toString());
+		log.debug(message.getHeaders().toString());
 		log.debug("End Checking messagePayload" );
 	}
 	

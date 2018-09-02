@@ -8,12 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.nanotek.batch.BlockExecutor;
 import org.nanotek.beans.Medium;
-import org.nanotek.dao.DAO;
+
 import org.nanotek.opencsv.BaseMap;
 import org.nanotek.opencsv.CsvBaseMapper;
 import org.nanotek.opencsv.CsvTabReader;
@@ -23,7 +25,7 @@ import org.springframework.context.ApplicationContext;
 
 public class CsvLoaderMedium extends CsvContextLoader{
 
-	private static final Logger log = Logger.getLogger(CsvLoaderMedium.class);
+	private static final Logger log = LoggerFactory.getLogger(CsvLoaderMedium.class);
 
 	public CsvLoaderMedium() {
 	}
@@ -70,7 +72,7 @@ public class CsvLoaderMedium extends CsvContextLoader{
 					executeDataInsert(mediumList, dataBaseContext);
 		} catch (IOException e) {
 			e.printStackTrace();
-			log.debug(e);
+			log.debug(e.toString());
 		}
 	}
 

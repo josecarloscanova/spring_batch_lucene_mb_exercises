@@ -1,4 +1,4 @@
-package br.gov.sp.prodesp.saog.integracao.ws;
+package tests.org.nanotek.musicbrainz.data.load;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

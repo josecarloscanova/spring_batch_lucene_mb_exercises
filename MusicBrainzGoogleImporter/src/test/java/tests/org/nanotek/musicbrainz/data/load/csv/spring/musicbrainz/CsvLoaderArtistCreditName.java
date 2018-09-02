@@ -11,26 +11,27 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.nanotek.Base;
 import org.nanotek.batch.BlockExecutor;
 import org.nanotek.beans.ArtistCredit;
 import org.nanotek.beans.ArtistCreditName;
-import org.nanotek.dao.DAO;
 import org.nanotek.opencsv.BaseMap;
 import org.nanotek.opencsv.CsvBaseMapper;
 import org.nanotek.opencsv.CsvTabReader;
 import org.nanotek.opencsv.HashMapCsvMapper;
 import org.nanotek.opencsv.MapColumnStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class CsvLoaderArtistCreditName implements Insertable{
 
 	
-	private static final Logger log = Logger.getLogger(CsvLoaderArtistCreditName.class);
+	private static final Logger log = LoggerFactory.getLogger(CsvLoaderArtistCreditName.class);
 	
 	public CsvLoaderArtistCreditName() {
 		

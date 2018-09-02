@@ -10,22 +10,20 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.nanotek.batch.BlockExecutor;
 import org.nanotek.beans.ArtistName;
-import org.nanotek.dao.DAO;
 import org.nanotek.opencsv.BaseMap;
 import org.nanotek.opencsv.CsvBaseMapper;
 import org.nanotek.opencsv.CsvTabReader;
 import org.nanotek.opencsv.HashMapCsvMapper;
 import org.nanotek.opencsv.MapColumnStrategy;
-import org.springframework.context.ApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class CsvLoaderArtistName implements Insertable{
 
-	private static final Logger log = Logger.getLogger(CsvLoaderArtistName.class);
+	private static final Logger log = LoggerFactory.getLogger(CsvLoaderArtistName.class);
 	
 	public CsvLoaderArtistName() {
 		
@@ -45,7 +43,6 @@ public class CsvLoaderArtistName implements Insertable{
 			"/database-loaders/spring-dao-context.xml"};
 			ClassPathXmlApplicationContext dataBaseContext = new ClassPathXmlApplicationContext(dataBaseContextLocation);
 			@SuppressWarnings("unchecked")
-			DAO<ArtistName> dao = (DAO<ArtistName>) dataBaseContext.getBean("artistNameDAO");
 			
 			CsvBaseMapper  csvMap = new CsvBaseMapper("TableName" , buildHashMap());
 			File artistFileBean = (File)csvContext.getBean("artistFile");

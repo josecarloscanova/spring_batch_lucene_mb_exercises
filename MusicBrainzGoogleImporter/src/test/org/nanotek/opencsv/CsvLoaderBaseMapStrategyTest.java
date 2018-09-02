@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.nanotek.Base;
 import org.nanotek.base.LongBase;
 import org.nanotek.opencsv.BaseMap;

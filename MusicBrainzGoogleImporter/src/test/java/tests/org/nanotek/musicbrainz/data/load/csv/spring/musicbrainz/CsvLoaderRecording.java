@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.log4j.Logger;
 import org.nanotek.batch.BlockExecutor;
 import org.nanotek.beans.Recording;
-import org.nanotek.dao.DAO;
+
 import org.nanotek.opencsv.BaseMap;
 import org.nanotek.opencsv.CsvBaseMapper;
 import org.nanotek.opencsv.CsvTabReader;
@@ -25,7 +27,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class CsvLoaderRecording implements Insertable{
 
 
-	private static final Logger log = Logger.getLogger(CsvLoaderRecording.class);
+	private static final Logger log = LoggerFactory.getLogger(CsvLoaderRecording.class);
 
 	public CsvLoaderRecording() {
 

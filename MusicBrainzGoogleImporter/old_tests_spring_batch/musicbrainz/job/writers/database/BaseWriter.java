@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nanotek.Base;
-import org.nanotek.dao.DAO;
+
 import org.springframework.batch.item.ItemWriter;
 
 public class BaseWriter<T extends Base<?>> implements ItemWriter<Base<?>> {

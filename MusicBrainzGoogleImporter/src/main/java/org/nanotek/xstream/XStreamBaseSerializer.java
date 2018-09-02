@@ -5,22 +5,24 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
+import javax.annotation.PostConstruct;
+
 import org.nanotek.Base;
 
 import com.thoughtworks.xstream.XStream;
 
-public class XStreamBaseSerializer implements PostConstructor<XStreamBaseSerializer>{
+public class XStreamBaseSerializer<T extends Base<?>> implements PostConstructor<XStreamBaseSerializer>{
 
 	private Class<? extends Base<?>> baseClass; 
 	private  XStream xstream;
 	
 	
-	public XStreamBaseSerializer(Class<? extends Base<?>> baseClass, XStream xStream) {
+	public XStreamBaseSerializer(Class<T> baseClass, XStream xStream) {
 		this.baseClass = baseClass;
 		this.xstream = xStream;
-		postConstruct();
 	}
 
+	@PostConstruct
 	public void postConstruct() 
 	{ 
 		setClassBaseAlias(this.baseClass , this.xstream);

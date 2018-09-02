@@ -3,7 +3,7 @@ package org.nanotek.musicbrainz.job.writers.database;
 import java.util.List;
 
 import org.nanotek.Base;
-import org.nanotek.dao.DAO;
+
 import org.springframework.batch.item.ItemWriter;
 
 public class BaseListWriter <T extends List<Base<?>>> implements ItemWriter<List<Base<?>>>{

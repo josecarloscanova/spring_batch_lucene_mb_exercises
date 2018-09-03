@@ -32,9 +32,9 @@ public class CsvLoaderArtistCredit {
 		
 	}
 
-	@Test
+//	@Test
 	@SuppressWarnings("resource")
-	public void main() {
+	public static void main(String[] args) {
 		
 		try {
 			
@@ -42,9 +42,9 @@ public class CsvLoaderArtistCredit {
 			"/file-loaders/mbz_files_context.xml"};
 			ClassPathXmlApplicationContext csvContext = new ClassPathXmlApplicationContext(csvContextLocation);
 			
-			String [] dataBaseContextLocation = new String[] {
-			"/database-loaders/spring-dao-context.xml"};
-			ClassPathXmlApplicationContext dataBaseContext = new ClassPathXmlApplicationContext(dataBaseContextLocation);
+			/*String [] dataBaseContextLocation = new String[] {
+			"/database-loaders/spring-dao-context.xml"};*/
+//			ClassPathXmlApplicationContext dataBaseContext = new ClassPathXmlApplicationContext(dataBaseContextLocation);
 			CsvBaseMapper  csvMap = new CsvBaseMapper("TableName" , buildHashMap());
 			File artistCreditFileBean = (File)csvContext.getBean("artistCreditFile");
 			FileReader csvFileReader = new FileReader (artistCreditFileBean);
@@ -71,14 +71,14 @@ public class CsvLoaderArtistCredit {
 				}
 				artistCreditList.add(base);
 			}
-			executeDataInsert(artistCreditList, dataBaseContext);
+			executeDataInsert(artistCreditList , null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@SuppressWarnings({ "unchecked"})
-	public void executeDataInsert(final List<ArtistCredit> artistCreditNameList , ApplicationContext dataBaseContext)
+	public static void executeDataInsert(final List<ArtistCredit> artistCreditNameList , ApplicationContext dataBaseContext)
 	{ 
 //		final DAO<ArtistCredit> dao = (DAO<ArtistCredit>) dataBaseContext.getBean("artistCreditNameDAO");
 //		artistCreditNameList.parallelStream().forEach(new Consumer<ArtistCredit>() {
